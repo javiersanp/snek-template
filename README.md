@@ -8,19 +8,24 @@ This project aims to build a [cookiecutter](https://github.com/audreyr/cookiecut
 Planned Features
 ----------------
 
-* Documment the workflow derived from this template.
+* Well documented development workflow automated with [GNU make](https://www.gnu.org/software/make/).
+* Dependency management and packaging with [Poetry](https://poetry.eustace.io/).
+* Testing with [pytest](https://pytests.org).
+* Style enforcement with [flake8](http://flake8.pycqa.org).
 * Set the template for my particular set of code style and analysis tools:
-  * TODO: define.
-* Configurate Sphinx in the template.
-* Option to choose between many licenses.
-* Add by configuration context with variable for credits if used inside a company.
-* Configuration option to choose CI or not.
+    * TODO: define.
+* Generation of documentation with [Sphinx](http://www.sphinx-doc.org) \[or [mkdocs](https://www.mkdocs.org/) or none\].
+* Build matrix with [tox](https://tox.readthedocs.io).
+* Continous Integration with [Travis](https://travis-ci.org/) \[, [CircleCI](https://circleci.com) or [Jenkins](https://jenkins.io)\].
+* Choose between many [open source licenses](https://choosealicense.com/).
+* Option to copyright (for example a Company name). It will be the author by default.
 
 **Optionally**
 
 * Addapt the template to be used both for libraries and applications.
 * Option to choose between mkdocs, Sphinx or no docs.
 * Add configuration for many CI: Travis, Jenkins and maybe CircleCI.
+* Auto-release to [PyPI](https://pypi.org/) (optional).
 
 Requirements
 ------------
@@ -42,7 +47,7 @@ Learn to use CI tools.
 Similar projects
 ----------------
 
-https://github.com/audreyr/cookiecutter-pypackage/
+https://github.com/audreyr/cookiecutter-pypackage
 https://github.com/claws/cookiecutter-python-project
 https://github.com/jacebrowning/template-python
 https://github.com/elgertam/cookiecutter-pipenv
