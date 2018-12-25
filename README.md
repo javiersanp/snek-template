@@ -5,8 +5,8 @@ Another cookicutter template for general Python projects.
 
 This project aims to build a [cookiecutter](https://github.com/audreyr/cookiecutter) template for personal use.
 
-Requirements
-------------
+Planned Features
+----------------
 
 * Documment the workflow derived from this template.
 * Set the template for my particular set of code style and analysis tools:
@@ -16,11 +16,22 @@ Requirements
 * Add by configuration context with variable for credits if used inside a company.
 * Configuration option to choose CI or not.
 
-**Optional requirements**
+**Optionally**
 
 * Addapt the template to be used both for libraries and applications.
 * Option to choose between mkdocs, Sphinx or no docs.
 * Add configuration for many CI: Travis, Jenkins and maybe CircleCI.
+
+Requirements
+------------
+
+Requirements
+------------
+Install `cookiecutter` command line: `pip install cookiecutter`    
+
+Usage
+-----
+Generate a new Cookiecutter template layout: `cookiecutter gh:javirsanp/snek-template` 
 
 Goals
 -----
