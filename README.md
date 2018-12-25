@@ -25,12 +25,11 @@ Planned Features
 Requirements
 ------------
 
-Requirements
-------------
-Install `cookiecutter` command line: `pip install cookiecutter`    
+Install `cookiecutter` command line: `pip install cookiecutter` 
 
 Usage
 -----
+
 Generate a new Cookiecutter template layout: `cookiecutter gh:javirsanp/snek-template` 
 
 Goals
@@ -40,7 +39,16 @@ Apply testing, documentation and good practices.
 Achive a nice developing workflow.
 Learn to use CI tools.
 
+Similar projects
+----------------
+
+https://github.com/audreyr/cookiecutter-pypackage/
+https://github.com/claws/cookiecutter-python-project
+https://github.com/jacebrowning/template-python
+https://github.com/elgertam/cookiecutter-pipenv
+
 Credits
 -------
 
 * The snek name comes from the [Amir Rachum tutorial](https://amir.rachum.com/blog/2017/07/28/python-entry-points/) used for the tempate code.
+
