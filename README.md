@@ -1,4 +1,4 @@
-snek-template
+Snek Template
 =============
 
 Another cookicutter template for general Python projects.
@@ -47,10 +47,10 @@ Learn to use CI tools.
 Similar projects
 ----------------
 
-https://github.com/audreyr/cookiecutter-pypackage
-https://github.com/claws/cookiecutter-python-project
-https://github.com/jacebrowning/template-python
-https://github.com/elgertam/cookiecutter-pipenv
+* https://github.com/audreyr/cookiecutter-pypackage
+* https://github.com/claws/cookiecutter-python-project
+* https://github.com/jacebrowning/template-python
+* https://github.com/elgertam/cookiecutter-pipenv
 
 Credits
 -------
