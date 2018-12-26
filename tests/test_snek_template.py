@@ -7,7 +7,8 @@ import subprocess
 @contextmanager
 def inside_dir(dirpath):
     """
-    Temporarily changes the current working directory
+    Temporarily changes the current working directory.
+    
     :param dirpath: String, path of the directory to change
     """
     print(dirpath)
@@ -21,7 +22,8 @@ def inside_dir(dirpath):
 
 def command_exit_code(command):
     """
-    Run a command and get the exit code
+    Run a command and get the exit code.
+    
     :param command: String with the command that will be executed
     :returns: Command exit code
     """

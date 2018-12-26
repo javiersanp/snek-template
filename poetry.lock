@@ -29,11 +29,6 @@ optional = false
 python-versions = "*"
 version = "18.2.0"
 
-[package.extras]
-dev = ["coverage", "hypothesis", "pympler", "pytest", "six", "zope.interface", "sphinx", "zope.interface", "pre-commit"]
-docs = ["sphinx", "zope.interface"]
-tests = ["coverage", "hypothesis", "pympler", "pytest", "six", "zope.interface"]
-
 [[package]]
 category = "main"
 description = "backports.functools_lru_cache"
@@ -42,10 +37,6 @@ name = "backports.functools-lru-cache"
 optional = false
 python-versions = ">=2.6"
 version = "1.5"
-
-[package.extras]
-docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
-testing = ["pytest (>=2.8)", "collective.checkdocs"]
 
 [[package]]
 category = "main"
@@ -185,9 +176,6 @@ version = "2.10"
 [package.dependencies]
 MarkupSafe = ">=0.23"
 
-[package.extras]
-i18n = ["Babel (>=0.8)"]
-
 [[package]]
 category = "main"
 description = "Jinja2 Extension for Dates and Times"
@@ -251,9 +239,6 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.8.0"
 
-[package.extras]
-dev = ["pre-commit", "tox"]
-
 [[package]]
 category = "main"
 description = "A lightweight YAML Parser for Python"
@@ -277,6 +262,18 @@ name = "pycodestyle"
 optional = false
 python-versions = "*"
 version = "2.4.0"
+
+[[package]]
+category = "dev"
+description = "Python docstring style checker"
+name = "pydocstyle"
+optional = false
+python-versions = "*"
+version = "3.0.0"
+
+[package.dependencies]
+six = "*"
+snowballstemmer = "*"
 
 [[package]]
 category = "dev"
@@ -311,9 +308,6 @@ version = "*"
 [package.dependencies.pathlib2]
 python = "<3.6"
 version = ">=2.2.0"
-
-[package.extras]
-testing = ["hypothesis (>=3.56)", "nose", "requests", "mock"]
 
 [[package]]
 category = "main"
@@ -352,10 +346,6 @@ chardet = ">=3.0.2,<3.1.0"
 idna = ">=2.5,<2.9"
 urllib3 = ">=1.21.1,<1.25"
 
-[package.extras]
-security = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)"]
-socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7)", "win-inet-pton"]
-
 [[package]]
 category = "main"
 description = "scandir, a better directory iterator and faster os.walk()"
@@ -374,16 +364,20 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*"
 version = "1.12.0"
 
 [[package]]
+category = "dev"
+description = "This package provides 16 stemmer algorithms (15 + Poerter English stemmer) generated from Snowball algorithms."
+name = "snowballstemmer"
+optional = false
+python-versions = "*"
+version = "1.2.1"
+
+[[package]]
 category = "main"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 name = "urllib3"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4"
 version = "1.24.1"
-
-[package.extras]
-secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
-socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
 
 [[package]]
 category = "main"
@@ -394,7 +388,7 @@ python-versions = "*"
 version = "0.5.2"
 
 [metadata]
-content-hash = "59eaf04bba07c0b773f0978e33f90488303da999399410e30799ebd441e10fa2"
+content-hash = "d159a033dceccd38a53a213b1c3146147cf2366564f1edff9950db5134c34f3f"
 python-versions = "^3.4 || ~2.7"
 
 [metadata.hashes]
@@ -424,6 +418,7 @@ pluggy = ["447ba94990e8014ee25ec853339faf7b0fc8050cdc3289d4d71f7f410fb90095", "b
 poyo = ["c34a5413191210ed564640510e9c4a4ba3b698746d6b454d46eb5bfb30edcd1d", "d1c317054145a6b1ca0608b5e676b943ddc3bfd671f886a2fe09288b98221edb"]
 py = ["bf92637198836372b520efcba9e020c330123be8ce527e535d185ed4b6f45694", "e76826342cefe3c3d5f7e8ee4316b80d1dd8a300781612ddbc765c17ba25a6c6"]
 pycodestyle = ["74abc4e221d393ea5ce1f129ea6903209940c1ecd29e002e8c6933c2b21026e0", "cbc619d09254895b0d12c2c691e237b2e91e9b2ecf5e84c26b35400f93dcfb83", "cbfca99bd594a10f674d0cd97a3d802a1fdef635d4361e1a2658de47ed261e3a"]
+pydocstyle = ["2258f9b0df68b97bf3a6c29003edc5238ff8879f1efb6f1999988d934e432bd8", "5741c85e408f9e0ddf873611085e819b809fca90b619f5fd7f34bd4959da3dd4", "ed79d4ec5e92655eccc21eb0c6cf512e69512b4a97d215ace46d17e4990f2039"]
 pyflakes = ["9a7662ec724d0120012f6e29d6248ae3727d821bba522a0e6b356eff19126a49", "f661252913bc1dbe7fcfcbf0af0db3f42ab65aabd1a6ca68fe5d466bace94dae"]
 pytest = ["f689bf2fc18c4585403348dd56f47d87780bf217c53ed9ae7a3e2d7faa45f8e9", "f812ea39a0153566be53d88f8de94839db1e8a05352ed8a49525d7d7f37861e9"]
 pytest-cookies = ["7054b5abd87704c3769b46deb65c332fadba80905d4103b0b1e0b4fe8a9a852a", "a6f37393b697eb3357625a5c226888d9dd020cca3d112b38c630467ce9ff7844"]
@@ -431,5 +426,6 @@ python-dateutil = ["063df5763652e21de43de7d9e00ccf239f953a832941e37be541614732cd
 requests = ["502a824f31acdacb3a35b6690b5fbf0bc41d63a24a45c4004352b0242707598e", "7bf2a778576d825600030a110f3c0e3e8edc51dfaafe1c146e39a2027784957b"]
 scandir = ["04b8adb105f2ed313a7c2ef0f1cf7aff4871aa7a1883fa4d8c44b5551ab052d6", "1444134990356c81d12f30e4b311379acfbbcd03e0bab591de2696a3b126d58e", "1b5c314e39f596875e5a95dd81af03730b338c277c54a454226978d5ba95dbb6", "346619f72eb0ddc4cf355ceffd225fa52506c92a2ff05318cfabd02a144e7c4e", "44975e209c4827fc18a3486f257154d34ec6eaec0f90fef0cca1caa482db7064", "61859fd7e40b8c71e609c202db5b0c1dbec0d5c7f1449dec2245575bdc866792", "a5e232a0bf188362fa00123cc0bb842d363a292de7126126df5527b6a369586a", "c14701409f311e7a9b7ec8e337f0815baf7ac95776cc78b419a1e6d49889a383", "c7708f29d843fc2764310732e41f0ce27feadde453261859ec0fca7865dfc41b", "c9009c527929f6e25604aec39b0a43c3f831d2947d89d6caaab22f057b7055c8", "f5c71e29b4e2af7ccdc03a020c626ede51da471173b4a6ad1e904f2b2e04b4bd"]
 six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"]
+snowballstemmer = ["919f26a68b2c17a7634da993d91339e288964f93c274f1343e3bbbe2096e1128", "9f3bcd3c401c3e862ec0ebe6d2c069ebc012ce142cce209c098ccb5b09136e89"]
 urllib3 = ["61bf29cada3fc2fbefad4fdf059ea4bd1b4a86d2b6d15e1c7c0b582b9752fe39", "de9529817c93f27c8ccbfead6985011db27bd0ddfcdb2d86f3f663385c6a9c22"]
 whichcraft = ["7533870f751901a0ce43c93cc9850186e9eba7fe58c924dfb435968ba9c9fa4e", "fecddd531f237ffc5db8b215409afb18fa30300699064cca4817521b4fc81815"]

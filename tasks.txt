@@ -1,11 +1,16 @@
 v   Análisis
     001 Definidos los requisitos
 Documentación
-    001 Lista proyectos similares
-Codificación
+    00 Documentación del proyecto
+        001 Lista proyectos similares
+        002 Escribe plantilla de README.md
+        003 Referencia a pytest-cookies en pruebas
     01 Documentar flujo de trabajo
+Codificación
     02 Automatizar flujo con Make
     03 Gestión de dependencias y empaquetado con Poetry
+o       001 Definir pyproject.toml del proyecto
+        002 Definir pyproject.toml de la plantilla
     04 Pruebas con pytest
 v       001 Generado esqueleto del proyecto
 o       002 Prueba con parámetros por defecto
@@ -13,12 +18,14 @@ v       003 Prueba de generación de slug
 v       004 Plantilla de código
 v       005 Plantilla de pruebas
 v       006 Prueba de ejecución de pruebas en el resultado
-v
-    05 Corrección de estilo con blake, isort
+    05 Corrección de estilo con blake, isort, pydocstyle
     06 Comprobación de estilo con flake8
-        001 Configuración para comprobar proyecto
-        002 Configuración para comprobar resultado
-    07 Queda algo más?
+v       001 Configuración para comprobar proyecto
+v       002 Configuración para comprobar resultado
+v       003 Prueba para comprobar resultado
+    07 Covertura de código con [Coverage](https://coverage.readthedocs.io/en/v4.5.x/)
+        001 Code coverage platform with [Coveralls](https://coveralls.io)?
+    Queda algo más?
     08 Generación de documentación con Sphinx
     09 Matriz de pruebas con tox
     10 Integración contínua con Travis
@@ -28,4 +35,4 @@ Opcionales
     20 Adaptar para uso como librería o aplicación
     21 Opción para elejir mkdocs o no docs como alternativas
     22 Integración contínua con Jenkins y quizá CircleCI
-    23 Publicación automática 
+    23 Publicación automática
