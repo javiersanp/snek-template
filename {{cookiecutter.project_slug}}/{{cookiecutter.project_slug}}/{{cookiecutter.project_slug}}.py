@@ -2,10 +2,10 @@
 """{{cookiecutter.project_name}} core module"""
 
 
-def get_sneks():
-    """Return a dict of sneks"""
+def get_emoji():
+    """Return a dict of emojis"""
     return dict(
-        red="\033[91m🐍\033[0m",
-        green="\033[92m🐍\033[0m",
-        blue="\033[94m🐍\033[0m",
+        snek="🐍",
+        rabit="🐰",
+        monky="🐒",
     )

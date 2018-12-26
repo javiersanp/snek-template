@@ -29,6 +29,11 @@ optional = false
 python-versions = "*"
 version = "18.2.0"
 
+[package.extras]
+dev = ["coverage", "hypothesis", "pympler", "pytest", "six", "zope.interface", "sphinx", "zope.interface", "pre-commit"]
+docs = ["sphinx", "zope.interface"]
+tests = ["coverage", "hypothesis", "pympler", "pytest", "six", "zope.interface"]
+
 [[package]]
 category = "main"
 description = "backports.functools_lru_cache"
@@ -37,6 +42,10 @@ name = "backports.functools-lru-cache"
 optional = false
 python-versions = ">=2.6"
 version = "1.5"
+
+[package.extras]
+docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
+testing = ["pytest (>=2.8)", "collective.checkdocs"]
 
 [[package]]
 category = "main"
@@ -176,6 +185,9 @@ version = "2.10"
 [package.dependencies]
 MarkupSafe = ">=0.23"
 
+[package.extras]
+i18n = ["Babel (>=0.8)"]
+
 [[package]]
 category = "main"
 description = "Jinja2 Extension for Dates and Times"
@@ -239,6 +251,9 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "0.8.0"
 
+[package.extras]
+dev = ["pre-commit", "tox"]
+
 [[package]]
 category = "main"
 description = "A lightweight YAML Parser for Python"
@@ -297,6 +312,9 @@ version = "*"
 python = "<3.6"
 version = ">=2.2.0"
 
+[package.extras]
+testing = ["hypothesis (>=3.56)", "nose", "requests", "mock"]
+
 [[package]]
 category = "main"
 description = "A Pytest plugin for your Cookiecutter templates"
@@ -334,6 +352,10 @@ chardet = ">=3.0.2,<3.1.0"
 idna = ">=2.5,<2.9"
 urllib3 = ">=1.21.1,<1.25"
 
+[package.extras]
+security = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)"]
+socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7)", "win-inet-pton"]
+
 [[package]]
 category = "main"
 description = "scandir, a better directory iterator and faster os.walk()"
@@ -359,6 +381,10 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4"
 version = "1.24.1"
 
+[package.extras]
+secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
+socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
+
 [[package]]
 category = "main"
 description = "This package provides cross-platform cross-python shutil.which functionality."
@@ -368,8 +394,8 @@ python-versions = "*"
 version = "0.5.2"
 
 [metadata]
-content-hash = "604af20a64704c5464faf9eab96eab8851ac9f14b32ada7a84191760c7bf37ab"
-python-versions = "^3.4 || ^2.7"
+content-hash = "59eaf04bba07c0b773f0978e33f90488303da999399410e30799ebd441e10fa2"
+python-versions = "^3.4 || ~2.7"
 
 [metadata.hashes]
 arrow = ["a558d3b7b6ce7ffc74206a86c147052de23d3d4ef0e17c210dd478c53575c4cd"]
