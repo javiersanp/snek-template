@@ -1,7 +1,7 @@
-from contextlib import contextmanager
 import os
 import shlex
 import subprocess
+from contextlib import contextmanager
 
 
 @contextmanager

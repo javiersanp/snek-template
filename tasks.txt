@@ -8,6 +8,7 @@ v       001 Lista proyectos similares
     01 Documentar flujo de trabajo
 Codificación
     02 Automatizar flujo con Make
+        001 Estudiar git hooks
 o   03 Gestión de dependencias y empaquetado con Poetry
 o       001 Definir pyproject.toml del proyecto
         002 Definir pyproject.toml de la plantilla
@@ -18,7 +19,8 @@ v       003 Prueba de generación de slug
 v       004 Plantilla de código
 v       005 Plantilla de pruebas
 v       006 Prueba de ejecución de pruebas en el resultado
-    05 Corrección de estilo con blake, isort
+o   05 Corrección de estilo con blake, isort
+v       001 Configured and passed isort
 o   06 Comprobación de estilo con flake8, pydocstyle
 v       001 Configuración para comprobar proyecto
 v       002 Configuración para comprobar resultado
