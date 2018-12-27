@@ -1,3 +1,5 @@
+# https://www.python.org/dev/peps/pep-0518/
+
 [tool.poetry]
 name = "snek-template"
 version = "0.1.0"
