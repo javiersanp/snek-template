@@ -4,8 +4,4 @@
 
 def get_emoji():
     """Return a dict of emojis."""
-    return dict(
-        snek="🐍",
-        rabit="🐰",
-        monky="🐒",
-    )
+    return dict(snek="🐍", rabit="🐰", monky="🐒")

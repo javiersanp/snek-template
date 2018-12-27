@@ -21,7 +21,7 @@ v       003 Prueba de generación de slug
 v       004 Plantilla de código
 v       005 Plantilla de pruebas
 v       006 Prueba de ejecución de pruebas en el resultado
-o   05 Corrección de estilo con blake, isort
+o   05 Corrección de estilo con black, isort
 v       001 Configured and passed isort
 o   06 Comprobación de estilo con flake8, pydocstyle
 v       001 Configuración para comprobar proyecto
@@ -38,8 +38,9 @@ v       005 Prueba para comprobar docstring en resultado
     11 Elegir entre varias licencias
     12 Añadir copyright de compañía
 v   13 System dependency version checker
-        001 Usar pydocstyle con la opción check-only, añadirlo a los tests y ponerlo en dev
-        002 Quizá bajar script verchew y quitar la dependencia
+        001 Quizá bajar script verchew y quitar la dependencia
+        002 Usar pydocstyle con la opción check-only, añadirlo a los tests y ponerlo en dev
+        003 Lo mismo con isort
 Opcionales
     20 Adaptar para uso como librería o aplicación
     21 Opción para elejir mkdocs o no docs como alternativas
