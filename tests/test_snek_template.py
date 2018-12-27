@@ -8,7 +8,7 @@ from contextlib import contextmanager
 def inside_dir(dirpath):
     """
     Temporarily changes the current working directory.
-    
+
     :param dirpath: String, path of the directory to change
     """
     print(dirpath)
@@ -23,7 +23,7 @@ def inside_dir(dirpath):
 def command_exit_code(command):
     """
     Run a command and get the exit code.
-    
+
     :param command: String with the command that will be executed
     :returns: Command exit code
     """
@@ -36,9 +36,10 @@ def test_bake_with_defaults(cookies):
     assert result.exception is None, "Render without errors"
     assert result.project.isdir(), "Project directory exists"
 
-    found_toplevel_files = [f.basename for f in result.project.listdir()]
-    assert "your_project_name" in found_toplevel_files
-    assert "tests" in found_toplevel_files
+    toplevel_files = [f.basename for f in result.project.listdir()]
+    assert ".editorconfig" in toplevel_files
+    assert ".gitignore" in toplevel_files
+    assert ".verchew.ini" in toplevel_files
 
 
 def test_slug(cookies):
