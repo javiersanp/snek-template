@@ -27,7 +27,7 @@ def temp_task_install():
 def task_check():
     """Check diff of code formatters."""
     black_cmd = (
-        'black -l 79 --diff --exclude "(\.venv|\.git|\{|\.tox|build|dist)" .'
+        r'black -l 79 --diff --exclude "(\.venv|\.git|\{|\.tox|build|dist)" .'
     )
     for action in [black_cmd, "isort --diff"]:
         yield get_subtask(action)
@@ -35,7 +35,7 @@ def task_check():
 
 def task_format():
     """Run code formatters."""
-    black_cmd = 'black -l 79 --exclude "(\.venv|\.git|\{|\.tox|build|dist)" .'
+    black_cmd = r'black -l 79 --exclude "(\.venv|\.git|\{|\.tox|build|dist)" .'
     for action in [black_cmd, "isort"]:
         yield get_subtask(action, PYTHON_FILES)
 
