@@ -57,10 +57,11 @@ def test_bake_and_run_tests(cookies):
         assert run(["pytest"]).returncode == 0, "Run tests ok"
 
 
-def test_doit_style_run_in_project(cookies):
+@pytest.mark.parametrize("command", ["style", "format"])
+def test_doit_command_run_in_project(cookies, command):
     result = cookies.bake(extra_context={"project_name": "testing"})
     with inside_dir(str(result.project)):
-        assert run(["doit", "style"]).returncode == 0, "Run doit style ok"
+        assert run(["doit", command]).returncode == 0
 
 
 @pytest.mark.parametrize("pkg_name", ["mypackage", "tests"])
