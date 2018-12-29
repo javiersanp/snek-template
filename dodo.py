@@ -6,7 +6,9 @@ import glob
 
 DOIT_CONFIG = {"default_tasks": ["task_check", "style"]}
 
-PYTHON_FILES = glob.glob("**/*.py", recursive=True)
+PYTHON_FILES = [
+    path for path in glob.iglob("**/*.py", recursive=True) if "{" not in path
+]
 
 
 def get_subtask(cmd_action, file_dep=None):
@@ -24,13 +26,17 @@ def temp_task_install():
 
 def task_check():
     """Check diff of code formatters."""
-    for action in ["black -l 79 --diff .", "isort --diff"]:
+    black_cmd = (
+        'black -l 79 --diff --exclude "(\.venv|\.git|\{|\.tox|build|dist)" .'
+    )
+    for action in [black_cmd, "isort --diff"]:
         yield get_subtask(action)
 
 
 def task_format():
     """Run code formatters."""
-    for action in ["black -l 79 .", "isort"]:
+    black_cmd = 'black -l 79 --exclude "(\.venv|\.git|\{|\.tox|build|dist)" .'
+    for action in [black_cmd, "isort"]:
         yield get_subtask(action, PYTHON_FILES)
 
 
