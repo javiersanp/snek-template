@@ -64,18 +64,18 @@ def test_doit_style_run_in_project(cookies):
 
 
 @pytest.mark.parametrize("pkg_name", ["mypackage", "tests"])
-@pytest.mark.parametrize("expected_error", ["D400"])
+@pytest.mark.parametrize("expected_error", ["E111", "D400", "sorted"])
 def test_doit_style_with_fails(cookies, capfd, pkg_name, expected_error):
     bad_style_code = {
         "E111": """def myfunction():\n   pass\n""",
-        "D400": """def myfunction():\n    \"\"\"Bla bla bla\"\"\"\n    pass\n""",
+        "D400": """def myfunction():\n    \"\"\"Bla bla\"\"\"\n    pass\n""",
+        "sorted": """import sys\nimport os\nprint(os.name, sys.platform)\n""",
     }
     result = cookies.bake(extra_context={"project_name": "mypackage"})
     with inside_dir(str(result.project)):
         python_file = os.path.join(pkg_name, "dummy.py")
         with open(str(python_file), "w") as fo:
             fo.write(bad_style_code[expected_error])
-        assert run(["cat", python_file])
         assert run(["doit", "style"]).returncode != 0
         captured = capfd.readouterr()
         assert expected_error in captured.out
