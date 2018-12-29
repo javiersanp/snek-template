@@ -9,35 +9,27 @@ v       001 Lista proyectos similares
     01 Documentar flujo de trabajo
 Codificación
 v   001 Añade .editorconfig
-    02 Automatizar flujo con Make
+o   02 Automatizar flujo con doit
         001 Estudiar git hooks
+v       002 doit style
+v       003 doit check
+v       004 doit format
+        005 doit install
 o   03 Gestión de dependencias y empaquetado con Poetry
 o       001 Definir pyproject.toml del proyecto
         002 Definir pyproject.toml de la plantilla
 o   04 Pruebas con pytest
-v       001 Generado esqueleto del proyecto
-o       002 Prueba con parámetros por defecto
-v       003 Prueba de generación de slug
-v       004 Plantilla de código
-v       005 Plantilla de pruebas
-v       006 Prueba de ejecución de pruebas en el resultado
-o   05 Corrección de estilo con black, isort
-v       001 Configured and passed isort
-o   06 Comprobación de estilo con flake8, pydocstyle
-v       001 Configuración para comprobar proyecto
-v       002 Configuración para comprobar resultado
-v       003 Prueba para comprobar resultado
-v       004 Exploración de pydocstring. Demasiado estricto, dejar como opcional
-v       005 Prueba para comprobar docstring en resultado
+v   05 Corrección de estilo con black, isort
+v   06 Comprobación de estilo con flake8, pydocstyle, isort
     07 Cobertura de código con [Coverage](https://coverage.readthedocs.io/en/v4.5.x/)
         001 Code coverage platform with [Coveralls](https://coveralls.io)?
     08 Generación de documentación con Sphinx
         001 Documentar proyecto con mkdocs
     09 Matriz de pruebas con tox
     10 Integración contínua con Travis
-    11 Elegir entre varias licencias
-    12 Añadir copyright de compañía
-v   13 System dependency version checker
+v   11 Elegir entre varias licencias
+v   12 Añadir copyright de compañía
+o   13 System dependency version checker
         001 Quizá bajar script verchew y quitar la dependencia
         002 Usar pydocstyle con la opción check-only, añadirlo a los tests y ponerlo en dev
         003 Lo mismo con isort
