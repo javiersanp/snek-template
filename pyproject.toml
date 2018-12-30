@@ -9,7 +9,8 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-pytest-cookies = "^0.3.0"
+isort = "^4.3"
+pydocstyle = "^3.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^4.0"

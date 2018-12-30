@@ -14,10 +14,12 @@ o   02 Automatizar flujo con doit
 v       002 doit style
 v       003 doit check
 v       004 doit format
-        005 doit install
-o   03 Gestión de dependencias y empaquetado con Poetry
-o       001 Definir pyproject.toml del proyecto
-        002 Definir pyproject.toml de la plantilla
+o       005 doit install
+v       006 doit verchew
+        007 manejar entorno en doit (poetry run vs poetry shell, dentro o fuera?)
+v   03 Gestión de dependencias y empaquetado con Poetry
+v       001 Definir pyproject.toml del proyecto
+v       002 Definir pyproject.toml de la plantilla
 o   04 Pruebas con pytest
 v   05 Corrección de estilo con black, isort
 v   06 Comprobación de estilo con flake8, pydocstyle, isort
@@ -29,10 +31,10 @@ v   06 Comprobación de estilo con flake8, pydocstyle, isort
     10 Integración contínua con Travis
 v   11 Elegir entre varias licencias
 v   12 Añadir copyright de compañía
-o   13 System dependency version checker
-        001 Quizá bajar script verchew y quitar la dependencia
-        002 Usar pydocstyle con la opción check-only, añadirlo a los tests y ponerlo en dev
-        003 Lo mismo con isort
+v   13 System dependency version checker
+v       001 Quizá bajar script verchew y quitar la dependencia
+v       002 Usar pydocstyle con la opción check-only, añadirlo a los tests y ponerlo en dev
+v       003 Lo mismo con isort
 Opcionales
     20 Adaptar para uso como librería o aplicación
     21 Opción para elejir mkdocs o no docs como alternativas

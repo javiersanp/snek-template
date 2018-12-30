@@ -4,7 +4,7 @@ See: http://pydoit.org/
 """
 import glob
 
-DOIT_CONFIG = {"default_tasks": ["task_check", "style"]}
+DOIT_CONFIG = {"default_tasks": ["task_check", "style"], "verbosity": 2}
 
 PYTHON_FILES = [
     path for path in glob.iglob("**/*.py", recursive=True) if "{" not in path
@@ -19,9 +19,23 @@ def get_subtask(cmd_action, file_dep=None):
     return task
 
 
-def temp_task_install():
-    """Install all dependencies in .venv virtual environment."""
-    return {"file_dep": ["pyproject.toml"], "actions": ["poetry install"]}
+def task_verchew():
+    """Check system dependencies"""
+    return {
+        "file_dep": [".verchew.ini"],
+        "actions": ["python bin/verchew --exit-code"],
+        "verbosity": 0,
+    }
+
+
+def task_install():
+    """Install all dependencies in a virtual environment."""
+    return {
+        "file_dep": ["pyproject.toml"],
+        "actions": ["poetry install"],
+        "task_dep": ["verchew"],
+        "verbosity": 1,
+    }
 
 
 def task_check():
