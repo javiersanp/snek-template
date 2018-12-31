@@ -1,14 +1,10 @@
 import os
-
-PROJECT_DIRECTORY = os.path.realpath(os.path.curdir)
-
-
-def remove_file(filepath):
-    os.remove(os.path.join(PROJECT_DIRECTORY, filepath))
-
+import subprocess
 
 if __name__ == "__main__":
-
-    remove_file("extra_context.j2")
+    project_directory = os.path.realpath(os.path.curdir)
+    os.chdir(project_directory)
+    os.remove("extra_context.j2")
     if "{{ cookiecutter.license }}" == "Not open source":
-        remove_file("LICENSE")
+        os.remove("LICENSE")
+    subprocess.run(["python", os.path.join("bin", "verchew")])
