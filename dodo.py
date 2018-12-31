@@ -1,11 +1,16 @@
 """Script for task automation.
 
 See: http://pydoit.org/
+Note: Install doit with python3, preferably in a virtual environment
 """
 import glob
+import os
+import webbrowser
+from urllib.request import pathname2url
 
 DOIT_CONFIG = {"default_tasks": ["check", "style", "test"], "verbosity": 2}
-PYTEST_VERBOSITY = "-v"  # set "", "-v", "-vv" or "-vvv"
+PYTEST_VERBOSITY = "-v"  # Set as "", "-v", "-vv" or "-vvv"
+MIN_COVERAGE = "10"  # Test fails if coverage is under this value
 LINE_LENGHT = "79"  # black don't have a config file
 
 # Set file_dep to this to run task only when the code changes
@@ -73,7 +78,23 @@ def task_style():
 
 def task_test():
     """Run tests."""
+    pytest_cmd = "poetry run pytest {v} --cov --cov-fail-under={mc}".format(
+        v=PYTEST_VERBOSITY, mc=MIN_COVERAGE
+    )
+    return {"actions": [pytest_cmd], "file_dep": PYTHON_FILES}
+
+
+def task__coverage():
+    # TODO: Read tox.ini [coverage:html] directory default
+    cov_html = "file://" + pathname2url(
+        os.path.abspath("docs/_build/coverage_html/index.html")
+    )
     return {
-        "actions": ["poetry run pytest " + PYTEST_VERBOSITY],
-        "file_dep": PYTHON_FILES,
+        "actions": ["coverage html"],
+        "teardown": [(webbrowser.open, (cov_html,))],
     }
+
+
+def task_coverage():
+    """Generate a coverage html report."""
+    return {"actions": [], "task_dep": ["test"], "setup": ["_coverage"]}
