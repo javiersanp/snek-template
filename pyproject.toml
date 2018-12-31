@@ -9,15 +9,15 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-isort = "^4.3"
-pydocstyle = "^3.0"
 
 [tool.poetry.dev-dependencies]
+flake8 = "^3.6"
+isort = "^4.3"
+mock = "^2.0"
+pydocstyle = "^3.0"
 pytest = "^4.0"
 pytest-cookies = "^0.3.0"
-flake8 = "^3.6"
 verchew = "^1.5"
-mock = "^2.0"
 
 [build-system]
 requires = ["poetry>=0.12"]

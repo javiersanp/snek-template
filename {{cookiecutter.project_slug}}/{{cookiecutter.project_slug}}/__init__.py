@@ -1,5 +1,4 @@
-{% import 'extra_context.j2' as extra_context with context %}
-# -*- coding: utf-8 -*-
+{% import 'extra_context.j2' as extra_context with context %}# -*- coding: utf-8 -*-
 """Top-level package for {{ cookiecutter.project_name }}."""
 
 __author__ = "{{ cookiecutter.full_name }}"

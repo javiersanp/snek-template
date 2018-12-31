@@ -5,10 +5,18 @@ See: http://pydoit.org/
 import glob
 
 DOIT_CONFIG = {"default_tasks": ["check", "style", "test"], "verbosity": 2}
+PYTEST_VERBOSITY = "-v"  # set "", "-v", "-vv" or "-vvv"
+LINE_LENGHT = "79"  # black don't have a config file
 
+# Set file_dep to this to run task only when the code changes
 PYTHON_FILES = [
     path for path in glob.iglob("**/*.py", recursive=True) if "{" not in path
 ]
+BLACK_CMD = (
+    "black -l "
+    + LINE_LENGHT
+    + r' {diff} --exclude "(\.venv|\.git|\{{|\.tox|build|dist)" .'
+)
 
 
 def get_subtask(cmd_action, file_dep=None):
@@ -37,22 +45,19 @@ def task_install():
         "file_dep": ["pyproject.toml"],
         "actions": ["poetry install"],
         "task_dep": ["_verchew"],
+        "targets": ["poetry.lock"],
     }
 
 
 def task_check():
     """Check diff of code formatters."""
-    black_cmd = (
-        r'black -l 79 --diff --exclude "(\.venv|\.git|\{|\.tox|build|dist)" .'
-    )
-    for action in [black_cmd, "poetry run isort --diff"]:
+    for action in [BLACK_CMD.format(diff="--diff"), "poetry run isort --diff"]:
         yield get_subtask(action, PYTHON_FILES)
 
 
 def task_format():
     """Run code formatters."""
-    black_cmd = r'black -l 79 --exclude "(\.venv|\.git|\{|\.tox|build|dist)" .'
-    for action in [black_cmd, "poetry run isort -y"]:
+    for action in [BLACK_CMD.format(diff=""), "poetry run isort -y"]:
         yield get_subtask(action, PYTHON_FILES)
 
 
@@ -68,4 +73,7 @@ def task_style():
 
 def task_test():
     """Run tests."""
-    return {"actions": ["poetry run pytest"], "file_dep": PYTHON_FILES}
+    return {
+        "actions": ["poetry run pytest " + PYTEST_VERBOSITY],
+        "file_dep": PYTHON_FILES,
+    }
