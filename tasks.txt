@@ -16,7 +16,8 @@ v       003 doit check
 v       004 doit format
 o       005 doit install
 v       006 doit verchew
-        007 manejar entorno en doit (poetry run vs poetry shell, dentro o fuera?)
+v       007 doit test
+        008 Enlazar postproceso de cookiecutter a verchew
 v   03 Gestión de dependencias y empaquetado con Poetry
 v       001 Definir pyproject.toml del proyecto
 v       002 Definir pyproject.toml de la plantilla
