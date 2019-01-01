@@ -81,17 +81,22 @@ def task_test():
     return {"actions": [pytest_cmd], "file_dep": PYTHON_FILES}
 
 
-def task__coverage():
+def task__showcov():
     # TODO: Read tox.ini [coverage:html] directory default
     cov_html = "file://" + pathname2url(
         os.path.abspath("docs/_build/coverage_html/index.html")
     )
-    return {
-        "actions": ["coverage html"],
-        "teardown": [(webbrowser.open, (cov_html,))],
-    }
+    return {"actions": None, "teardown": [(webbrowser.open, (cov_html,))]}
+
+
+def task__covhtml():
+    return {"file_dep": [".coverage"], "actions": ["poetry run coverage html"]}
 
 
 def task_coverage():
     """Generate a coverage html report."""
-    return {"actions": [], "task_dep": ["test"], "setup": ["_coverage"]}
+    return {
+        "actions": None,
+        "task_dep": ["test", "_covhtml"],
+        "setup": ["_showcov"],
+    }
