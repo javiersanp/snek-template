@@ -8,7 +8,11 @@ import os
 import webbrowser
 from urllib.request import pathname2url
 
-DOIT_CONFIG = {"default_tasks": ["check", "style", "test"], "verbosity": 2}
+DOIT_CONFIG = {
+    "default_tasks": ["check", "style", "test"],
+    "verbosity": 2,
+    "template": "{name:<10} {doc}",
+}
 PYTEST_VERBOSITY = "-v"  # Set as "", "-v", "-vv" or "-vvv"
 MIN_COVERAGE = "10"  # Test fails if coverage is under this value
 LINE_LENGHT = "79"  # black don't have a config file
@@ -36,6 +40,10 @@ def get_subtask(cmd_action, file_dep=None):
     return task
 
 
+def show_task_dog(task):
+    print("TODO: " + task.doc)
+
+
 def task__verchew():
     """Check system dependencies."""
     return {
@@ -55,13 +63,13 @@ def task_install():
 
 
 def task_check():
-    """Check diff of code formatters."""
+    """Show the changes that the code formatters would apply."""
     for action in [BLACK_CMD.format(diff="--diff"), "poetry run isort --diff"]:
         yield get_subtask(action, PYTHON_FILES)
 
 
 def task_format():
-    """Run code formatters."""
+    """Run code formatters and apply it's changes."""
     for action in [BLACK_CMD.format(diff=""), "poetry run isort -y"]:
         yield get_subtask(action, PYTHON_FILES)
 
@@ -84,6 +92,12 @@ def task_test():
     return {"actions": [pytest_cmd], "file_dep": PYTHON_FILES}
 
 
+# TODO
+def task_test_all():
+    """Run tests using different Python versions."""
+    return {"basename": "test-all", "actions": [show_task_dog]}
+
+
 def task__showcov():
     # TODO: Read tox.ini [coverage:html] directory default
     cov_html = "file://" + pathname2url(
@@ -97,9 +111,53 @@ def task__covhtml():
 
 
 def task_coverage():
-    """Generate a coverage html report."""
+    """Generate and show coverage html report."""
     return {
         "actions": None,
         "task_dep": ["test", "_covhtml"],
         "setup": ["_showcov"],
     }
+
+
+# TODO
+def task_docs():
+    """Generate the HTML documentation."""
+    return {"actions": [show_task_dog]}
+
+
+# TODO
+def task_server():
+    """Show the documentation and coverage watching for changes."""
+    # https://github.com/gorakhargosh/watchdog
+    return {"actions": [show_task_dog]}
+
+
+# TODO
+def task_release():
+    """Bump the current version and release to the repository master branch."""
+    return {"actions": [show_task_dog]}
+
+
+# TODO
+def task_build():
+    """Builds source and wheel package."""
+    return {"actions": [show_task_dog]}
+
+
+# TODO
+def task_publish():
+    """Publish to PyPI."""
+    return {"actions": [show_task_dog]}
+
+
+# TODO
+def task_clean_all():
+    """Remove all build, test, coverage and Python artifacts."""
+    # calls to doit clean task ?
+    return {"basename": "clean-all", "actions": [show_task_dog]}
+
+
+# TODO
+def task_morehelp():
+    """Extended help on this script and its workflow."""
+    return {"actions": [show_task_dog]}

@@ -20,11 +20,14 @@ v       007 doit test
 v       008 Enlazar postproceso de cookiecutter a verchew
 v       009 Add coverage to pytest
 v       010 doit coverage
-        011 doit doc
-        012 doit doc-serve
-        013 doit version?
-        014 doit build
-        015 doit publish
+        011 doit test-all
+        012 doit doc
+        013 doit server
+        014 doit release
+        015 doit build
+        016 doit publish
+        017 doit clean-all
+        018 doit morehelp
 v   03 Gestión de dependencias y empaquetado con Poetry
 v       001 Definir pyproject.toml del proyecto
 v       002 Definir pyproject.toml de la plantilla
