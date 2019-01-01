@@ -33,6 +33,10 @@ def get_subtask(cmd_action, file_dep=None):
     return task
 
 
+def show_task_dog(task):
+    print("TODO: " + task.doc)
+
+
 def task__verchew():
     """Check system dependencies."""
     return {
@@ -100,3 +104,9 @@ def task_coverage():
         "task_dep": ["test", "_covhtml"],
         "setup": ["_showcov"],
     }
+
+
+# TODO
+def task_run():
+    """Run the application entry point."""
+    return {"actions": [show_task_dog]}
