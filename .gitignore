@@ -106,4 +106,4 @@ site/
 .mypy_cache/
 
 # doit internal data
-.doit.db
+.doit.db*

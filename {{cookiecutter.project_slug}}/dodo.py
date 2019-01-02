@@ -9,7 +9,7 @@ import webbrowser
 from urllib.request import pathname2url
 
 DOIT_CONFIG = {
-    "default_tasks": ["check", "style", "test"],
+    "default_tasks": ["style", "test"],
     "verbosity": 2,
     "template": "{name:<10} {doc}",
 }
