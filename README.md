@@ -37,6 +37,24 @@ Usage
 
 Generate a new Cookiecutter template layout: `cookiecutter gh:javirsanp/snek-template` 
 
+You will be prompted to enter these values:
+
+project_name
+    The display name for your project. This is used in documentation, so spaces and any characters are fine here.
+project_slug
+    The namespace of your Python package. This should be Python import-friendly. Typically, it is the slugified version of project_name.
+project_short_description
+    A 1-sentence description of what your Python package does.
+full_name
+    Your full name.
+email
+    Your email address.
+version
+    The starting version number of the package.
+license
+    Legal stuff about reusing your project. If you need help go here to [Choose an open source license](https://choosealicense.com).
+
+
 Goals
 -----
 

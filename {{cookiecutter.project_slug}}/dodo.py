@@ -1,13 +1,18 @@
 """Script for task automation.
 
 See: http://pydoit.org/
+Note: Install doit with python3, preferably in a virtual environment
 """
 import glob
 import os
 import webbrowser
 from urllib.request import pathname2url
 
-DOIT_CONFIG = {"default_tasks": ["check", "style", "test"], "verbosity": 2}
+DOIT_CONFIG = {
+    "default_tasks": ["check", "style", "test"],
+    "verbosity": 2,
+    "template": "{name:<10} {doc}",
+}
 PYTEST_VERBOSITY = "-v"  # Set as "", "-v", "-vv" or "-vvv"
 MIN_COVERAGE = "50"  # Test fails if coverage is under this value
 LINE_LENGHT = "79"  # black don't have a config file
@@ -33,7 +38,13 @@ def get_subtask(cmd_action, file_dep=None):
     return task
 
 
-def show_task_dog(task):
+def open_in_browser(file_to_open):
+    """Open a file in the web browser."""
+    url = "file://" + pathname2url(os.path.abspath(file_to_open))
+    webbrowser.open(url)
+
+
+def show_task_doc(task):
     print("TODO: " + task.doc)
 
 
@@ -85,28 +96,23 @@ def task_test():
     return {"actions": [pytest_cmd], "file_dep": PYTHON_FILES}
 
 
-def task__showcov():
-    # TODO: Read tox.ini [coverage:html] directory default
-    cov_html = "file://" + pathname2url(
-        os.path.abspath("docs/_build/coverage_html/index.html")
-    )
-    return {"actions": None, "teardown": [(webbrowser.open, (cov_html,))]}
-
-
 def task__covhtml():
-    return {"file_dep": [".coverage"], "actions": ["poetry run coverage html"]}
+    return {
+        "file_dep": [".coverage"],
+        "actions": ["poetry run coverage html"],
+        "targets": ["htmlcov", "htmlcov/index.html"],
+    }
 
 
 def task_coverage():
-    """Generate a coverage html report."""
+    """Generate and show the coverage html report."""
     return {
-        "actions": None,
+        "actions": [(open_in_browser, ("htmlcov/index.html",))],
         "task_dep": ["test", "_covhtml"],
-        "setup": ["_showcov"],
     }
 
 
 # TODO
-def task_run():
+def task_launch():
     """Run the application entry point."""
-    return {"actions": [show_task_dog]}
+    return {"actions": [show_task_doc]}

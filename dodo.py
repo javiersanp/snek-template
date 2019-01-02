@@ -21,6 +21,10 @@ LINE_LENGHT = "79"  # black don't have a config file
 PYTHON_FILES = [
     path for path in glob.iglob("**/*.py", recursive=True) if "{" not in path
 ]
+# Set file_dep to this to run task only when the documentation changes
+DOCS_FILES = [
+    path for path in glob.iglob("**/*.md", recursive=True) if "{" not in path
+]
 BLACK_CMD = (
     "black -l "
     + LINE_LENGHT
@@ -40,7 +44,13 @@ def get_subtask(cmd_action, file_dep=None):
     return task
 
 
-def show_task_dog(task):
+def open_in_browser(file_to_open):
+    """Open a file in the web browser."""
+    url = "file://" + pathname2url(os.path.abspath(file_to_open))
+    webbrowser.open(url)
+
+
+def show_task_doc(task):
     print("TODO: " + task.doc)
 
 
@@ -95,69 +105,74 @@ def task_test():
 # TODO
 def task_test_all():
     """Run tests using different Python versions."""
-    return {"basename": "test-all", "actions": [show_task_dog]}
-
-
-def task__showcov():
-    # TODO: Read tox.ini [coverage:html] directory default
-    cov_html = "file://" + pathname2url(
-        os.path.abspath("docs/_build/coverage_html/index.html")
-    )
-    return {"actions": None, "teardown": [(webbrowser.open, (cov_html,))]}
+    return {"basename": "test-all", "actions": [show_task_doc]}
 
 
 def task__covhtml():
-    return {"file_dep": [".coverage"], "actions": ["poetry run coverage html"]}
-
-
-def task_coverage():
-    """Generate and show coverage html report."""
     return {
-        "actions": None,
-        "task_dep": ["test", "_covhtml"],
-        "setup": ["_showcov"],
+        "file_dep": [".coverage"],
+        "actions": ["poetry run coverage html"],
+        "targets": ["htmlcov", "htmlcov/index.html"],
     }
 
 
-# TODO
+def task_coverage():
+    """Generate and show the coverage html report."""
+    return {
+        "actions": [(open_in_browser, ("htmlcov/index.html",))],
+        "task_dep": ["test", "_covhtml"],
+    }
+
+
+def task__docshtml():
+    return {
+        "file_dep": DOCS_FILES,
+        "actions": ["poetry run mkdocs build"],
+        "targets": ["site", "site/index.html"],
+    }
+
+
 def task_docs():
     """Generate the HTML documentation."""
-    return {"actions": [show_task_dog]}
+    return {
+        "actions": [(open_in_browser, ("site/index.html",))],
+        "task_dep": ["_docshtml"],
+    }
 
 
 # TODO
 def task_server():
     """Show the documentation and coverage watching for changes."""
     # https://github.com/gorakhargosh/watchdog
-    return {"actions": [show_task_dog]}
+    return {"actions": [show_task_doc]}
 
 
 # TODO
 def task_release():
     """Bump the current version and release to the repository master branch."""
-    return {"actions": [show_task_dog]}
+    return {"actions": [show_task_doc]}
 
 
 # TODO
 def task_build():
-    """Builds source and wheel package."""
-    return {"actions": [show_task_dog]}
+    """Build source and wheel package."""
+    return {"actions": [show_task_doc]}
 
 
 # TODO
 def task_publish():
     """Publish to PyPI."""
-    return {"actions": [show_task_dog]}
+    return {"actions": [show_task_doc]}
 
 
 # TODO
 def task_clean_all():
     """Remove all build, test, coverage and Python artifacts."""
     # calls to doit clean task ?
-    return {"basename": "clean-all", "actions": [show_task_dog]}
+    return {"basename": "clean-all", "actions": [show_task_doc]}
 
 
 # TODO
 def task_morehelp():
-    """Extended help on this script and its workflow."""
-    return {"actions": [show_task_dog]}
+    """Show extended help on this script and its workflow."""
+    return {"actions": [show_task_doc]}
