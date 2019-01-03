@@ -54,37 +54,9 @@ def show_task_doc(task):
     print("TODO: " + task.doc)
 
 
-def show_more():
-
-    def show_task(task):
-        doc = task.__doc__ + "\n"
-        meta = task()
-        if "targets" in meta:
-            doc += "    Targets: " + ", ".join(meta["targets"]) + "\n"
-        if "file_dep" in meta:
-            doc += "    File denpendencies: " + ", ".join(meta["file_dep"]) + "\n"
-        task_dep = []
-        if "task_dep" in meta:
-            task_dep = [i for i in meta["task_dep"] if not i.startswith("_")]
-        if len(task_dep) > 0:
-            doc += "    Task denpendencies: " + ", ".join(task_dep) + "\n"
-        print("doit " + task.__name__[5:] + doc)
-
-    print("\n\ndoit")
-    print("    Run the default tasks: " + str(DOIT_CONFIG["default_tasks"]))
-    print("")
-    for task in [task_install, task_init]:
-        show_task(task)
-
-
 # TODO
 def task_init():
-    """
-    Initialize the git repository.
-
-    Creates a empty git local, connect to your previously created remote
-    repository, create the `develop` branch and checkout to it.
-    """
+    """Initialize the git repository."""
     return {"actions": [show_task_doc], "targets": [".git"]}
 
 
@@ -97,12 +69,7 @@ def task__verchew():
 
 
 def task_install():
-    """
-    Install all dependencies in a virtual environment.
-    
-    The first step for your project. Check system dependencies, create a
-    virtual environment if necessary and install the requirements.
-    """
+    """Install all dependencies in a virtual environment."""
     return {
         "file_dep": ["pyproject.toml"],
         "actions": ["poetry install"],
@@ -179,13 +146,10 @@ def task_docs():
     }
 
 
-def task_docs_serve():
+def task_serve_docs():
     """Show the documentation and coverage watching for changes."""
     # https://github.com/gorakhargosh/watchdog (sphinx)
-    return {
-        "basename": "docs-serve",
-        "actions": ["poetry run mkdocs serve"],
-    }
+    return {"basename": "serve-docs", "actions": ["poetry run mkdocs serve"]}
 
 
 # TODO
@@ -212,8 +176,3 @@ def task_clean_all():
     # calls to doit clean task ?
     return {"basename": "clean-all", "actions": [show_task_doc]}
 
-
-# TODO
-def task_more():
-    """Show extended help on this script and its workflow."""
-    return {"actions": [show_more]}

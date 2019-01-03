@@ -38,19 +38,6 @@ These are the requirements with links to their installation instructions.
 * [Poetry](https://poetry.eustace.io/docs/)
 * [DoIt](http://pydoit.org/install.html).
 
-I suggest you to first install poetry following their recommended way:
-
-    curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
-
-Then install [Pipsi](https://github.com/mitsuhiko/pipsi):
-
-    curl https://raw.githubusercontent.com/mitsuhiko/pipsi/master/get-pipsi.py | python
-
-And use it to install cookiecutter and doit:
-
-    pipsi install cookiecutter doit
-
-
 Usage
 -----
 
@@ -72,57 +59,18 @@ You will be prompted to enter these values:
 
 Change to the newly created project folder. For example, if your *'project_slug'* is demo: `cd demo`.
 
-Get familiar with the deveopment workflow with:
-
-    doit more-help
-
 Then you can install with
 
     doit install
-
-
-Workflow
---------
-
-The first step is to check system dependencies, create a virtual environment and install the project requirements.
-
-    doit install
-
-When you run the `install` task, first `init` will be executed. This task creates a empty git local repository, connects to your previously created remote repository, creates the `develop` branch and checkout to it.
-
-    doit init
-
-    doit install
-
-To run the code tests, just:
-
-    doit
-
-This will run the default tasks: `style` and `test`.
-
-To run the code tests:
-
-    doit test
-
-To validate code styling:
-
-    doit style
-
-If you want to show the changes that the code formatters would apply:
-
-    doit check
-
-And if you want to apply this changes to your code:
-
-    doit format
 
 You can use poetry to add aditional requirements. For example:
 
     poetry add pendulum
     poetry add --dev mock
 
+To list all the availlable [tasks](tasks.md):
 
-
+    doit list
 
 Extra context
 -------------
