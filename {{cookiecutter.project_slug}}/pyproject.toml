@@ -7,7 +7,7 @@ license = "{{cookiecutter.license}}"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.6 || ~2.7"
+python = "^3.6 || ^2.7.9"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.6"
@@ -16,7 +16,9 @@ pydocstyle = "^3.0"
 pytest = "^4.0"
 pytest-cookies = "^0.3.0"
 pytest-cov = "^2.6"
-sphinx = "^1.8"
+{% if cookiecutter.docs_generator == "Sphinx" %}sphinx = "^1.8"
+sphinx_bootstrap_theme = "^0.6.5"{% else %}mkdocs = "^1.0"
+markdown_include = "^0.5.1"{% endif %}
 
 [build-system]
 requires = ["poetry>=0.12"]

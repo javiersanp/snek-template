@@ -42,7 +42,7 @@ Usage
 
 Create a `git` empty repository (whitout any accesory files like README, .gitignore).
 
-Generate a new Cookiecutter template layout: `cookiecutter gh:javirsanp/snek-template` 
+Generate a new Cookiecutter template layout: `cookiecutter gh:javiersanp/snek-template` 
 
 You will be prompted to enter these values:
 

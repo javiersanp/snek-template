@@ -24,6 +24,7 @@ BLACK_CMD = (
     + LINE_LENGHT
     + r' {diff} --exclude "(\.venv|\.git|\{{ '{{' }}|\.tox|build|dist)" .'
 )
+COV_INDEX = os.path.join("docs",{% if cookiecutter.docs_generator == "Sphinx" %} "_build",{% endif %} "htmlcov", "index.html")
 
 
 def get_subtask(cmd_action, file_dep=None):
@@ -100,14 +101,14 @@ def task__covhtml():
     return {
         "file_dep": [".coverage"],
         "actions": ["poetry run coverage html"],
-        "targets": ["htmlcov", "htmlcov/index.html"],
+        "targets": ["htmlcov", COV_INDEX],
     }
 
 
 def task_coverage():
     """Generate and show the coverage html report."""
     return {
-        "actions": [(open_in_browser, ("htmlcov/index.html",))],
+        "actions": [(open_in_browser, (COV_INDEX,))],
         "task_dep": ["test", "_covhtml"],
     }
 

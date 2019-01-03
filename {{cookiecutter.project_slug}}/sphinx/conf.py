@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+{% import 'extra_context.j2' as extra_context with context %}# -*- coding: utf-8 -*-
 #
 # Configuration file for the Sphinx documentation builder.
 #
@@ -15,13 +15,17 @@
 # import os
 # import sys
 # sys.path.insert(0, os.path.abspath('.'))
+import os
 
+from sphinx.ext import apidoc
+
+import sphinx_bootstrap_theme
 
 # -- Project information -----------------------------------------------------
 
-project = 'Project name'
-copyright = '2019, Author name'
-author = 'Author name'
+project = '{{ cookiecutter.project_name }}'
+copyright = '{{ extra_context.copyright }}'
+author = '{{ cookiecutter.full_name }}'
 
 # The short X.Y version
 version = ''
@@ -67,7 +71,7 @@ language = None
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # The name of the Pygments (syntax highlighting) style to use.
-pygments_style = None
+pygments_style = 'sphinx'
 
 
 # -- Options for HTML output -------------------------------------------------
@@ -75,7 +79,8 @@ pygments_style = None
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'  # 'alabaster'
+html_theme = 'bootstrap'
+html_theme_path = sphinx_bootstrap_theme.get_html_theme_path()
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -98,13 +103,15 @@ html_static_path = ['_static']
 #
 # html_sidebars = {}
 
+# If true, links to the reST sources are added to the pages.
+#
 html_show_sourcelink = False
 
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Projectnamedoc'
+htmlhelp_basename = '{{ cookiecutter.project_slug }}doc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -131,8 +138,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'Projectname.tex', 'Project name Documentation',
-     'Author name', 'manual'),
+    (master_doc, '{{ cookiecutter.project_slug }}.tex', '{{ cookiecutter.project_name }} Documentation',
+     '{{ cookiecutter.full_name }}', 'manual'),
 ]
 
 
@@ -141,7 +148,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'projectname', 'Project name Documentation',
+    (master_doc, '{{ cookiecutter.project_slug }}', '{{ cookiecutter.project_name }} Documentation',
      [author], 1)
 ]
 
@@ -152,8 +159,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'Projectname', 'Project name Documentation',
-     author, 'Projectname', 'One line description of project.',
+    (master_doc, '{{ cookiecutter.project_slug }}', '{{ cookiecutter.project_name }} Documentation',
+     author, '{{ cookiecutter.project_slug }}', 'One line description of project.',
      'Miscellaneous'),
 ]
 
@@ -177,3 +184,13 @@ epub_exclude_files = ['search.html']
 
 
 # -- Extension configuration -------------------------------------------------
+
+# Generate API doc
+def run_apidoc(_):
+    project_root = os.path.dirname(os.path.dirname(__file__))
+    pkg_root = os.path.join(project_root, '{{cookiecutter.project_slug}}')
+    output_path = os.path.join(project_root, 'docs', 'api')
+    apidoc.main(['-o', output_path, '-f', pkg_root])
+
+def setup(app):
+    app.connect('builder-inited', run_apidoc)
