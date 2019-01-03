@@ -12,8 +12,7 @@ Features
 * Automated tasks workflow with [DoIt](http://pydoit.org/).
 * Testing with [pytest](https://pytests.org).
 * Style enforcement with [flake8](http://flake8.pycqa.org), [isort](https://github.com/timothycrosley/isort) and [pydocsstyle](http://www.pydocstyle.org/).
-* Optional automatic code formatting with [Black](https://github.com/ambv/black)
-* Choose between many [open source licenses](https://choosealicense.com/).
+* Optional automatic code formatting with [Black](https://github.com/ambv/black) and isort.
 
 Planned Features
 ----------------
@@ -59,18 +58,26 @@ You will be prompted to enter these values:
 
 Change to the newly created project folder. For example, if your *'project_slug'* is demo: `cd demo`.
 
-Then you can install with
+Then you can install with:
 
     doit install
+
+The install task will execute three steeps:
+
+1. Check the system for the [required](#Requirements) tools.
+2. Initialize the repository. Create a empty local git, connect to your previously created remote repository, create the `develop` branch and checkout to it.
+3. Create a virtual environment if there is not one active. Install in it the project requirements.
 
 You can use poetry to add aditional requirements. For example:
 
     poetry add pendulum
     poetry add --dev mock
 
-To list all the availlable [tasks](tasks.md):
+To list all the availlable DoIt [tasks](tasks.md) run:
 
     doit list
+
+Read more about [poetry](https://poetry.eustace.io/docs/) or [DoIt](http://pydoit.org/contents.html) in their documentation.
 
 Extra context
 -------------

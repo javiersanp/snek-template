@@ -1,5 +1,4 @@
-{% import 'extra_context.j2' as extra_context with context %}
-{% if cookiecutter.license == 'MIT' -%}MIT License
+{% import 'extra_context.j2' as extra_context with context %}{% if cookiecutter.license == 'MIT' -%}MIT License
 
 {{ extra_context.copyright }}
 

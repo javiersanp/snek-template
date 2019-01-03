@@ -4,6 +4,7 @@
     "project_short_description": "A 1-sentence description of what your Python package does",
     "full_name": "Your full name",
     "email": "your_email@example.com",
+    "repo_name": "{{ cookiecutter.project_slug }}",
     "version": "0.1.0",
     "license": ["MIT", "BSD-4-Clause", "Apache-2.0", "GPL-3.0", "Not open source"]
 }

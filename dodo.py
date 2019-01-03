@@ -175,4 +175,3 @@ def task_clean_all():
     """Remove all build, test, coverage and Python artifacts."""
     # calls to doit clean task ?
     return {"basename": "clean-all", "actions": [show_task_doc]}
-
