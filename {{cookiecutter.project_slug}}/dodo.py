@@ -5,6 +5,7 @@ Note: Install doit with python3, preferably in a virtual environment
 """
 import glob
 import os
+import shutil
 import webbrowser
 from urllib.request import pathname2url
 
@@ -19,12 +20,47 @@ LINE_LENGHT = "79"  # black don't have a config file
 
 # Set file_dep to this to run task only when the code changes
 PYTHON_FILES = glob.glob("**/*.py", recursive=True)
+
+# Set file_dep to this to run task only when the documentation changes
+DOCS_FILES = (
+    glob.glob("docs/**/*.md", recursive=True)
+    + glob.glob("docs/**/*.rst", recursive=True)
+    + glob.glob("**/*.md")
+    + glob.glob("**/*.rst")
+)
+
 BLACK_CMD = (
     "black -l "
     + LINE_LENGHT
     + r' {diff} --exclude "(\.venv|\.git|\{{ '{{' }}|\.tox|build|dist)" .'
 )
-COV_INDEX = os.path.join("docs",{% if cookiecutter.docs_generator == "Sphinx" %} "_build",{% endif %} "htmlcov", "index.html")
+COV_HTML = os.path.join("docs", "htmlcov")
+COV_INDEX = os.path.join(COV_HTML, "index.html")
+DOCS_HTML = "site"
+DOCS_INDEX = os.path.join(DOCS_HTML, "index.html")
+VERCHEW = os.path.join("bin", "verchew")
+
+
+################### Actions ########################
+
+
+def clean_directories(*args):
+    """Delete the given directories"""
+    for folder in args:
+        if os.path.isdir(folder):
+            print("Cleaning ", folder)
+            shutil.rmtree(folder)
+
+
+def copy_directory(source_dir, target_dir):
+    """Copy source directory into target directory"""
+    target = os.path.join(target_dir, os.path.basename(source_dir))
+    if (
+        os.path.isdir(source_dir)
+        and os.path.isdir(target_dir)
+        and not os.path.exists(target)
+    ):
+        shutil.copytree(source_dir, target)
 
 
 def get_subtask(cmd_action, file_dep=None):
@@ -49,11 +85,14 @@ def show_task_doc(task):
     print("TODO: " + task.doc)
 
 
+################# Development ######################
+
+
 def task__verchew():
     """Check system dependencies."""
     return {
         "file_dep": [".verchew.ini"],
-        "actions": ["python bin/verchew --exit-code"]
+        "actions": ["python {} --exit-code".format(VERCHEW)],
     }
 
 
@@ -94,22 +133,58 @@ def task_test():
     pytest_cmd = "poetry run pytest {v} --cov --cov-fail-under={mc}".format(
         v=PYTEST_VERBOSITY, mc=MIN_COVERAGE
     )
-    return {"actions": [pytest_cmd], "file_dep": PYTHON_FILES}
+    return {
+        "task_dep": ["install"],
+        "actions": [pytest_cmd],
+        "file_dep": PYTHON_FILES
+    }
 
 
 def task__covhtml():
     return {
+        "task_dep": ["install"],
         "file_dep": [".coverage"],
         "actions": ["poetry run coverage html"],
-        "targets": ["htmlcov", COV_INDEX],
+        "targets": [COV_HTML, COV_INDEX],
     }
 
 
-def task_coverage():
+def task_coveragex():
     """Generate and show the coverage html report."""
     return {
         "actions": [(open_in_browser, (COV_INDEX,))],
-        "task_dep": ["test", "_covhtml"],
+        "task_dep": ["testx", "_covhtml"],
+    }
+
+
+{% if cookiecutter.docs_generator == "Sphinx" %}def task__docshtml():
+    return {
+        "task_dep": ["install"],
+        "file_dep": DOCS_FILES,
+        "actions": [
+            (clean_directories, (DOCS_HTML,)),
+            "poetry run sphinx-build -b html -j auto -a docs site",
+            (copy_directory, (os.path.join("docs", "htmlcov"), DOCS_HTML)),
+        ],
+        "targets": [DOCS_HTML, DOCS_INDEX],
+        "clean": [(clean_directories, (DOCS_HTML,))],
+    }
+
+
+{% else %}def task__docshtml():
+    return {
+        "task_dep": ["install"],
+        "file_dep": DOCS_FILES,
+        "actions": ["poetry run mkdocs build"],
+        "targets": [DOCS_HTML, DOCS_INDEX],
+    }
+
+
+{% endif %}def task_docs():
+    """Generate the HTML documentation."""
+    return {
+        "actions": [(open_in_browser, (DOCS_INDEX,))],
+        "task_dep": ["_docshtml"],
     }
 
 

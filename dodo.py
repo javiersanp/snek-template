@@ -5,6 +5,7 @@ Note: Install doit with python3, preferably in a virtual environment
 """
 import glob
 import os
+import shutil
 import webbrowser
 from urllib.request import pathname2url
 
@@ -21,15 +22,26 @@ LINE_LENGHT = "79"  # black don't have a config file
 PYTHON_FILES = [
     path for path in glob.iglob("**/*.py", recursive=True) if "{" not in path
 ]
+
 # Set file_dep to this to run task only when the documentation changes
-DOCS_FILES = [
-    path for path in glob.iglob("**/*.md", recursive=True) if "{" not in path
-]
+DOCS_FILES = (
+    glob.glob("docs/**/*.md", recursive=True) + glob.glob("**/*.md")
+    + ["{{cookiecutter.project_slug}}/docs/tasks.md"]
+)
+
 BLACK_CMD = (
     "black -l "
     + LINE_LENGHT
     + r' {diff} --exclude "(\.venv|\.git|\{{|\.tox|build|dist)" .'
 )
+COV_HTML = os.path.join("docs", "htmlcov")
+COV_INDEX = os.path.join(COV_HTML, "index.html")
+DOCS_HTML = "site"
+DOCS_INDEX = os.path.join(DOCS_HTML, "index.html")
+VERCHEW = os.path.join("bin", "verchew")
+
+
+################### Actions ########################
 
 
 def get_subtask(cmd_action, file_dep=None):
@@ -54,6 +66,8 @@ def show_task_doc(task):
     print("TODO: " + task.doc)
 
 
+################# Installation #####################
+
 # TODO
 def task_init():
     """Initialize the git repository."""
@@ -64,7 +78,7 @@ def task__verchew():
     """Check system dependencies."""
     return {
         "file_dep": [".verchew.ini"],
-        "actions": ["python bin/verchew --exit-code"],
+        "actions": ["python {} --exit-code".format(VERCHEW)],
     }
 
 
@@ -76,6 +90,9 @@ def task_install():
         "task_dep": ["_verchew", "init"],
         "targets": ["poetry.lock"],
     }
+
+
+################# Development ######################
 
 
 def task_check():
@@ -105,7 +122,11 @@ def task_test():
     pytest_cmd = "poetry run pytest {v} --cov --cov-fail-under={mc}".format(
         v=PYTEST_VERBOSITY, mc=MIN_COVERAGE
     )
-    return {"actions": [pytest_cmd], "file_dep": PYTHON_FILES}
+    return {
+        "task_dep": ["install"],
+        "file_dep": PYTHON_FILES,
+        "actions": [pytest_cmd],
+    }
 
 
 # TODO
@@ -116,32 +137,34 @@ def task_test_all():
 
 def task__covhtml():
     return {
+        "task_dep": ["install"],
         "file_dep": [".coverage"],
         "actions": ["poetry run coverage html"],
-        "targets": ["htmlcov", "htmlcov/index.html"],
+        "targets": [COV_HTML, COV_INDEX],
     }
 
 
 def task_coverage():
     """Generate and show the coverage html report."""
     return {
-        "actions": [(open_in_browser, ("htmlcov/index.html",))],
+        "actions": [(open_in_browser, (DOCS_INDEX,))],
         "task_dep": ["test", "_covhtml"],
     }
 
 
 def task__docshtml():
     return {
+        "task_dep": ["install"],
         "file_dep": DOCS_FILES,
         "actions": ["poetry run mkdocs build"],
-        "targets": ["site", "site/index.html"],
+        "targets": [DOCS_HTML, DOCS_INDEX],
     }
 
 
 def task_docs():
     """Generate the HTML documentation."""
     return {
-        "actions": [(open_in_browser, ("site/index.html",))],
+        "actions": [(open_in_browser, (DOCS_INDEX,))],
         "task_dep": ["_docshtml"],
     }
 
@@ -151,6 +174,8 @@ def task_serve_docs():
     # https://github.com/gorakhargosh/watchdog (sphinx)
     return {"basename": "serve-docs", "actions": ["poetry run mkdocs serve"]}
 
+
+################### Release ########################
 
 # TODO
 def task_release():

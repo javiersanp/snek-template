@@ -1,6 +1,8 @@
 import os
 from subprocess import run
 
+import doit
+import mock
 import pytest
 
 import dodo
@@ -27,7 +29,7 @@ def test_get_subtask_with_poetry():
     assert task["actions"] == ["poetry run foo bar"]
 
 
-@pytest.mark.parametrize("command", ["format", "test"])
+@pytest.mark.parametrize("command", ["format", "style", "test"])
 def test_doit_command_run_in_project(cookies, command):
     result = cookies.bake(extra_context={"project_name": "testing"})
     with inside_dir(str(result.project)):
@@ -55,3 +57,30 @@ def test_doit_style_with_fails(cookies, capfd, pkg_name, expected_error):
             assert run(["doit", "style"]).returncode != 0
         captured = capfd.readouterr()
         assert expected_error in captured.out
+
+
+@mock.patch("doit.api.sys")
+def test_doit_coverage(mock_sys, cookies):
+    mock_sys.argv = ["", "coverage"]
+    result = cookies.bake(extra_context={"project_name": "testing"})
+    with inside_dir(str(result.project)):
+        with poetryenv_in_project():
+            # TODO: Ned to import template dodo.py instead of root
+            print("xxxxxxxxxxxxxxxxxxxxxxxxxxxx", dd.VERSION)
+            dodo.webbrowser = mock.MagicMock()
+            print(doit.run(dodo))
+            assert False
+
+
+@mock.patch("doit.api.sys")
+@pytest.mark.parametrize("docs_generator", ["Sphinx", "MkDocs"])
+def test_doit_docs(mock_sys, cookies, docs_generator):
+    mock_sys.argv = ["", "docs"]
+    dodo.webbrowser = mock.MagicMock()
+    result = cookies.bake(extra_context={"docs_generator": docs_generator})
+    with inside_dir(str(result.project)):
+        with poetryenv_in_project():
+            os.mkdir(os.path.join("docs", "htmlcov"))
+            with open(os.path.join("docs", "htmlcov", "index.html")) as fo:
+                fo.write("")
+            doit.run(dodo)

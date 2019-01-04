@@ -15,4 +15,3 @@ if __name__ == "__main__":
         os.remove("mkdocs.yml")
     else:
         shutil.rmtree("sphinx")
-
