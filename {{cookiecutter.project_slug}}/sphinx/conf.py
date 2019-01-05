@@ -24,7 +24,7 @@ from sphinx.ext import apidoc
 
 project = "{{ cookiecutter.project_name }}"
 copyright = "{{ extra_context.copyright }}"
-author = "{{ cookiecutter.full_name }}"
+author = "{{ cookiecutter.author_name }}"
 
 # The short X.Y version
 version = ""
@@ -41,9 +41,7 @@ release = "0.1.0"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-    "sphinx.ext.autodoc",
-]
+extensions = ["sphinx.ext.autodoc"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -141,9 +139,9 @@ latex_documents = [
         master_doc,
         "{{ cookiecutter.project_slug }}.tex",
         "{{ cookiecutter.project_name }} Documentation",
-        "{{ cookiecutter.full_name }}",
+        "{{ cookiecutter.author_name }}",
         "manual",
-    ),
+    )
 ]
 
 
@@ -156,9 +154,9 @@ man_pages = [
         master_doc,
         "{{ cookiecutter.project_slug }}",
         "{{ cookiecutter.project_name }} Documentation",
-         [author],
-         1
-     )
+        [author],
+        1,
+    )
 ]
 
 
@@ -172,11 +170,11 @@ texinfo_documents = [
         master_doc,
         "{{ cookiecutter.project_slug }}",
         "{{ cookiecutter.project_name }} Documentation",
-         author,
-         "{{ cookiecutter.project_slug }}",
-         "One line description of project.",
-         "Miscellaneous"
-     ),
+        author,
+        "{{ cookiecutter.project_slug }}",
+        "One line description of project.",
+        "Miscellaneous",
+    )
 ]
 
 
@@ -206,6 +204,7 @@ def run_apidoc(_):
     pkg_root = os.path.join(project_root, "{{cookiecutter.project_slug}}")
     output_path = os.path.join(project_root, "docs", "api")
     apidoc.main(["-o", output_path, "-f", pkg_root])
+
 
 def setup(app):
     app.connect("builder-inited", run_apidoc)

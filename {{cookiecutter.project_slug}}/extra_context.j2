@@ -2,6 +2,6 @@
 {% set company = "" %}
 {# Acronym of your company #}
 {% set company_short = "" %}
-{% set copyright %}Copyright (c) {% now 'local', '%Y'%} {{ cookiecutter.full_name if company == '' else company }}{% endset %}
+{% set copyright %}Copyright (c) {% now 'local', '%Y'%} {{ cookiecutter.author_name if company == '' else company }}{% endset %}
 {% set repository %}https://github.com/{{ cookiecutter.email.split('@')[0] }}/{{ cookiecutter.repo_name }}.git{% endset %}
 

@@ -33,6 +33,7 @@ def test_get_subtask_with_poetry():
 @pytest.mark.parametrize("command", ["format", "style", "test"])
 def test_doit_command_run_in_project(cookies, command):
     result = cookies.bake(extra_context={"project_name": "testing"})
+    print(str(result.project))
     with inside_dir(str(result.project)):
         with poetryenv_in_project():
             assert run(["doit", command]).returncode == 0

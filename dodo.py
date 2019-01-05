@@ -14,7 +14,7 @@ DOIT_CONFIG = {
     "template": "{name:<10} {doc}",
 }
 PYTEST_VERBOSITY = "-v"  # Set as "", "-v", "-vv" or "-vvv"
-MIN_COVERAGE = "10"  # Test fails if coverage is under this value
+MIN_COVERAGE = "50"  # Test fails if coverage is under this value
 LINE_LENGHT = "79"  # black don't have a config file
 
 # Set file_dep to this to run task only when the code changes

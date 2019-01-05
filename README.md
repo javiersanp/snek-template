@@ -49,7 +49,7 @@ You will be prompted to enter these values:
 * **project_name**: The display name for your project. This is used in documentation, so spaces and any characters are fine here.
 * **project_slug**: The namespace of your Python package. This should be Python import-friendly. Typically, it is the slugified version of project_name.
 * **project_short_description**: A 1-sentence description of what your Python package does.
-* **full_name**: Your full name.
+* **author_name**: Your full name.
 * **email**: Your email address.
 * **git_user_name**: Your git account.
 * **git_repository**: The url of the project git repository.

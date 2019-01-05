@@ -56,7 +56,7 @@ def test_selecting_license(cookies, cookiecutter, license, target_string):
         assert target_string in license_text
         if license != "GPL-3.0":
             assert str(datetime.datetime.now().year) in license_text
-            assert cookiecutter["full_name"] in license_text
+            assert cookiecutter["author_name"] in license_text
         assert license in project.join("pyproject.toml").read()
 
 
@@ -74,5 +74,5 @@ def test_pyproject(cookies, cookiecutter):
         assert cookiecutter["project_slug"] in pyproject
         assert cookiecutter["version"] in pyproject
         assert cookiecutter["project_short_description"] in pyproject
-        assert cookiecutter["full_name"] in pyproject
+        assert cookiecutter["author_name"] in pyproject
         assert cookiecutter["email"] in pyproject
