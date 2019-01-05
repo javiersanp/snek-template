@@ -162,11 +162,13 @@ def task_coverage():
     }
     yield {
         "name": "show",
+        "task_dep": ["coverage:build"],
         "actions": [(open_in_browser, (COV_INDEX,))],
     }
 
 
 def task_docs():
+    """Generate and show the HTML documentation."""
     yield {
         "name": "build",
         "task_dep": ["install"],
@@ -180,9 +182,9 @@ def task_docs():
 {% else %}        "actions": ["poetry run mkdocs build"],
 {% endif %}        "targets": [DOCS_HTML, DOCS_INDEX],
     }
-    """Generate and show the HTML documentation."""
     yield {
         "name": "show",
+        "task_dep": ["docs:build"],
         "actions": [(open_in_browser, (DOCS_INDEX,))],
     }
 
