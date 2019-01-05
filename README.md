@@ -49,12 +49,14 @@ You will be prompted to enter these values:
 * **project_name**: The display name for your project. This is used in documentation, so spaces and any characters are fine here.
 * **project_slug**: The namespace of your Python package. This should be Python import-friendly. Typically, it is the slugified version of project_name.
 * **project_short_description**: A 1-sentence description of what your Python package does.
-* **author_name**: Your full name.
+* **full_name**: Your full name.
 * **email**: Your email address.
 * **git_user_name**: Your git account.
-* **git_repository**: The url of the project git repository.
+* **repo_name**: The name of your project repository.
+* **repository**: The url of the project git repository.
 * **version**: The starting version number of the package.
 * **license**: Legal stuff about reusing your project. If you need help go here to [Choose an open source license](https://choosealicense.com).
+* **docs_generator**: Choose the tool MkDocs, Sphinx or None to generate the static site of the documentation.
 
 Change to the newly created project folder. For example, if your *'project_slug'* is demo: `cd demo`.
 
@@ -78,14 +80,6 @@ To list all the availlable DoIt [tasks](tasks.md) run:
     doit list
 
 Read more about [poetry](https://poetry.eustace.io/docs/) or [DoIt](http://pydoit.org/contents.html) in their documentation.
-
-Extra context
--------------
-
-If you work into a company, you can make a local copy of the template and edit the `{{cookiecutter.project_slug}}/extra_context.j2` file.
-
-* **company**: Full name of your company if any, else leave it blank.
-* **company_short**: Acronym of your company if any, else leave it blank.
 
 Goals
 -----

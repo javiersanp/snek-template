@@ -24,7 +24,7 @@ from sphinx.ext import apidoc
 
 project = "{{ cookiecutter.project_name }}"
 copyright = "{{ extra_context.copyright }}"
-author = "{{ cookiecutter.author_name }}"
+author = "{{ cookiecutter.full_name }}"
 
 # The short X.Y version
 version = ""
@@ -139,7 +139,7 @@ latex_documents = [
         master_doc,
         "{{ cookiecutter.project_slug }}.tex",
         "{{ cookiecutter.project_name }} Documentation",
-        "{{ cookiecutter.author_name }}",
+        "{{ cookiecutter.full_name }}",
         "manual",
     )
 ]

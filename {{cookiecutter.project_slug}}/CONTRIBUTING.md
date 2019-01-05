@@ -1,10 +1,10 @@
-{% import 'extra_context.j2' as extra_context with context %}Contributing Guide
+Contributing Guide
 ==================
 
 Bug Reports
 -----------
 
-For bug reports or requests{% if 'github.com' in extra_context.repository or 'gitlab.com' in extra_context.repository %} submit an issue: <{{ extra_context.repository }}/issues>{% else %} send me an email to <{{ cookiecutter.email }}>.{% endif %}
+For bug reports or requests{% if 'github.com' in cookiecutter.repository or 'gitlab.com' in cookiecutter.repository %} submit an issue: <{{ cookiecutter.repository }}/issues>{% else %} send me an email to <{{ cookiecutter.email }}>.{% endif %}
 
 Pull Requests
 -------------
@@ -13,11 +13,11 @@ Contributions are welcome and greatly appreciated!
 
 To develop new features or bug fixes follow this workflow:
 
-1. Fork the {{ cookiecutter.project_name }} repository: <{{ extra_context.repository }}>
+1. Fork the {{ cookiecutter.project_name }} repository: <{{ cookiecutter.repository }}>
 
 2. Obtain the source by cloning it onto your development machine::
 
-    git clone {{ extra_context.repository }}
+    git clone {{ cookiecutter.repository }}
     cd {{ cookiecutter.project_slug }}
 
 3. Create a branch for local development::
@@ -43,4 +43,4 @@ To develop new features or bug fixes follow this workflow:
     git push origin name-of-your-bugfix-or-feature
 
 8. Finally, go to the web page of your fork and make a pull request to the {{ cookiecutter.project_name }} repository.
-{% if 'github.com' in extra_context.repository %}<https://help.github.com/articles/about-pull-requests/>{% elif 'gitlab.com' in extra_context.repository %}<https://docs.gitlab.com/ee/gitlab-basics/add-merge-request.html>{% endif %}
+{% if 'github.com' in cookiecutter.repository %}<https://help.github.com/articles/about-pull-requests/>{% elif 'gitlab.com' in cookiecutter.repository %}<https://docs.gitlab.com/ee/gitlab-basics/add-merge-request.html>{% endif %}
