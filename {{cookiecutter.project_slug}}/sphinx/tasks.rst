@@ -85,6 +85,6 @@ You can also run a particular target::
 
     doit style:flake8
 
-For more info about DoIt check it `documentation`<http://pydoit.org/contents.html>_ and the command line help::
+For more info about DoIt check it `documentation <http://pydoit.org/contents.html>`_ and the command line help::
 
     doit help
