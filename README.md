@@ -56,7 +56,7 @@ You will be prompted to enter these values:
 * **repository**: The url of the project git repository.
 * **version**: The starting version number of the package.
 * **license**: Legal stuff about reusing your project. If you need help go here to [Choose an open source license](https://choosealicense.com).
-* **docs_generator**: Choose the tool MkDocs, Sphinx or None to generate the static site of the documentation.
+* **docs_generator**: Choose the tool MkDocs or Sphinx to generate the static site of the documentation.
 
 Change to the newly created project folder. For example, if your *'project_slug'* is demo: `cd demo`.
 

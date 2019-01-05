@@ -135,38 +135,28 @@ def task_test_all():
     return {"basename": "test-all", "actions": [show_task_doc]}
 
 
-def task__covhtml():
-    return {
-        "task_dep": ["install"],
+def task_coverage():
+    """Generate and show the coverage html report."""
+    yield {
+        "name": "build",
+        "task_dep": ["test"],
         "file_dep": [".coverage"],
         "actions": ["poetry run coverage html"],
         "targets": [COV_HTML, COV_INDEX],
     }
+    yield {"name": "show", "actions": [(open_in_browser, (COV_INDEX,))]}
 
 
-def task_coverage():
-    """Generate and show the coverage html report."""
-    return {
-        "actions": [(open_in_browser, (COV_INDEX,))],
-        "task_dep": ["test", "_covhtml"],
-    }
-
-
-def task__docshtml():
-    return {
+def task_docs():
+    yield {
+        "name": "build",
         "task_dep": ["install"],
         "file_dep": DOCS_FILES,
         "actions": ["poetry run mkdocs build"],
         "targets": [DOCS_HTML, DOCS_INDEX],
     }
-
-
-def task_docs():
     """Generate and show the HTML documentation."""
-    return {
-        "actions": [(open_in_browser, (DOCS_INDEX,))],
-        "task_dep": ["_docshtml"],
-    }
+    yield {"name": "show", "actions": [(open_in_browser, (DOCS_INDEX,))]}
 
 
 def task_serve_docs():

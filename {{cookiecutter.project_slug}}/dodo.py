@@ -143,51 +143,39 @@ def task_test():
     }
 
 
-def task__covhtml():
-    return {
-        "task_dep": ["install"],
+def task_coverage():
+    """Generate and show the coverage html report."""
+    yield {
+        "name": "build",
+        "task_dep": ["test"],
         "file_dep": [".coverage"],
         "actions": ["poetry run coverage html"],
         "targets": [COV_HTML, COV_INDEX],
     }
-
-
-def task_coverage():
-    """Generate and show the coverage html report."""
-    return {
+    yield {
+        "name": "show",
         "actions": [(open_in_browser, (COV_INDEX,))],
-        "task_dep": ["test", "_covhtml"],
     }
 
 
-{% if cookiecutter.docs_generator == "Sphinx" %}def task__docshtml():
-    return {
+def task_docs():
+    yield {
+        "name": "build",
         "task_dep": ["install"],
         "file_dep": DOCS_FILES,
-        "actions": [
+{% if cookiecutter.docs_generator == "Sphinx" %}        "actions": [
             (clean_directories, (DOCS_HTML,)),
             "poetry run sphinx-build -b html -j auto -a docs site",
             (copy_directory, (os.path.join("docs", "htmlcov"), DOCS_HTML)),
         ],
-        "targets": [DOCS_HTML, DOCS_INDEX],
         "clean": [(clean_directories, (DOCS_HTML,))],
+{% else %}        "actions": ["poetry run mkdocs build"],
+{% endif %}        "targets": [DOCS_HTML, DOCS_INDEX],
     }
-
-
-{% else %}def task__docshtml():
-    return {
-        "task_dep": ["install"],
-        "file_dep": DOCS_FILES,
-        "actions": ["poetry run mkdocs build"],
-        "targets": [DOCS_HTML, DOCS_INDEX],
-    }
-
-
-{% endif %}def task_docs():
     """Generate and show the HTML documentation."""
-    return {
+    yield {
+        "name": "show",
         "actions": [(open_in_browser, (DOCS_INDEX,))],
-        "task_dep": ["_docshtml"],
     }
 
 
