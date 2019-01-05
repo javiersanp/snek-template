@@ -41,11 +41,11 @@ DOCS_INDEX = os.path.join(DOCS_HTML, "index.html")
 VERCHEW = os.path.join("bin", "verchew")
 
 
-################### Actions ########################
+# --------------------- Actions ------------------------
 
 
 def clean_directories(*args):
-    """Delete the given directories"""
+    """Delete the given directories."""
     for folder in args:
         if os.path.isdir(folder):
             print("Cleaning ", folder)
@@ -53,7 +53,7 @@ def clean_directories(*args):
 
 
 def copy_directory(source_dir, target_dir):
-    """Copy source directory into target directory"""
+    """Copy source directory into target directory."""
     target = os.path.join(target_dir, os.path.basename(source_dir))
     if (
         os.path.isdir(source_dir)
@@ -85,7 +85,7 @@ def show_task_doc(task):
     print("TODO: " + task.doc)
 
 
-################# Development ######################
+# ------------------- Installation ---------------------
 
 
 def task__verchew():
@@ -106,14 +106,17 @@ def task_install():
     }
 
 
+# --------------------- Development ----------------------
+
+
 def task_check():
-    """Check diff of code formatters."""
+    """Show the changes that the code formatters would apply."""
     for action in [BLACK_CMD.format(diff="--diff"), "poetry run isort --diff"]:
         yield get_subtask(action, PYTHON_FILES)
 
 
 def task_format():
-    """Run code formatters."""
+    """Run code formatters and apply it's changes."""
     for action in [BLACK_CMD.format(diff=""), "poetry run isort -y"]:
         yield get_subtask(action, PYTHON_FILES)
 
@@ -135,8 +138,8 @@ def task_test():
     )
     return {
         "task_dep": ["install"],
+        "file_dep": PYTHON_FILES,
         "actions": [pytest_cmd],
-        "file_dep": PYTHON_FILES
     }
 
 
@@ -149,11 +152,11 @@ def task__covhtml():
     }
 
 
-def task_coveragex():
+def task_coverage():
     """Generate and show the coverage html report."""
     return {
         "actions": [(open_in_browser, (COV_INDEX,))],
-        "task_dep": ["testx", "_covhtml"],
+        "task_dep": ["test", "_covhtml"],
     }
 
 
@@ -181,7 +184,7 @@ def task_coveragex():
 
 
 {% endif %}def task_docs():
-    """Generate the HTML documentation."""
+    """Generate and show the HTML documentation."""
     return {
         "actions": [(open_in_browser, (DOCS_INDEX,))],
         "task_dep": ["_docshtml"],

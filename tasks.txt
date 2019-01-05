@@ -1,12 +1,13 @@
 v   Análisis
 v   001 Definidos los requisitos
 Documentación
-    00 Documentación del proyecto
+v   00 Documentación del proyecto
 v       001 Lista proyectos similares
-        002 Escribe plantilla de README.md
-        003 Referencia a pytest-cookies en pruebas
-        004 Añade enlaces de referencia en archivos de configuración
-    01 Documentar flujo de trabajo
+v       002 Escribe plantilla de README.md
+x       003 Referencia a pytest-cookies en pruebas
+v       004 Añade enlaces de referencia en archivos de configuración
+o   01 Documentar flujo de trabajo
+o   02 Documentar variables de la plantilla
 Codificación
 v   001 Añade .editorconfig
 o   02 Automatizar flujo con doit
@@ -21,13 +22,13 @@ v       008 Enlazar postproceso de cookiecutter a verchew
 v       009 Add coverage to pytest
 v       010 doit coverage
         011 doit test-all
-        012 doit doc
+v       012 doit doc
         013 doit server
         014 doit release
         015 doit build
         016 doit publish
         017 doit clean-all
-        018 doit morehelp
+        018 doit launch
 v   03 Gestión de dependencias y empaquetado con Poetry
 v       001 Definir pyproject.toml del proyecto
 v       002 Definir pyproject.toml de la plantilla

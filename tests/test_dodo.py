@@ -1,9 +1,10 @@
-import os
+import importlib
 from subprocess import run
 
-import doit
 import mock
 import pytest
+from doit.cmd_base import ModuleTaskLoader
+from doit.doit_cmd import DoitMain
 
 import dodo
 from tests.utils import inside_dir, poetryenv_in_project
@@ -49,9 +50,9 @@ def bad_style_code():
 @pytest.mark.parametrize("expected_error", list(bad_style_code().keys()))
 def test_doit_style_with_fails(cookies, capfd, pkg_name, expected_error):
     result = cookies.bake(extra_context={"project_name": "mypackage"})
-    with inside_dir(str(result.project)):
-        python_file = os.path.join(pkg_name, "dummy.py")
-        with open(str(python_file), "w") as fo:
+    project = result.project
+    with inside_dir(str(project)):
+        with project.join(pkg_name, "dummy.py").open("w") as fo:
             fo.write(bad_style_code()[expected_error])
         with poetryenv_in_project():
             assert run(["doit", "style"]).returncode != 0
@@ -59,28 +60,27 @@ def test_doit_style_with_fails(cookies, capfd, pkg_name, expected_error):
         assert expected_error in captured.out
 
 
-@mock.patch("doit.api.sys")
-def test_doit_coverage(mock_sys, cookies):
-    mock_sys.argv = ["", "coverage"]
+def test_doit_coverage(cookies):
     result = cookies.bake(extra_context={"project_name": "testing"})
     with inside_dir(str(result.project)):
         with poetryenv_in_project():
-            # TODO: Ned to import template dodo.py instead of root
-            print("xxxxxxxxxxxxxxxxxxxxxxxxxxxx", dd.VERSION)
+            importlib.reload(dodo)
             dodo.webbrowser = mock.MagicMock()
-            print(doit.run(dodo))
-            assert False
+            assert DoitMain(ModuleTaskLoader(dodo)).run(["coverage"]) == 0
+    importlib.reload(dodo)
 
 
-@mock.patch("doit.api.sys")
 @pytest.mark.parametrize("docs_generator", ["Sphinx", "MkDocs"])
-def test_doit_docs(mock_sys, cookies, docs_generator):
-    mock_sys.argv = ["", "docs"]
-    dodo.webbrowser = mock.MagicMock()
+def test_doit_docs(cookies, docs_generator):
     result = cookies.bake(extra_context={"docs_generator": docs_generator})
-    with inside_dir(str(result.project)):
+    project = result.project
+    with inside_dir(str(project)):
         with poetryenv_in_project():
-            os.mkdir(os.path.join("docs", "htmlcov"))
-            with open(os.path.join("docs", "htmlcov", "index.html")) as fo:
+            importlib.reload(dodo)
+            dodo.webbrowser = mock.MagicMock()
+            project.mkdir("docs", "htmlcov")
+            with project.join("docs", "htmlcov", "index.html").open("w") as fo:
                 fo.write("")
-            doit.run(dodo)
+            assert DoitMain(ModuleTaskLoader(dodo)).run(["docs"]) == 0
+            assert project.join("site", "htmlcov").check(dir=1)
+    importlib.reload(dodo)

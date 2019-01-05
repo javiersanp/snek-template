@@ -5,7 +5,6 @@ Note: Install doit with python3, preferably in a virtual environment
 """
 import glob
 import os
-import shutil
 import webbrowser
 from urllib.request import pathname2url
 
@@ -25,7 +24,8 @@ PYTHON_FILES = [
 
 # Set file_dep to this to run task only when the documentation changes
 DOCS_FILES = (
-    glob.glob("docs/**/*.md", recursive=True) + glob.glob("**/*.md")
+    glob.glob("docs/**/*.md", recursive=True)
+    + glob.glob("**/*.md")
     + ["{{cookiecutter.project_slug}}/docs/tasks.md"]
 )
 
@@ -41,7 +41,7 @@ DOCS_INDEX = os.path.join(DOCS_HTML, "index.html")
 VERCHEW = os.path.join("bin", "verchew")
 
 
-################### Actions ########################
+# --------------------- Actions ------------------------
 
 
 def get_subtask(cmd_action, file_dep=None):
@@ -66,7 +66,7 @@ def show_task_doc(task):
     print("TODO: " + task.doc)
 
 
-################# Installation #####################
+# ------------------- Installation ---------------------
 
 # TODO
 def task_init():
@@ -92,7 +92,7 @@ def task_install():
     }
 
 
-################# Development ######################
+# --------------------- Development ----------------------
 
 
 def task_check():
@@ -147,7 +147,7 @@ def task__covhtml():
 def task_coverage():
     """Generate and show the coverage html report."""
     return {
-        "actions": [(open_in_browser, (DOCS_INDEX,))],
+        "actions": [(open_in_browser, (COV_INDEX,))],
         "task_dep": ["test", "_covhtml"],
     }
 
@@ -162,7 +162,7 @@ def task__docshtml():
 
 
 def task_docs():
-    """Generate the HTML documentation."""
+    """Generate and show the HTML documentation."""
     return {
         "actions": [(open_in_browser, (DOCS_INDEX,))],
         "task_dep": ["_docshtml"],
@@ -175,7 +175,7 @@ def task_serve_docs():
     return {"basename": "serve-docs", "actions": ["poetry run mkdocs serve"]}
 
 
-################### Release ########################
+# -------------------- Release ------------------------
 
 # TODO
 def task_release():

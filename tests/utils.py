@@ -2,22 +2,25 @@
 
 import os
 import subprocess
+import sys
 from contextlib import contextmanager
 
 
 @contextmanager
 def inside_dir(dirpath):
     """
-    Temporarily changes the current working directory.
+    Temporarily changes the current working directory and sys.path.
 
     :param dirpath: String, path of the directory to change
     """
     old_path = os.getcwd()
     try:
         os.chdir(dirpath)
+        sys.path.insert(0, dirpath)
         yield
     finally:
         os.chdir(old_path)
+        sys.path.pop(0)
 
 
 @contextmanager

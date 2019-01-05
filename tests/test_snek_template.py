@@ -18,18 +18,17 @@ def cookiecutter():
 
 def test_with_defaults(cookies, cookiecutter):
     result = cookies.bake()
+    project = result.project
     assert result.exit_code == 0, "Exit code ok"
     assert result.exception is None, "Render without errors"
-    assert result.project.isdir(), "Project directory exists"
-
-    toplevel_files = [f.basename for f in result.project.listdir()]
-    assert cookiecutter["project_slug"] in toplevel_files
-    assert "tests" in toplevel_files
-    assert ".editorconfig" in toplevel_files
-    assert ".gitignore" in toplevel_files
-    assert "tox.ini" in toplevel_files
-    assert ".verchew.ini" in toplevel_files
-    assert "extra_context.j2" not in toplevel_files
+    assert project.isdir(), "Project directory exists"
+    assert project.join(cookiecutter["project_slug"]).check(dir=1)
+    assert project.join("tests").check(dir=1)
+    assert project.join(".editorconfig").check(file=1)
+    assert project.join(".gitignore").check(file=1)
+    assert project.join("tox.ini").check(file=1)
+    assert project.join(".verchew.ini").check(file=1)
+    assert not project.join("extra_context.j2").check()
 
 
 def test_slug(cookies):
@@ -51,21 +50,21 @@ def license_strings():
 )
 def test_selecting_license(cookies, cookiecutter, license, target_string):
     result = cookies.bake(extra_context={"license": license})
-    with inside_dir(str(result.project)):
-        license_text = result.project.join("LICENSE").read()
+    project = result.project
+    with inside_dir(str(project)):
+        license_text = project.join("LICENSE").read()
         assert target_string in license_text
         if license != "GPL-3.0":
             assert str(datetime.datetime.now().year) in license_text
             assert cookiecutter["full_name"] in license_text
-        pyproject = result.project.join("pyproject.toml").read()
-        assert license in pyproject
+        assert license in project.join("pyproject.toml").read()
 
 
 def test_not_open_source_license(cookies):
     result = cookies.bake(extra_context={"license": "Not open source"})
-    with inside_dir(str(result.project)):
-        found_toplevel_files = [f.basename for f in result.project.listdir()]
-        assert "LICENSE" not in found_toplevel_files
+    project = result.project
+    with inside_dir(str(project)):
+        assert not project.join("LICENSE").check()
 
 
 def test_pyproject(cookies, cookiecutter):
