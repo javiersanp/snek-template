@@ -28,7 +28,7 @@ def poetryenv_in_project():
     """Temporarilly set poetry config to make virtualenvs in project."""
     venvset = "settings.virtualenvs.in-project"
     old_setting = subprocess.check_output(
-        ["poetry", "config", venvset], text=True
+        ["poetry", "config", venvset], universal_newlines=True
     ).strip("\n\r")
     try:
         subprocess.run(["poetry", "config", venvset, "true"])

@@ -21,7 +21,7 @@ v       007 doit test
 v       008 Enlazar postproceso de cookiecutter a verchew
 v       009 Add coverage to pytest
 v       010 doit coverage
-        011 doit test-all
+v       011 doit test-all
 v       012 doit doc
         013 doit server
         014 doit release

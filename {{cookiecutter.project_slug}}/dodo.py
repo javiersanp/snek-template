@@ -143,6 +143,14 @@ def task_test():
     }
 
 
+def task_test_all():
+    """Run tests with tox using different Python versions."""
+    return {
+        "basename": "test-all",
+        "actions": ["tox"],
+    }
+
+
 def task_coverage():
     """Generate and show the coverage html report."""
     yield {

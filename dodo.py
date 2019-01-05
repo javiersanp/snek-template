@@ -129,10 +129,12 @@ def task_test():
     }
 
 
-# TODO
 def task_test_all():
-    """Run tests using different Python versions."""
-    return {"basename": "test-all", "actions": [show_task_doc]}
+    """Run tests with tox using different Python versions."""
+    return {
+        "basename": "test-all",
+        "actions": ["tox"],
+    }
 
 
 def task_coverage():

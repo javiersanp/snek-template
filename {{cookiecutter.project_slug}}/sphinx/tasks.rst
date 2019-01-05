@@ -35,7 +35,7 @@ Run tests::
 
     doit test
 
-Run tests using different Python versions::
+Run tests with tox using different Python versions::
 
     doit test-all
 
