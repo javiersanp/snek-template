@@ -44,12 +44,22 @@ VERCHEW = os.path.join("bin", "verchew")
 # --------------------- Actions ------------------------
 
 
-def clean_directories(*args):
-    """Delete the given directories."""
-    for folder in args:
-        if os.path.isdir(folder):
-            print("Cleaning ", folder)
-            shutil.rmtree(folder)
+def clean_paths(*args):
+    """
+    Delete the given paths (files, directories). Can contain shell-style
+    wildcards.
+    """
+    paths = []
+    for path_ in args:
+        if '*' in path_ or '?' in path_:
+            paths.extend(glob.glob(path_))
+        else:
+            paths.append(path_)
+    for path_ in paths:
+        if os.path.isdir(path_):
+            shutil.rmtree(path_)
+        elif os.path.isfile(path_):
+            os.remove(path_)
 
 
 def copy_directory(source_dir, target_dir):

@@ -10,6 +10,42 @@ import dodo
 from tests.utils import inside_dir, poetryenv_in_project
 
 
+def test_clean_paths(cookies):
+    result = cookies.bake()
+    project = result.project
+    with inside_dir(str(project)):
+        importlib.reload(dodo)
+        with mock.patch("dodo.os") as m_os:
+            with mock.patch("dodo.glob") as m_glob:
+                with mock.patch("dodo.shutil") as m_shutil:
+                    m_glob.glob.side_effect = (("c", "d"), ("e", "f"))
+                    m_os.path.isdir.side_effect = lambda path_: path_ > "c"
+                    m_os.path.isfile.side_effect = lambda path_: path_ <= "c"
+                    dodo.clean_paths("a", "b", "*", "?")
+                    m_os.remove.assert_has_calls(
+                        [mock.call("a"), mock.call("b"), mock.call("c")]
+                    )
+                    m_shutil.rmtree.assert_has_calls(
+                        [mock.call("d"), mock.call("e"), mock.call("f")]
+                    )
+    importlib.reload(dodo)
+
+
+def test_copy_directory(cookies):
+    result = cookies.bake()
+    project = result.project
+    with inside_dir(str(project)):
+        importlib.reload(dodo)
+        with mock.patch("dodo.os") as m_os:
+            with mock.patch("dodo.shutil") as m_shutil:
+                m_os.path.join = lambda *paths: "/".join(paths)
+                m_os.path.basename.return_value = "b"
+                m_os.path.isdir.side_effect = [True, True]
+                m_os.path.exists.return_value = False
+                dodo.copy_directory("a/b", "c")
+                m_shutil.copytree.called_once_with("a/b", "c/b")
+
+
 def test_get_subtask_defaults():
     task = dodo.get_subtask("foo bar")
     assert task["name"] == "foo"

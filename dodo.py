@@ -131,10 +131,7 @@ def task_test():
 
 def task_test_all():
     """Run tests with tox using different Python versions."""
-    return {
-        "basename": "test-all",
-        "actions": ["tox"],
-    }
+    return {"basename": "test-all", "actions": ["tox"]}
 
 
 def task_coverage():
@@ -149,7 +146,7 @@ def task_coverage():
     yield {
         "name": "show",
         "task_dep": ["coverage:build"],
-        "actions": [(open_in_browser, (COV_INDEX,))]
+        "actions": [(open_in_browser, (COV_INDEX,))],
     }
 
 
@@ -165,7 +162,7 @@ def task_docs():
     yield {
         "name": "show",
         "task_dep": ["docs:build"],
-        "actions": [(open_in_browser, (DOCS_INDEX,))]
+        "actions": [(open_in_browser, (DOCS_INDEX,))],
     }
 
 
