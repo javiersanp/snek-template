@@ -29,6 +29,9 @@ def test_with_defaults(cookies, cookiecutter):
     assert project.join("tox.ini").check(file=1)
     assert project.join(".verchew.ini").check(file=1)
     assert not project.join("extra_context.j2").check()
+    assert project.join("mkdocs.yml").check(file=1)
+    assert project.join("docs", "index.md").check(file=1)
+    assert not project.join("sphinx").check()
 
 
 def test_slug(cookies):
@@ -76,3 +79,11 @@ def test_pyproject(cookies, cookiecutter):
         assert cookiecutter["project_short_description"] in pyproject
         assert cookiecutter["full_name"] in pyproject
         assert cookiecutter["email"] in pyproject
+
+
+def test_selecting_sphinx(cookies):
+    result = cookies.bake(extra_context={"docs_generator": "Sphinx"})
+    project = result.project
+    assert project.join("docs", "index.rst").check(file=1)
+    assert not project.join("mkdocs.yml").check()
+
