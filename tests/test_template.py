@@ -88,4 +88,3 @@ def test_selecting_sphinx(cookies):
     assert project.join("docs", "index.rst").check(file=1)
     assert project.join("bin", "serve-docs").check(file=1)
     assert not project.join("mkdocs.yml").check()
-

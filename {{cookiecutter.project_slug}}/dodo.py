@@ -177,26 +177,31 @@ def task_coverage():
 
 def task_docs():
     """Generate and show the HTML documentation."""
-    to_clean = [DOCS_HTML]
-{% if cookiecutter.docs_generator == "Sphinx" %}    to_clean += [
+{% if cookiecutter.docs_generator == "Sphinx" %}    to_clean = [
+        DOCS_HTML,
         os.path.join("docs", "api", "{{cookiecutter.project_slug}}*.rst"),
         os.path.join("docs", "api", "modules.rst"),
     ]
-    apidoc_cmd = "poetry run sphinx-apidoc -o docs/ap {{ cookiecutter.project_slug }}"
-{% endif %}    yield {
+    apidoc_cmd = "poetry run sphinx-apidoc -o docs/apirm . {{ cookiecutter.project_slug }}"
+    yield {
         "name": "build",
         "task_dep": ["install"],
         "file_dep": DOCS_FILES,
-{% if cookiecutter.docs_generator == "Sphinx" %}        "actions": [
+        "actions": [
             (clean_paths, to_clean),
             apidoc_cmd,
             "poetry run sphinx-build -b html -j auto -a docs site",
             (copy_directory, (os.path.join("docs", "htmlcov"), DOCS_HTML)),
         ],
+        "targets": [DOCS_HTML, DOCS_INDEX],
         "clean": [(clean_paths, to_clean)],
-{% else %}        "actions": ["poetry run mkdocs build"],
-{% endif %}        "targets": [DOCS_HTML, DOCS_INDEX],
-    }
+{% else %}    yield {
+        "name": "build",
+        "task_dep": ["install"],
+        "file_dep": DOCS_FILES,
+        "actions": ["poetry run mkdocs build"],
+        "targets": [DOCS_HTML, DOCS_INDEX],
+{% endif %}    }
     yield {
         "name": "show",
         "task_dep": ["docs:build"],
@@ -209,7 +214,11 @@ def task_serve_docs():
 {% if cookiecutter.docs_generator == "Sphinx" %}    serve_docs = os.path.join("bin", "serve-docs")
     serve_cmd = "poetry run python " + serve_docs
     return {"basename": "serve-docs", "actions": [serve_cmd]}
-{% else %}    return {"basename": "serve-docs", "actions": ["poetry run mkdocs serve"]}
+{% else %}    return {
+        "basename": "serve-docs",
+        "task_dep": ["coverage:build", "docs:build"],
+        "actions": ["poetry run mkdocs serve"],
+    }
 {% endif %}
 
 # TODO
