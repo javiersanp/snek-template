@@ -32,6 +32,7 @@ def test_with_defaults(cookies, cookiecutter):
     assert project.join("mkdocs.yml").check(file=1)
     assert project.join("docs", "index.md").check(file=1)
     assert not project.join("sphinx").check()
+    assert not project.join("bin", "serve-docs").check()
 
 
 def test_slug(cookies):

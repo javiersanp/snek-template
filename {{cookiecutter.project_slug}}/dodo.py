@@ -44,12 +44,23 @@ VERCHEW = os.path.join("bin", "verchew")
 # --------------------- Actions ------------------------
 
 
-def clean_directories(*args):
-    """Delete the given directories."""
-    for folder in args:
-        if os.path.isdir(folder):
-            print("Cleaning ", folder)
-            shutil.rmtree(folder)
+def clean_paths(*args):
+    """
+    Delete the given paths (files or directories).
+
+    Can contain shell-style wildcards.
+    """
+    paths = []
+    for path_ in args:
+        if "*" in path_ or "?" in path_:
+            paths.extend(glob.glob(path_))
+        else:
+            paths.append(path_)
+    for path_ in paths:
+        if os.path.isdir(path_):
+            shutil.rmtree(path_)
+        elif os.path.isfile(path_):
+            os.remove(path_)
 
 
 def copy_directory(source_dir, target_dir):
@@ -145,10 +156,7 @@ def task_test():
 
 def task_test_all():
     """Run tests with tox using different Python versions."""
-    return {
-        "basename": "test-all",
-        "actions": ["tox"],
-    }
+    return {"basename": "test-all", "actions": ["tox"]}
 
 
 def task_coverage():
@@ -162,30 +170,47 @@ def task_coverage():
     }
     yield {
         "name": "show",
+        "task_dep": ["coverage:build"],
         "actions": [(open_in_browser, (COV_INDEX,))],
     }
 
 
 def task_docs():
-    yield {
+    """Generate and show the HTML documentation."""
+    to_clean = [DOCS_HTML]
+{% if cookiecutter.docs_generator == "Sphinx" %}    to_clean += [
+        os.path.join("docs", "api", "{{cookiecutter.project_slug}}*.rst"),
+        os.path.join("docs", "api", "modules.rst"),
+    ]
+    apidoc_cmd = "poetry run sphinx-apidoc -o docs/ap {{ cookiecutter.project_slug }}"
+{% endif %}    yield {
         "name": "build",
         "task_dep": ["install"],
         "file_dep": DOCS_FILES,
 {% if cookiecutter.docs_generator == "Sphinx" %}        "actions": [
-            (clean_directories, (DOCS_HTML,)),
+            (clean_paths, to_clean),
+            apidoc_cmd,
             "poetry run sphinx-build -b html -j auto -a docs site",
             (copy_directory, (os.path.join("docs", "htmlcov"), DOCS_HTML)),
         ],
-        "clean": [(clean_directories, (DOCS_HTML,))],
+        "clean": [(clean_paths, to_clean)],
 {% else %}        "actions": ["poetry run mkdocs build"],
 {% endif %}        "targets": [DOCS_HTML, DOCS_INDEX],
     }
-    """Generate and show the HTML documentation."""
     yield {
         "name": "show",
+        "task_dep": ["docs:build"],
         "actions": [(open_in_browser, (DOCS_INDEX,))],
     }
 
+
+def task_serve_docs():
+    """Show the documentation and coverage watching for changes."""
+{% if cookiecutter.docs_generator == "Sphinx" %}    serve_docs = os.path.join("bin", "serve-docs")
+    serve_cmd = "poetry run python " + serve_docs
+    return {"basename": "serve-docs", "actions": [serve_cmd]}
+{% else %}    return {"basename": "serve-docs", "actions": ["poetry run mkdocs serve"]}
+{% endif %}
 
 # TODO
 def task_launch():
