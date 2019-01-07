@@ -183,7 +183,6 @@ def task_docs():
         os.path.join("docs", "api", "modules.rst"),
     ]
     apidoc_cmd = "poetry run sphinx-apidoc -o docs/ap {{ cookiecutter.project_slug }}"
-    )
 {% endif %}    yield {
         "name": "build",
         "task_dep": ["install"],
@@ -204,6 +203,14 @@ def task_docs():
         "actions": [(open_in_browser, (DOCS_INDEX,))],
     }
 
+
+def task_serve_docs():
+    """Show the documentation and coverage watching for changes."""
+{% if cookiecutter.docs_generator == "Sphinx" %}    serve_docs = os.path.join("bin", "serve-docs")
+    serve_cmd = "poetry run python " + serve_docs
+    return {"basename": "serve-docs", "actions": [serve_cmd]}
+{% else %}    return {"basename": "serve-docs", "actions": ["poetry run mkdocs serve"]}
+{% endif %}
 
 # TODO
 def task_launch():

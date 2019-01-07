@@ -23,8 +23,9 @@ v       009 Add coverage to pytest
 v       010 doit coverage
 v       011 doit test-all
 v       012 doit doc
-        013 doit server
+v       013 doit server-docs
         014 doit release
+            001 bump version
         015 doit build
         016 doit publish
         017 doit clean-all
