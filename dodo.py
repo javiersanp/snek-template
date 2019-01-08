@@ -119,7 +119,7 @@ def task_style():
 
 def task_test():
     """Run tests."""
-    pytest_cmd = "poetry run pytest {v} --cov --cov-fail-under={mc}".format(
+    pytest_cmd = "poetry run pytest {v}".format(
         v=PYTEST_VERBOSITY, mc=MIN_COVERAGE
     )
     return {
