@@ -11,6 +11,7 @@ Features
 * Dependency management and packaging with [Poetry](https://poetry.eustace.io/).
 * Automated tasks workflow with [DoIt](http://pydoit.org/).
 * Testing with [pytest](https://pytests.org).
+* Metrics of test [coverage](https://coverage.readthedocs.io) and [mccabe](https://github.com/The-Compiler/pytest-mccabe) complexity.
 * Style enforcement with [flake8](http://flake8.pycqa.org), [isort](https://github.com/timothycrosley/isort) and [pydocsstyle](http://www.pydocstyle.org/).
 * Optional automatic code formatting with [Black](https://github.com/ambv/black) and isort.
 
