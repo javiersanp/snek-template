@@ -13,8 +13,6 @@ DOIT_CONFIG = {
     "verbosity": 2,
     "template": "{name:<10} {doc}",
 }
-PYTEST_VERBOSITY = "-v"  # Set as "", "-v", "-vv" or "-vvv"
-MIN_COVERAGE = "50"  # Test fails if coverage is under this value
 LINE_LENGHT = "79"  # black don't have a config file
 
 # Set file_dep to this to run task only when the code changes
@@ -114,13 +112,10 @@ def task_style():
 
 def task_test():
     """Run tests."""
-    pytest_cmd = "poetry run pytest {v}".format(
-        v=PYTEST_VERBOSITY, mc=MIN_COVERAGE
-    )
     return {
         "task_dep": ["install"],
         "file_dep": PYTHON_FILES,
-        "actions": [pytest_cmd],
+        "actions": ["poetry run pytest"],
     }
 
 
