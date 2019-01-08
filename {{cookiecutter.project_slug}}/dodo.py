@@ -92,6 +92,11 @@ def open_in_browser(file_to_open):
     webbrowser.open(url)
 
 
+def targets_exists(task):
+    """Return True (updated) if all task targets exists."""
+    return all([os.path.exists(target) for target in task.targets])
+
+
 def show_task_doc(task):
     print("TODO: " + task.doc)
 
@@ -104,6 +109,22 @@ def task__verchew():
     return {
         "file_dep": [".verchew.ini"],
         "actions": ["python {} --exit-code".format(VERCHEW)],
+    }
+
+
+def task_init_repo():
+    repo = "{{ cookiecutter.repository }}"
+    return {
+        "basename": "init-repo",
+        "actions": [
+            "git init",
+            "git remote add origin " + repo,
+            'git commit --allow-empty -m "First commit"',
+            "git checkout -b develop",
+            "git  push -u origin master",
+        ],
+        "targets": [".git"],
+        "uptodate": [targets_exists],
     }
 
 

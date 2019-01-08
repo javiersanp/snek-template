@@ -15,8 +15,8 @@ def inside_dir(dirpath):
     """
     old_path = os.getcwd()
     try:
-        os.chdir(dirpath)
-        sys.path.insert(0, dirpath)
+        os.chdir(str(dirpath))
+        sys.path.insert(0, str(dirpath))
         yield
     finally:
         os.chdir(old_path)

@@ -15,7 +15,8 @@ o   02 Automatizar flujo con doit
 v       002 doit style
 v       003 doit check
 v       004 doit format
-o       005 doit install
+v       005 doit install
+v           001 doit init-repo
 v       006 doit verchew
 v       007 doit test
 v       008 Enlazar postproceso de cookiecutter a verchew

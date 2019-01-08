@@ -13,7 +13,7 @@ from tests.utils import inside_dir, poetryenv_in_project
 def test_clean_paths(cookies):
     result = cookies.bake()
     project = result.project
-    with inside_dir(str(project)):
+    with inside_dir(project):
         importlib.reload(dodo)
         with mock.patch("dodo.os") as m_os:
             with mock.patch("dodo.glob") as m_glob:
@@ -34,7 +34,7 @@ def test_clean_paths(cookies):
 def test_copy_directory(cookies):
     result = cookies.bake()
     project = result.project
-    with inside_dir(str(project)):
+    with inside_dir(project):
         importlib.reload(dodo)
         with mock.patch("dodo.os") as m_os:
             with mock.patch("dodo.shutil") as m_shutil:
@@ -68,9 +68,8 @@ def test_get_subtask_with_poetry():
 
 @pytest.mark.parametrize("command", ["format", "style", "test"])
 def test_doit_command_run_in_project(cookies, command):
-    result = cookies.bake(extra_context={"project_name": "testing"})
-    print(str(result.project))
-    with inside_dir(str(result.project)):
+    result = cookies.bake()
+    with inside_dir(result.project):
         with poetryenv_in_project():
             assert run(["doit", command]).returncode == 0
 
@@ -88,7 +87,7 @@ def bad_style_code():
 def test_doit_style_with_fails(cookies, capfd, pkg_name, expected_error):
     result = cookies.bake(extra_context={"project_name": "mypackage"})
     project = result.project
-    with inside_dir(str(project)):
+    with inside_dir(project):
         with project.join(pkg_name, "dummy.py").open("w") as fo:
             fo.write(bad_style_code()[expected_error])
         with poetryenv_in_project():
@@ -98,8 +97,8 @@ def test_doit_style_with_fails(cookies, capfd, pkg_name, expected_error):
 
 
 def test_doit_coverage(cookies):
-    result = cookies.bake(extra_context={"project_name": "testing"})
-    with inside_dir(str(result.project)):
+    result = cookies.bake()
+    with inside_dir(result.project):
         with poetryenv_in_project():
             importlib.reload(dodo)
             dodo.webbrowser = mock.MagicMock()
@@ -109,9 +108,10 @@ def test_doit_coverage(cookies):
 
 @pytest.mark.parametrize("docs_generator", ["Sphinx", "MkDocs"])
 def test_doit_docs(cookies, docs_generator):
-    result = cookies.bake(extra_context={"docs_generator": docs_generator})
+    extra_context = {"docs_generator": docs_generator}
+    result = cookies.bake(extra_context=extra_context)
     project = result.project
-    with inside_dir(str(project)):
+    with inside_dir(project):
         with poetryenv_in_project():
             importlib.reload(dodo)
             dodo.webbrowser = mock.MagicMock()

@@ -55,7 +55,7 @@ def license_strings():
 def test_selecting_license(cookies, cookiecutter, license, target_string):
     result = cookies.bake(extra_context={"license": license})
     project = result.project
-    with inside_dir(str(project)):
+    with inside_dir(project):
         license_text = project.join("LICENSE").read()
         assert target_string in license_text
         if license != "GPL-3.0":
@@ -67,13 +67,13 @@ def test_selecting_license(cookies, cookiecutter, license, target_string):
 def test_not_open_source_license(cookies):
     result = cookies.bake(extra_context={"license": "Not open source"})
     project = result.project
-    with inside_dir(str(project)):
+    with inside_dir(project):
         assert not project.join("LICENSE").check()
 
 
 def test_pyproject(cookies, cookiecutter):
     result = cookies.bake()
-    with inside_dir(str(result.project)):
+    with inside_dir(result.project):
         pyproject = result.project.join("pyproject.toml").read()
         assert cookiecutter["project_slug"] in pyproject
         assert cookiecutter["version"] in pyproject

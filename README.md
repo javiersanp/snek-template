@@ -60,22 +60,27 @@ You will be prompted to enter these values:
 
 Change to the newly created project folder. For example, if your *'project_slug'* is demo: `cd demo`.
 
-Then you can install with:
+Then you can install with::
 
     doit install
 
-The install task will execute three steeps:
+The install task will execute this steeps:
 
 1. Check the system for the [required](#Requirements) tools.
-2. Initialize the repository. Create a empty local git, connect to your previously created remote repository, create the `develop` branch and checkout to it.
-3. Create a virtual environment if there is not one active. Install in it the project requirements.
+2. Create a virtual environment if there is not one active. Install in it the project requirements.
 
-You can use poetry to add aditional requirements. For example:
+Initialize the repository with::
+
+    doit init-repo
+
+This create a empty local git, connect to your previously created remote repository, create the `master` branch and push it, create the `develop` branch and checkout to it.
+
+You can use poetry to add aditional requirements. For example::
 
     poetry add pendulum
     poetry add --dev mock
 
-To list all the availlable DoIt [tasks](tasks.md) run:
+To list all the availlable DoIt [tasks](tasks.md) run::
 
     doit list
 

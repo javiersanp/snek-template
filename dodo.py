@@ -68,11 +68,6 @@ def show_task_doc(task):
 
 # ------------------- Installation ---------------------
 
-# TODO
-def task_init():
-    """Initialize the git repository."""
-    return {"actions": [show_task_doc], "targets": [".git"]}
-
 
 def task__verchew():
     """Check system dependencies."""
@@ -87,7 +82,7 @@ def task_install():
     return {
         "file_dep": ["pyproject.toml"],
         "actions": ["poetry install"],
-        "task_dep": ["_verchew", "init"],
+        "task_dep": ["_verchew"],
         "targets": ["poetry.lock"],
     }
 
