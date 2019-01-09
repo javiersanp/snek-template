@@ -7,7 +7,10 @@ import glob
 import os
 import shutil
 import webbrowser
+from subprocess import run
 from urllib.request import pathname2url
+
+from doit.exceptions import TaskFailed
 
 DOIT_CONFIG = {
     "default_tasks": ["style", "test"],
@@ -93,6 +96,38 @@ def open_in_browser(file_to_open):
 def targets_exists(task):
     """Return True (updated) if all task targets exists."""
     return all([os.path.exists(target) for target in task.targets])
+
+
+def do_release(part):
+    """Bump version and push to master."""
+    run(["git", "checkout", "master"])
+    result = run(
+        ["git", "status", "--porcelain", "--untracked=no"], capture_output=True
+    )
+    if len(result.stdout) > 0:
+        return TaskFailed("Git working directory is not clean.")
+    last_version = run(
+        ["git", "describe", "--tags", "--abbrev=0"],
+        capture_output=True,
+        universal_newlines=True,
+    ).stdout.strip("\n\r ")
+    unreleased_commits = run(
+        ["git", "--no-pager", "log", "--oneline", last_version + ".."],
+        capture_output=True,
+        universal_newlines=True,
+    ).stdout
+    if len(unreleased_commits) > 0:
+        print("Commits since", last_version)
+        print(unreleased_commits)
+    else:
+        return TaskFailed("There aren't any commit to release.")
+    run(["poetry", "run", "bump2version", "-n", "--verbose", part])
+    proceed = input("Do you agree with the changes? (y/n): ")
+    if proceed.lower().strip().startswith("y"):
+        run(["poetry", "run", "bump2version", part])
+        run(["git", "push", "origin", "master"])
+    else:
+        return TaskFailed("Cancelled by user.")
 
 
 def show_task_doc(task):
@@ -242,21 +277,24 @@ def task_serve_docs():
 
 # -------------------- Release ------------------------
 
-# TODO
+
 def task_release():
     """Bump the current version and release to the repository master branch."""
     # "task_dep": ["init-repo"],
     return {
-        "params": [{
-            "name": "part",
-            "long": "part",
-            "short": "p",
-            "choices": (("major", ""), ("minor", ""), ("patch", "")),
-            "default": "",
-            "help": "The part of the version to increase.",
-        }],
-        "actions": ["echo hi %(part)s"],
+        "params": [
+            {
+                "name": "part",
+                "long": "part",
+                "short": "p",
+                "choices": (("major", ""), ("minor", ""), ("patch", "")),
+                "default": "patch",
+                "help": "The part of the version to increase.",
+            }
+        ],
+        "actions": [do_release],
     }
+
 
 # TODO
 def task_launch():

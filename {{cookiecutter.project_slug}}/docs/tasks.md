@@ -56,7 +56,7 @@ Release
 
 Bump the current version and release to the repository master branch::
 
-    doit release
+    doit release --part minor
 
 Build source and wheel package::
 

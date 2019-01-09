@@ -25,8 +25,8 @@ v       010 doit coverage
 v       011 doit test-all
 v       012 doit doc
 v       013 doit server-docs
-        014 doit release
-            001 bump version
+v       014 doit release
+v           001 bump version
         015 doit build
         016 doit publish
         017 doit clean-all
