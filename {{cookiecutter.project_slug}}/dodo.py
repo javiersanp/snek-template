@@ -240,6 +240,24 @@ def task_serve_docs():
     }
 {% endif %}
 
+# -------------------- Release ------------------------
+
+# TODO
+def task_release():
+    """Bump the current version and release to the repository master branch."""
+    # "task_dep": ["init-repo"],
+    return {
+        "params": [{
+            "name": "part",
+            "long": "part",
+            "short": "p",
+            "choices": (("major", ""), ("minor", ""), ("patch", "")),
+            "default": "",
+            "help": "The part of the version to increase.",
+        }],
+        "actions": ["echo hi %(part)s"],
+    }
+
 # TODO
 def task_launch():
     """Run the application entry point."""
