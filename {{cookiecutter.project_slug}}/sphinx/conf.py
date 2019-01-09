@@ -27,9 +27,9 @@ copyright = "Copyright (c) {% now 'local', '%Y'%} {{ cookiecutter.full_name if c
 author = "{{ cookiecutter.full_name }}"
 
 # The short X.Y version
-version = ""
+version = "{{ cookiecutter.version }}"
 # The full version, including alpha/beta/rc tags
-release = "0.1.0"
+release = version
 
 
 # -- General configuration ---------------------------------------------------

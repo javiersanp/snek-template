@@ -10,6 +10,7 @@ readme = "README.md"
 python = "^3.6 || ^2.7.9"
 
 [tool.poetry.dev-dependencies]
+bump2version = "^0.5.10"
 flake8 = "^3.6"
 isort = "^4.3"
 pydocstyle = "^3.0"
