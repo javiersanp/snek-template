@@ -111,15 +111,17 @@ def task__verchew():
 
 
 def task_init_repo():
+    """Initialize the repository and push first commit."""
     repo = "{{ cookiecutter.repository }}"
     return {
         "basename": "init-repo",
         "actions": [
             "git init",
+            "git add .",
+            'git commit -m "First commit"',
             "git remote add origin " + repo,
-            'git commit --allow-empty -m "First commit"',
-            "git checkout -b develop",
             "git  push -u origin master",
+            "git checkout -b develop",
         ],
         "targets": [".git"],
         "uptodate": [targets_exists],

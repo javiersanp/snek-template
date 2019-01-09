@@ -74,7 +74,7 @@ Initialize the repository with::
 
     doit init-repo
 
-This create a empty local git, connect to your previously created remote repository, create the `master` branch and push it, create the `develop` branch and checkout to it.
+This create a empty local git, connect it to your previously created remote repository, push all files to the `master` branch, create the `develop` branch and checkout to it.
 
 You can use poetry to add aditional requirements. For example::
 
