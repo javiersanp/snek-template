@@ -77,7 +77,7 @@ A task will run only if their target files don't exists, or it dependent files h
 
     doit --always check
 
-Note that you can indicate many tasks in one command::
+Note that you can run multiple tasks in a single invocation::
 
     doit check style
 
