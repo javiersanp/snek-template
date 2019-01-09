@@ -28,7 +28,6 @@ def test_with_defaults(cookies, cookiecutter):
     assert project.join(".gitignore").check(file=1)
     assert project.join("tox.ini").check(file=1)
     assert project.join(".verchew.ini").check(file=1)
-    assert not project.join("extra_context.j2").check()
     assert project.join("mkdocs.yml").check(file=1)
     assert project.join("docs", "index.md").check(file=1)
     assert not project.join("sphinx").check()

@@ -1,4 +1,4 @@
-{% import 'extra_context.j2' as extra_context with context %}# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 #
 # Configuration file for the Sphinx documentation builder.
 #
@@ -23,7 +23,7 @@ from sphinx.ext import apidoc
 # -- Project information -----------------------------------------------------
 
 project = "{{ cookiecutter.project_name }}"
-copyright = "{{ extra_context.copyright }}"
+copyright = "Copyright (c) {% now 'local', '%Y'%} {{ cookiecutter.full_name if cookiecutter._company == '' else cookiecutter._company }}"  # noqa
 author = "{{ cookiecutter.full_name }}"
 
 # The short X.Y version

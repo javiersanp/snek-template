@@ -87,6 +87,13 @@ To list all the availlable DoIt [tasks](tasks.md) run::
 
 Read more about [poetry](https://poetry.eustace.io/docs/) or [DoIt](http://pydoit.org/contents.html) in their documentation.
 
+Extra context
+-------------
+
+If you work into a company, you can make a local copy of the template and edit the value of this variable in the `cookiecutter.json` file. It will be used in the software copyright statements.
+
+* **_company**: Full name of your company if any, else leave it blank.
+
 Goals
 -----
 
@@ -101,6 +108,7 @@ Similar projects
 * https://github.com/claws/cookiecutter-python-project
 * https://github.com/jacebrowning/template-python
 * https://github.com/elgertam/cookiecutter-pipenv
+* https://github.com/sdss/python_template
 
 Credits
 -------

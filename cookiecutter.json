@@ -9,5 +9,6 @@
     "repository": "https://github.com/{{ cookiecutter.git_username }}/{{ cookiecutter.repo_name }}.git",
     "version": "0.1.0",
     "license": ["MIT", "BSD-4-Clause", "Apache-2.0", "GPL-3.0", "Not open source"],
-    "docs_generator": ["MkDocs", "Sphinx"]
+    "docs_generator": ["MkDocs", "Sphinx"],
+    "_company": ""
 }
