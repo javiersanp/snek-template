@@ -9,23 +9,24 @@ Features
 --------
 
 * Dependency management and packaging with [Poetry](https://poetry.eustace.io/).
-* Automated tasks workflow with [DoIt](http://pydoit.org/).
+* Automated tasks workflow with [DoIt](http://pydoit.org/). Run tasks only when the dependent files change.
 * Testing with [pytest](https://pytests.org).
 * Metrics of test [coverage](https://coverage.readthedocs.io) and [mccabe](https://github.com/The-Compiler/pytest-mccabe) complexity.
 * Style enforcement with [flake8](http://flake8.pycqa.org), [isort](https://github.com/timothycrosley/isort) and [pydocsstyle](http://www.pydocstyle.org/).
 * Optional automatic code formatting with [Black](https://github.com/ambv/black) and isort.
+* Generation of documentation with [Sphinx](http://www.sphinx-doc.org) or [mkdocs](https://www.mkdocs.org/).
+* Edit documentation on the fly with [livereload](https://github.com/lepture/python-livereload) server for Sphinx and built-in Mkdocs feature.
+* Build matrix with [tox](https://tox.readthedocs.io).
+* [Bump version](https://github.com/c4urself/bump2version) and release to master branch with one command.
 
 Planned Features
 ----------------
 
-* Generation of documentation with [Sphinx](http://www.sphinx-doc.org) \[or [mkdocs](https://www.mkdocs.org/) or none\].
-* Build matrix with [tox](https://tox.readthedocs.io).
 * Continous Integration with [Travis](https://travis-ci.org/) \[, [CircleCI](https://circleci.com) or [Jenkins](https://jenkins.io)\].
 
 **Optionally**
 
 * Addapt the template to be used both for libraries and applications.
-* Option to choose between mkdocs, Sphinx or no docs.
 * Add configuration for many CI: Travis, Jenkins and maybe CircleCI.
 * Auto-release to [PyPI](https://pypi.org/) (optional).
 
