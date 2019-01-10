@@ -80,11 +80,12 @@ def get_stdout(command):
 
 def do_merge(branch):
     """Merge current branch with given branch (default master) and push it."""
-    current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD)
+    current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
     if current_branch == branch:
         return TaskFailed("Source and targets branch are the same.")
     changes = get_stdout(GIT_UNSTAGED_CHANGES)
     if len(changes) > 0:
+        print(changes)
         return TaskFailed("Git working directory is not clean.")
     run(["git", "checkout", branch], check=True)
     run(["git", "merge", "--no-ff", current_branch], check=True)
