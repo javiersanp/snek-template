@@ -84,7 +84,7 @@ def do_merge(branch):
     if current_branch == branch:
         return TaskFailed("Source and targets branch are the same.")
     changes = get_stdout(GIT_UNSTAGED_CHANGES)
-    if len(changes.stdout) > 0:
+    if len(changes) > 0:
         return TaskFailed("Git working directory is not clean.")
     run(["git", "checkout", branch], check=True)
     run(["git", "merge", "-no-ff", current_branch], check=True)
@@ -96,7 +96,7 @@ def do_release(part):
     """Bump version and push to master."""
     run(["git", "checkout", "master"], check=True)
     changes = get_stdout(GIT_UNSTAGED_CHANGES)
-    if len(changes.stdout) > 0:
+    if len(changes) > 0:
         return TaskFailed("Git working directory is not clean.")
     last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
     unreleased_commits = get_stdout(GIT_BRIEF_LOG_CMD + [last_version + ".."])
