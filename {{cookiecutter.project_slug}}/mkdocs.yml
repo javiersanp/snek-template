@@ -1,0 +1,12 @@
+site_name: {{ cookiecutter.project_name }}
+
+nav:
+- Home: 'index.md'
+- Development Guide:
+    - 'contributing.md'
+    - 'tasks.md'
+    - 'coverage.md'
+
+markdown_extensions:
+    - markdown_include.include:
+        base_path: docs

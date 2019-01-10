@@ -1,0 +1,40 @@
+# https://www.python.org/dev/peps/pep-0518/
+
+[tool.poetry]
+name = "snek-template"
+version = "0.1.0"
+description = "Another cookicutter template for general Python projects"
+authors = ["Javier Sánchez Portero <javiersanp@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+# https://pypi.org/classifiers/
+classifiers = [
+    'Development Status :: 4 - Beta',
+    'Environment :: Console',
+    'Intended Audience :: Developers',
+    'Natural Language :: English',
+    'Topic :: Software Development',
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+[tool.poetry.dev-dependencies]
+black = {version = "^18.3-alpha.0",allows-prereleases = true}
+doit = "^0.31.1"
+flake8 = "^3.6"
+isort = "^4.3"
+pydocstyle = "^3.0"
+markdown_include = "^0.5.1"
+mkdocs = "^1.0"
+mock = "^2.0"
+pytest = "^4.0"
+pytest-cookies = "^0.3.0"
+pytest-cov = "^2.6"
+tox = "^3.6"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+

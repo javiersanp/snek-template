@@ -1,0 +1,14 @@
+{
+    "project_name": "Your project name",
+    "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
+    "project_short_description": "A 1-sentence description of what your Python package does",
+    "full_name": "Your full name",
+    "email": "your_email@example.com",
+    "git_username": "{{ cookiecutter.email.split('@')[0] }}",
+    "repo_name": "{{ cookiecutter.project_slug }}",
+    "repository": "https://github.com/{{ cookiecutter.git_username }}/{{ cookiecutter.repo_name }}.git",
+    "version": "0.1.0",
+    "license": ["MIT", "BSD-4-Clause", "Apache-2.0", "GPL-3.0", "Not open source"],
+    "docs_generator": ["MkDocs", "Sphinx"],
+    "_company": ""
+}

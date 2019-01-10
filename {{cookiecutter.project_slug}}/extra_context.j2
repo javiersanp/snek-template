@@ -1,0 +1,5 @@
+{# Full name of your company if any, else leave it blank #}
+{% set company = "" %}
+{# Acronym of your company #}
+{% set company_short = "" %}
+{% set copyright %}Copyright (c) {% now 'local', '%Y'%} {{ cookiecutter.full_name if company == '' else company }}{% endset %}

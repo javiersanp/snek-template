@@ -1,0 +1,65 @@
+v   Análisis
+v   001 Definidos los requisitos
+Documentación
+v   00 Documentación del proyecto
+v       001 Lista proyectos similares
+v       002 Escribe plantilla de README.md
+x       003 Referencia a pytest-cookies en pruebas
+v       004 Añade enlaces de referencia en archivos de configuración
+o   01 Documentar flujo de trabajo
+o   02 Documentar variables de la plantilla
+Codificación
+v   001 Añade .editorconfig
+o   02 Automatizar flujo con doit
+        001 Estudiar git hooks
+v       002 doit style
+v       003 doit check
+v       004 doit format
+v       005 doit install
+v           001 doit init-repo
+v       006 doit verchew
+v       007 doit test
+x       008 Enlazar postproceso de cookiecutter a verchew
+v       009 Add coverage to pytest
+v       010 doit coverage
+v       011 doit test-all
+v       012 doit doc
+v       013 doit server-docs
+v       014 doit release
+v           001 bump version
+        015 doit build
+        016 doit publish
+        017 doit clean-all
+        018 doit launch
+v   03 Gestión de dependencias y empaquetado con Poetry
+v       001 Definir pyproject.toml del proyecto
+v       002 Definir pyproject.toml de la plantilla
+o   04 Pruebas con pytest
+v   05 Corrección de estilo con black, isort
+v   06 Comprobación de estilo con flake8, pydocstyle, isort
+v   07 Cobertura de código con [Coverage](https://coverage.readthedocs.io/en/v4.5.x/)
+        001 Code coverage platform with [Coveralls](https://coveralls.io)?
+v   08 Generación de documentación con Sphinx
+v       001 Documentar proyecto con mkdocs
+v   09 Matriz de pruebas con tox
+    10 Integración contínua con Travis
+v   11 Elegir entre varias licencias
+v   12 Añadir copyright de compañía
+v   13 System dependency version checker
+v       001 Quizá bajar script verchew y quitar la dependencia
+v       002 Usar pydocstyle con la opción check-only, añadirlo a los tests y ponerlo en dev
+v       003 Lo mismo con isort
+    14 Registro
+Opcionales
+    20 Adaptar para uso como librería o aplicación
+        001 Opción para crear CLI
+v   21 Opción para elejir mkdocs o no docs como alternativas
+    22 Integración contínua con Jenkins y quizá CircleCI
+    23 Publicación automática
+
+Requerimientos (nuevos)
+=======================
+
+System dependency version checker with [verchew](https://github.com/jacebrowning/verchew).
+
+There are many tools that are optional for your development. For example you would recommend your team mates to use black as code formatter, but this is not really an enforcement. Black requires Python >= 3.6.0 even though it can reformat Python 2 code too. So if you put black in your development requirements you are pinning the Python version of your project preventing it to be backward compatible. It's better to install black in its own virtual environment available for all your projects (with [pipsi](https://github.com/mitsuhiko/pipsi), for example). Verchew is a convenience script for new team members to ensure their computer has everything needed to work on the project.

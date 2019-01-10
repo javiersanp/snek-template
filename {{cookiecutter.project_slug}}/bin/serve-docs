@@ -1,0 +1,15 @@
+from livereload import Server, shell
+import os
+
+
+def serve_sphinx_docs():
+    server = Server()
+    server.watch("docs/*.rst", shell("doit docs:build"))
+    server.watch("docs/*.md", shell("doit docs:build"))
+    server.watch("*.rst", shell("doit docs:build"))
+    server.watch("*.md", shell("doit docs:build"))
+    server.serve(root="site", port=8000, open_url_delay=1)
+
+
+if __name__ == '__main__':
+    serve_sphinx_docs()
