@@ -148,6 +148,7 @@ def do_release(part):
         check_call(["poetry", "run", "bump2version", part])
         check_call(["git", "push", "origin", "master"])
     else:
+        check_call(["git", "checkout", current_branch])
         return TaskFailed("Cancelled by user.")
     check_call(["git", "checkout", current_branch])
 
