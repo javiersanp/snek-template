@@ -101,6 +101,7 @@ def do_merge(branch):
 
 def do_release(part):
     """Bump version and push to master."""
+    current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
     run(["git", "checkout", "master"], check=True)
     changes = get_stdout(GIT_UNSTAGED_CHANGES)
     if len(changes) > 0:
@@ -119,6 +120,7 @@ def do_release(part):
         run(["git", "push", "origin", "master"], check=True)
     else:
         return TaskFailed("Cancelled by user.")
+    run(["git", "checkout", current_branch], check=True)
 
 
 # ------------------- Installation ---------------------
@@ -224,7 +226,7 @@ def task_serve_docs():
 def task_merge():
     """Merge current branch with given branch (default master) and push it."""
     return {
-        # "task_dep": ["test-all"],
+        "task_dep": ["test-all"],
         "params": [
             {
                 "name": "branch",
