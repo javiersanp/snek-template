@@ -266,7 +266,7 @@ def task_docs():
         os.path.join("docs", "api", "{{cookiecutter.project_slug}}*.rst"),
         os.path.join("docs", "api", "modules.rst"),
     ]
-    apidoc_cmd = "poetry run sphinx-apidoc -o docs/apirm . {{ cookiecutter.project_slug }}"
+    apidoc_cmd = "poetry run sphinx-apidoc -o docs/api {{ cookiecutter.project_slug }}"
     yield {
         "name": "build",
         "task_dep": ["install"],
