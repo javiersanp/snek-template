@@ -238,7 +238,11 @@ def task_test():
 
 def task_test_all():
     """Run tests with tox using different Python versions."""
-    return {"basename": "test-all", "actions": ["tox"]}
+    return {
+        "basename": "test-all",
+        "task_dep": ["install"],
+        "actions": ["poetry run tox"]
+    }
 
 
 def task_coverage():
