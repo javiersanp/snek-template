@@ -100,9 +100,11 @@ def targets_exists(task):
 
 def do_release(part):
     """Bump version and push to master."""
-    run(["git", "checkout", "master"])
+    run(["git", "checkout", "master"], check=True)
     result = run(
-        ["git", "status", "--porcelain", "--untracked=no"], capture_output=True
+        ["git", "status", "--porcelain", "--untracked=no"],
+        capture_output=True,
+        check=True,
     )
     if len(result.stdout) > 0:
         return TaskFailed("Git working directory is not clean.")
@@ -110,22 +112,24 @@ def do_release(part):
         ["git", "describe", "--tags", "--abbrev=0"],
         capture_output=True,
         universal_newlines=True,
+        check=True,
     ).stdout.strip("\n\r ")
     unreleased_commits = run(
         ["git", "--no-pager", "log", "--oneline", last_version + ".."],
         capture_output=True,
         universal_newlines=True,
+        check=True,
     ).stdout
     if len(unreleased_commits) > 0:
         print("Commits since", last_version)
         print(unreleased_commits)
     else:
         return TaskFailed("There aren't any commit to release.")
-    run(["poetry", "run", "bump2version", "-n", "--verbose", part])
+    run(["poetry", "run", "bump2version", "-n", "--verbose", part], check=True)
     proceed = input("Do you agree with the changes? (y/n): ")
     if proceed.lower().strip().startswith("y"):
-        run(["poetry", "run", "bump2version", part])
-        run(["git", "push", "origin", "master"])
+        run(["poetry", "run", "bump2version", part], check=True)
+        run(["git", "push", "origin", "master"], check=True)
     else:
         return TaskFailed("Cancelled by user.")
 
