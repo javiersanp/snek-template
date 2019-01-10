@@ -7,7 +7,7 @@ import glob
 import os
 import shutil
 import webbrowser
-from subprocess import run
+from subprocess import check_call, check_output
 from urllib.request import pathname2url
 
 from doit.exceptions import TaskFailed
@@ -104,9 +104,7 @@ def targets_exists(task):
 
 def get_stdout(command):
     """Run command with text capture and check, then return stdout."""
-    return run(
-        command, capture_output=True, universal_newlines=True, check=True
-    ).stdout
+    return check_output(command, universal_newlines=True)
 
 
 def do_merge(branch):
@@ -124,16 +122,16 @@ def do_merge(branch):
     if len(changes) > 0:
         print(changes)
         return TaskFailed("Git working directory is not clean.")
-    run(["git", "checkout", branch], check=True)
-    run(["git", "merge", "--no-ff", current_branch], check=True)
-    run(["git", "push", "origin", branch], check=True)
-    run(["git", "checkout", current_branch], check=True)
+    check_call(["git", "checkout", branch])
+    check_call(["git", "merge", "--no-ff", current_branch])
+    check_call(["git", "push", "origin", branch])
+    check_call(["git", "checkout", current_branch])
 
 
 def do_release(part):
     """Bump version and push to master."""
     current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
-    run(["git", "checkout", "master"], check=True)
+    check_call(["git", "checkout", "master"])
     changes = get_stdout(GIT_UNSTAGED_CHANGES)
     if len(changes) > 0:
         return TaskFailed("Git working directory is not clean.")
@@ -144,14 +142,14 @@ def do_release(part):
         print(unreleased_commits)
     else:
         return TaskFailed("There aren't any commit to release.")
-    run(["poetry", "run", "bump2version", "-n", "--verbose", part], check=True)
+    check_call(["poetry", "run", "bump2version", "-n", "--verbose", part])
     proceed = input("Do you agree with the changes? (y/n): ")
     if proceed.lower().strip().startswith("y"):
-        run(["poetry", "run", "bump2version", part], check=True)
-        run(["git", "push", "origin", "master"], check=True)
+        check_call(["poetry", "run", "bump2version", part])
+        check_call(["git", "push", "origin", "master"])
     else:
         return TaskFailed("Cancelled by user.")
-    run(["git", "checkout", current_branch], check=True)
+    check_call(["git", "checkout", current_branch])
 
 
 def show_task_doc(task):

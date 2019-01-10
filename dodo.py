@@ -220,7 +220,7 @@ def task_serve_docs():
     return {
         "basename": "serve-docs",
         "task_dep": ["install"],
-        "actions": ["poetry run mkdocs serve"]
+        "actions": ["poetry run mkdocs serve"],
     }
 
 
