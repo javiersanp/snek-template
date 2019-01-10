@@ -40,6 +40,10 @@ COV_INDEX = os.path.join(COV_HTML, "index.html")
 DOCS_HTML = "site"
 DOCS_INDEX = os.path.join(DOCS_HTML, "index.html")
 VERCHEW = os.path.join("bin", "verchew")
+GIT_LAST_VERSION_CMD = ["git", "describe", "--tags", "--abbrev=0"]
+GIT_BRIEF_LOG_CMD = ["git", "--no-pager", "log", "--oneline"]
+GIT_UNSTAGED_CHANGES = ["git", "status", "--porcelain", "--untracked=no"]
+GIT_CURRENT_BRANCH_CMD = ["git", "rev-parse", "--abbrev-ref", "HEAD"]
 
 
 # --------------------- Actions ------------------------
@@ -67,28 +71,35 @@ def show_task_doc(task):
     print("TODO: " + task.doc)
 
 
+def get_stdout(command):
+    """Run command with text capture and check, then return stdout."""
+    return run(
+        command, capture_output=True, universal_newlines=True, check=True
+    ).stdout
+
+
+def do_merge(branch):
+    """Merge current branch with given branch (default master) and push it."""
+    current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD)
+    if current_branch == branch:
+        return TaskFailed("Source and targets branch are the same.")
+    changes = get_stdout(GIT_UNSTAGED_CHANGES)
+    if len(changes.stdout) > 0:
+        return TaskFailed("Git working directory is not clean.")
+    run(["git", "checkout", branch], check=True)
+    run(["git", "merge", "-no-ff", current_branch], check=True)
+    run(["git", "push", "origin", branch], check=True)
+    run(["git", "checkout", current_branch], check=True)
+
+
 def do_release(part):
     """Bump version and push to master."""
     run(["git", "checkout", "master"], check=True)
-    result = run(
-        ["git", "status", "--porcelain", "--untracked=no"],
-        capture_output=True,
-        check=True,
-    )
-    if len(result.stdout) > 0:
+    changes = get_stdout(GIT_UNSTAGED_CHANGES)
+    if len(changes.stdout) > 0:
         return TaskFailed("Git working directory is not clean.")
-    last_version = run(
-        ["git", "describe", "--tags", "--abbrev=0"],
-        capture_output=True,
-        universal_newlines=True,
-        check=True,
-    ).stdout.strip("\n\r ")
-    unreleased_commits = run(
-        ["git", "--no-pager", "log", "--oneline", last_version + ".."],
-        capture_output=True,
-        universal_newlines=True,
-        check=True,
-    ).stdout
+    last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
+    unreleased_commits = get_stdout(GIT_BRIEF_LOG_CMD + [last_version + ".."])
     if len(unreleased_commits) > 0:
         print("Commits since", last_version)
         print(unreleased_commits)
@@ -201,6 +212,23 @@ def task_serve_docs():
 
 
 # -------------------- Release ------------------------
+
+
+def task_merge():
+    """Merge current branch with given branch (default master) and push it."""
+    return {
+        # "task_dep": ["test-all"],
+        "params": [
+            {
+                "name": "branch",
+                "long": "branch",
+                "short": "b",
+                "default": "master",
+                "help": "Branch to merge into.",
+            }
+        ],
+        "actions": [do_merge],
+    }
 
 
 def task_release():

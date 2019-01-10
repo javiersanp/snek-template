@@ -1,7 +1,14 @@
 Automation tool
 ===============
 
-This is a list of all the availlable task defined in ``dodo.py``. They can be executed using the ``doit [task]*`` command.
+This project uses `DoIt <http://pydoit.org>`_ for task automation. These are its advantages:
+
+* Time saving since the tasks will not be executed if the files they depend on have not been modified.
+* Summarize complex operations in individual commands.
+* It facilitates learning the workflow to new collaborators.
+* Enforces tasks to run in the correct order. Ensure that the code is tested and style linted before merge or push.
+
+This is a list of all the availlable tasks defined in ``dodo.py``. They can be executed using the ``doit [task]*`` command.
 
 Installation
 ------------
@@ -43,7 +50,7 @@ Generate and show the coverage html report::
 
     doit coverage
 
-Generate the HTML documentation::
+Generate and show the HTML documentation::
 
     doit docs
 
@@ -54,7 +61,14 @@ Show the documentation and coverage watching for changes::
 Release
 -------
 
-Bump the current version and release to the repository master branch::
+Merge the current branch with that in the --branch/-b parameter (default
+master) and push it. The test-all task will run before this to ensure you
+don't merge untested code::
+
+    doit merge [--branch branch-to-merge-into]
+
+Bump the current version and release to the repository master branch. The
+test-all task will run before this to ensure you don't publish untested code::
 
     doit release --part minor
 
