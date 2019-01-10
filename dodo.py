@@ -6,7 +6,10 @@ Note: Install doit with python3, preferably in a virtual environment
 import glob
 import os
 import webbrowser
+from subprocess import run
 from urllib.request import pathname2url
+
+from doit.exceptions import TaskFailed
 
 DOIT_CONFIG = {
     "default_tasks": ["format", "style", "test"],
