@@ -80,6 +80,12 @@ def get_stdout(command):
 
 def do_merge(branch):
     """Merge current branch with given branch (default master) and push it."""
+    branches = [
+        branch_.strip("* \r")
+        for branch_ in get_stdout(["git", "branch"]).strip("\n\r ").split("\n")
+    ]
+    if branch not in branches:
+        return TaskFailed("Branch {} don't exist.".format(branch))
     current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
     if current_branch == branch:
         return TaskFailed("Source and targets branch are the same.")
