@@ -40,6 +40,10 @@ COV_INDEX = os.path.join(COV_HTML, "index.html")
 DOCS_HTML = "site"
 DOCS_INDEX = os.path.join(DOCS_HTML, "index.html")
 VERCHEW = os.path.join("bin", "verchew")
+GIT_LAST_VERSION_CMD = ["git", "describe", "--tags", "--abbrev=0"]
+GIT_BRIEF_LOG_CMD = ["git", "--no-pager", "log", "--oneline"]
+GIT_UNSTAGED_CHANGES = ["git", "status", "--porcelain", "--untracked=no"]
+GIT_CURRENT_BRANCH_CMD = ["git", "rev-parse", "--abbrev-ref", "HEAD"]
 
 
 # --------------------- Actions ------------------------
@@ -98,28 +102,43 @@ def targets_exists(task):
     return all([os.path.exists(target) for target in task.targets])
 
 
+def get_stdout(command):
+    """Run command with text capture and check, then return stdout."""
+    return run(
+        command, capture_output=True, universal_newlines=True, check=True
+    ).stdout
+
+
+def do_merge(branch):
+    """Merge current branch with given branch (default master) and push it."""
+    branches = [
+        branch_.strip("* \r")
+        for branch_ in get_stdout(["git", "branch"]).strip("\n\r ").split("\n")
+    ]
+    if branch not in branches:
+        return TaskFailed("Branch {} don't exist.".format(branch))
+    current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
+    if current_branch == branch:
+        return TaskFailed("Source and targets branch are the same.")
+    changes = get_stdout(GIT_UNSTAGED_CHANGES)
+    if len(changes) > 0:
+        print(changes)
+        return TaskFailed("Git working directory is not clean.")
+    run(["git", "checkout", branch], check=True)
+    run(["git", "merge", "--no-ff", current_branch], check=True)
+    run(["git", "push", "origin", branch], check=True)
+    run(["git", "checkout", current_branch], check=True)
+
+
 def do_release(part):
     """Bump version and push to master."""
+    current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
     run(["git", "checkout", "master"], check=True)
-    result = run(
-        ["git", "status", "--porcelain", "--untracked=no"],
-        capture_output=True,
-        check=True,
-    )
-    if len(result.stdout) > 0:
+    changes = get_stdout(GIT_UNSTAGED_CHANGES)
+    if len(changes) > 0:
         return TaskFailed("Git working directory is not clean.")
-    last_version = run(
-        ["git", "describe", "--tags", "--abbrev=0"],
-        capture_output=True,
-        universal_newlines=True,
-        check=True,
-    ).stdout.strip("\n\r ")
-    unreleased_commits = run(
-        ["git", "--no-pager", "log", "--oneline", last_version + ".."],
-        capture_output=True,
-        universal_newlines=True,
-        check=True,
-    ).stdout
+    last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
+    unreleased_commits = get_stdout(GIT_BRIEF_LOG_CMD + [last_version + ".."])
     if len(unreleased_commits) > 0:
         print("Commits since", last_version)
         print(unreleased_commits)
@@ -132,6 +151,7 @@ def do_release(part):
         run(["git", "push", "origin", "master"], check=True)
     else:
         return TaskFailed("Cancelled by user.")
+    run(["git", "checkout", current_branch], check=True)
 
 
 def show_task_doc(task):
@@ -286,6 +306,23 @@ def task_serve_docs():
 {% endif %}
 
 # -------------------- Release ------------------------
+
+
+def task_merge():
+    """Merge current branch with given branch (default master) and push it."""
+    return {
+        "task_dep": ["init-repo", "test-all"],
+        "params": [
+            {
+                "name": "branch",
+                "long": "branch",
+                "short": "b",
+                "default": "master",
+                "help": "Branch to merge into.",
+            }
+        ],
+        "actions": [do_merge],
+    }
 
 
 def task_release():
