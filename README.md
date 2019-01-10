@@ -75,7 +75,7 @@ Initialize the repository with::
 
     doit init-repo
 
-This create a empty local git, connect it to your previously created remote repository, tag the initial version, push all files to the `master` branch, create the `develop` branch and checkout to it. It will be the first version release.
+This create a empty local git, connect it to your previously created remote repository, tag the initial version, push all files to the `master` branch, create the `develop` branch and checkout to it. It will be the first version release. It's recommended to follow this [Git branching model](https://nvie.com/posts/a-successful-git-branching-model/). Check out the [gitflow](https://github.com/nvie/gitflow/) extension to git.
 
 You can use poetry to add aditional requirements. For example::
 
