@@ -150,7 +150,13 @@ def task__verchew():
 
 
 def task_init_repo():
-    """Initialize the repository and push first commit."""
+    """
+    Initialize the repository and push first commit.
+
+    Create a empty local git, connect it to the remote repository, tag the
+    initial version, push all files to the `master` branch, create the
+    `develop` branch and checkout to it.
+    """
     repo = "{{ cookiecutter.repository }}"
     return {
         "basename": "init-repo",
