@@ -46,6 +46,11 @@ Run tests with tox using different Python versions::
 
     doit test-all
 
+Note for pyenv users: don't forget to explicitly enable the Python versions
+used by tox, for example::
+
+    pyenv local 3.7.1 3.6.7 2.7.15
+
 Generate and show the coverage html report::
 
     doit coverage
