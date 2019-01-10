@@ -87,7 +87,7 @@ def do_merge(branch):
     if len(changes) > 0:
         return TaskFailed("Git working directory is not clean.")
     run(["git", "checkout", branch], check=True)
-    run(["git", "merge", "-no-ff", current_branch], check=True)
+    run(["git", "merge", "--no-ff", current_branch], check=True)
     run(["git", "push", "origin", branch], check=True)
     run(["git", "checkout", current_branch], check=True)
 
