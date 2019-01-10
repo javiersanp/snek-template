@@ -284,8 +284,8 @@ def task_serve_docs():
 
 def task_release():
     """Bump the current version and release to the repository master branch."""
-    # "task_dep": ["init-repo"],
     return {
+        "task_dep": ["init-repo", "test-all"],
         "params": [
             {
                 "name": "part",

@@ -64,6 +64,42 @@ def show_task_doc(task):
     print("TODO: " + task.doc)
 
 
+def do_release(part):
+    """Bump version and push to master."""
+    run(["git", "checkout", "master"], check=True)
+    result = run(
+        ["git", "status", "--porcelain", "--untracked=no"],
+        capture_output=True,
+        check=True,
+    )
+    if len(result.stdout) > 0:
+        return TaskFailed("Git working directory is not clean.")
+    last_version = run(
+        ["git", "describe", "--tags", "--abbrev=0"],
+        capture_output=True,
+        universal_newlines=True,
+        check=True,
+    ).stdout.strip("\n\r ")
+    unreleased_commits = run(
+        ["git", "--no-pager", "log", "--oneline", last_version + ".."],
+        capture_output=True,
+        universal_newlines=True,
+        check=True,
+    ).stdout
+    if len(unreleased_commits) > 0:
+        print("Commits since", last_version)
+        print(unreleased_commits)
+    else:
+        return TaskFailed("There aren't any commit to release.")
+    run(["poetry", "run", "bump2version", "-n", "--verbose", part], check=True)
+    proceed = input("Do you agree with the changes? (y/n): ")
+    if proceed.lower().strip().startswith("y"):
+        run(["poetry", "run", "bump2version", part], check=True)
+        run(["git", "push", "origin", "master"], check=True)
+    else:
+        return TaskFailed("Cancelled by user.")
+
+
 # ------------------- Installation ---------------------
 
 
@@ -158,16 +194,28 @@ def task_docs():
 
 def task_serve_docs():
     """Show the documentation and coverage watching for changes."""
-    # https://github.com/gorakhargosh/watchdog (sphinx)
     return {"basename": "serve-docs", "actions": ["poetry run mkdocs serve"]}
 
 
 # -------------------- Release ------------------------
 
-# TODO
+
 def task_release():
     """Bump the current version and release to the repository master branch."""
-    return {"actions": [show_task_doc]}
+    return {
+        "task_dep": ["test-all"],
+        "params": [
+            {
+                "name": "part",
+                "long": "part",
+                "short": "p",
+                "choices": (("major", ""), ("minor", ""), ("patch", "")),
+                "default": "patch",
+                "help": "The part of the version to increase.",
+            }
+        ],
+        "actions": [do_release],
+    }
 
 
 # TODO
