@@ -217,7 +217,11 @@ def task_docs():
 
 def task_serve_docs():
     """Show the documentation and coverage watching for changes."""
-    return {"basename": "serve-docs", "actions": ["poetry run mkdocs serve"]}
+    return {
+        "basename": "serve-docs",
+        "task_dep": ["install"],
+        "actions": ["poetry run mkdocs serve"]
+    }
 
 
 # -------------------- Release ------------------------

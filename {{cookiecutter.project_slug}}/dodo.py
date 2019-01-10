@@ -297,10 +297,14 @@ def task_serve_docs():
     """Show the documentation and coverage watching for changes."""
 {% if cookiecutter.docs_generator == "Sphinx" %}    serve_docs = os.path.join("bin", "serve-docs")
     serve_cmd = "poetry run python " + serve_docs
-    return {"basename": "serve-docs", "actions": [serve_cmd]}
-{% else %}    return {
+    return {
         "basename": "serve-docs",
         "task_dep": ["coverage:build", "docs:build"],
+        "actions": [serve_cmd],
+    }
+{% else %}    return {
+        "basename": "serve-docs",
+        "task_dep": ["install"],
         "actions": ["poetry run mkdocs serve"],
     }
 {% endif %}
