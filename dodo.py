@@ -115,7 +115,7 @@ def do_release(part):
     proceed = input("Do you agree with the changes? (y/n): ")
     if proceed.lower().strip().startswith("y"):
         check_call(["poetry", "run", "bump2version", part])
-        check_call(["git", "push", "origin", "master"])
+        check_call(["git", "push", "--tags", "origin", "master"])
     else:
         check_call(["git", "checkout", current_branch])
         return TaskFailed("Cancelled by user.")

@@ -22,6 +22,7 @@ python = "^3.6"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^18.3-alpha.0",allows-prereleases = true}
+bump2version = "^0.5.10"
 doit = "^0.31.1"
 flake8 = "^3.6"
 isort = "^4.3"
