@@ -1,4 +1,5 @@
 import importlib
+from datetime import datetime
 from subprocess import run
 
 import mock
@@ -121,3 +122,25 @@ def test_doit_docs(cookies, docs_generator):
             assert DoitMain(ModuleTaskLoader(dodo)).run(["docs"]) == 0
             assert project.join("site", "htmlcov").check(dir=1)
     importlib.reload(dodo)
+
+
+def test_bumpversion(cookies):
+    result = cookies.bake()
+    with inside_dir(result.project):
+        with poetryenv_in_project():
+            run(["poetry", "install"])
+            bump = run(
+                ["poetry", "run", "bump2version", "patch", "-n", "--verbose"],
+                capture_output=True,
+                text=True,
+            ).stderr
+            assert '+version = "0.1.1"' in bump
+            assert '+__version__ = "0.1.1"' in bump
+            now = datetime.utcnow().strftime("%Y-%m-%d")
+            assert (
+                "+## [v0.1.1]({repo}/compare/0.1.0...0.1.1) ({now})".format(
+                    repo="https://github.com/your_email/your_project_name".
+                    now=now
+                )
+                in bump
+            )
