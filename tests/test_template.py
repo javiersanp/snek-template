@@ -1,8 +1,19 @@
 import datetime
+import json
 
 import pytest
 
-from tests.utils import cookiecutter, inside_dir
+from tests.utils import inside_dir
+
+
+@pytest.fixture
+def cookiecutter():
+    with open("cookiecutter.json") as fo:
+        vars_ = json.loads(fo.read())
+        vars_["project_slug"] = (
+            vars_["project_name"].lower().replace(" ", "_").replace("-", "_")
+        )
+        return vars_
 
 
 def test_with_defaults(cookies, cookiecutter):

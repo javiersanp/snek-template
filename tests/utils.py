@@ -1,12 +1,9 @@
 """Utilities for tests."""
 
-import json
 import os
 import subprocess
 import sys
 from contextlib import contextmanager
-
-import pytest
 
 
 @contextmanager
@@ -38,13 +35,3 @@ def poetryenv_in_project():
         yield
     finally:
         subprocess.run(["poetry", "config", venvset, old_setting])
-
-
-@pytest.fixture
-def cookiecutter():
-    with open("cookiecutter.json") as fo:
-        vars_ = json.loads(fo.read())
-        vars_["project_slug"] = (
-            vars_["project_name"].lower().replace(" ", "_").replace("-", "_")
-        )
-        return vars_

@@ -139,8 +139,8 @@ def test_bumpversion(cookies):
             now = datetime.utcnow().strftime("%Y-%m-%d")
             assert (
                 "+## [v0.1.1]({repo}/compare/0.1.0...0.1.1) ({now})".format(
-                    repo="https://github.com/your_email/your_project_name".
-                    now=now
+                    repo="https://github.com/your_email/your_project_name",
+                    now=now,
                 )
                 in bump
             )
