@@ -1,6 +1,6 @@
 import importlib
+import subprocess
 from datetime import datetime
-from subprocess import run
 
 import mock
 import pytest
@@ -72,7 +72,7 @@ def test_doit_command_run_in_project(cookies, command):
     result = cookies.bake()
     with inside_dir(result.project):
         with poetryenv_in_project():
-            assert run(["doit", command]).returncode == 0
+            assert subprocess.run(["doit", command]).returncode == 0
 
 
 def bad_style_code():
@@ -92,7 +92,7 @@ def test_doit_style_with_fails(cookies, capfd, pkg_name, expected_error):
         with project.join(pkg_name, "dummy.py").open("w") as fo:
             fo.write(bad_style_code()[expected_error])
         with poetryenv_in_project():
-            assert run(["doit", "style"]).returncode != 0
+            assert subprocess.run(["doit", "style"]).returncode != 0
         captured = capfd.readouterr()
         assert expected_error in captured.out
 
@@ -128,11 +128,11 @@ def test_bumpversion(cookies):
     result = cookies.bake()
     with inside_dir(result.project):
         with poetryenv_in_project():
-            run(["poetry", "install"])
-            bump = run(
+            subprocess.run(["poetry", "install"])
+            bump = subprocess.run(
                 ["poetry", "run", "bump2version", "patch", "-n", "--verbose"],
-                capture_output=True,
-                text=True,
+                stderr=subprocess.PIPE,
+                universal_newlines=True,
             ).stderr
             assert '+version = "0.1.1"' in bump
             assert '+__version__ = "0.1.1"' in bump
