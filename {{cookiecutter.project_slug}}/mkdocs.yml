@@ -6,6 +6,10 @@ nav:
     - 'contributing.md'
     - 'tasks.md'
     - 'coverage.md'
+- About:
+    - 'authors.md'
+    - 'license.md'
+    - 'changelog.md'
 
 markdown_extensions:
     - markdown_include.include:

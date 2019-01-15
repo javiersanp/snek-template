@@ -1,5 +1,6 @@
 import importlib
-from subprocess import run
+import subprocess
+from datetime import datetime
 
 import mock
 import pytest
@@ -71,7 +72,7 @@ def test_doit_command_run_in_project(cookies, command):
     result = cookies.bake()
     with inside_dir(result.project):
         with poetryenv_in_project():
-            assert run(["doit", command]).returncode == 0
+            assert subprocess.run(["doit", command]).returncode == 0
 
 
 def bad_style_code():
@@ -91,7 +92,7 @@ def test_doit_style_with_fails(cookies, capfd, pkg_name, expected_error):
         with project.join(pkg_name, "dummy.py").open("w") as fo:
             fo.write(bad_style_code()[expected_error])
         with poetryenv_in_project():
-            assert run(["doit", "style"]).returncode != 0
+            assert subprocess.run(["doit", "style"]).returncode != 0
         captured = capfd.readouterr()
         assert expected_error in captured.out
 
@@ -121,3 +122,25 @@ def test_doit_docs(cookies, docs_generator):
             assert DoitMain(ModuleTaskLoader(dodo)).run(["docs"]) == 0
             assert project.join("site", "htmlcov").check(dir=1)
     importlib.reload(dodo)
+
+
+def test_bumpversion(cookies):
+    result = cookies.bake()
+    with inside_dir(result.project):
+        with poetryenv_in_project():
+            subprocess.run(["poetry", "install"])
+            bump = subprocess.run(
+                ["poetry", "run", "bump2version", "patch", "-n", "--verbose"],
+                stderr=subprocess.PIPE,
+                universal_newlines=True,
+            ).stderr
+            assert '+version = "0.1.1"' in bump
+            assert '+__version__ = "0.1.1"' in bump
+            now = datetime.utcnow().strftime("%Y-%m-%d")
+            assert (
+                "+## [v0.1.1]({repo}/compare/0.1.0...0.1.1) ({now})".format(
+                    repo="https://github.com/your_email/your_project_name",
+                    now=now,
+                )
+                in bump
+            )
