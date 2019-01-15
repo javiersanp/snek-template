@@ -2,7 +2,7 @@
 
 [tool.poetry]
 name = "snek-template"
-version = "0.1.0"
+version = "0.2.0"
 description = "Another cookicutter template for general Python projects"
 authors = ["Javier Sánchez Portero <javiersanp@gmail.com>"]
 license = "MIT"
