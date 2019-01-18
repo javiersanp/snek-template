@@ -15,3 +15,10 @@ if __name__ == "__main__":
     else:
         shutil.rmtree("sphinx")
         os.remove(os.path.join("bin", "serve-docs"))
+    cli = "{{ cookiecutter.command_line_interface }}"
+    if cli == "No command-line interface":
+        os.remove(os.path.join("{{ cookiecutter.project_slug }}", "cli.py"))
+        os.remove(
+            os.path.join("{{ cookiecutter.project_slug }}", "__main__.py")
+        )
+        os.remove(os.path.join("tests", "test_cli.py"))
