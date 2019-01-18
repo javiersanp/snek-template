@@ -85,10 +85,6 @@ Publish to PyPI::
 
     doit publish
 
-Remove all build, test, coverage and Python artifacts::
-
-    doit clean-all
-
 Some options
 ------------
 

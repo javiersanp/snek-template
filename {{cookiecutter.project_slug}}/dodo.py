@@ -351,7 +351,13 @@ def task_release():
     }
 
 
+def task_build():
+    """Build source and wheel package."""
+    return {"task_dep": ["test-all"], "actions": ["poetry build"]}
+
+
 # TODO
-def task_launch():
-    """Run the application entry point."""
+def task_publish():
+    """Publish to PyPI."""
     return {"actions": [show_task_doc]}
+
