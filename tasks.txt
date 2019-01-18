@@ -11,7 +11,7 @@ o   02 Documentar variables de la plantilla
 Codificación
 v   001 Añade .editorconfig
 o   02 Automatizar flujo con doit
-        001 Estudiar git hooks
+v       001 Estudiar git hooks
 v       002 doit style
 v       003 doit check
 v       004 doit format
@@ -50,9 +50,10 @@ v       001 Quizá bajar script verchew y quitar la dependencia
 v       002 Usar pydocstyle con la opción check-only, añadirlo a los tests y ponerlo en dev
 v       003 Lo mismo con isort
     14 Registro
+v   15 CLI
 Opcionales
     20 Adaptar para uso como librería o aplicación
-        001 Opción para crear CLI
+v       001 Opción para crear CLI
 v   21 Opción para elejir mkdocs o no docs como alternativas
     22 Integración contínua con Jenkins y quizá CircleCI
     23 Publicación automática

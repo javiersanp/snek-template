@@ -23,6 +23,13 @@ def test_with_defaults(cookies, cookiecutter):
     assert result.exception is None, "Render without errors"
     assert project.isdir(), "Project directory exists"
     assert project.join(cookiecutter["project_slug"]).check(dir=1)
+    assert project.join(
+        cookiecutter["project_slug"], cookiecutter["project_slug"] + ".py"
+    ).check(file=1)
+    assert project.join(cookiecutter["project_slug"], "cli.py").check(file=1)
+    assert project.join(cookiecutter["project_slug"], "__main__.py").check(
+        file=1
+    )
     assert project.join("tests").check(dir=1)
     assert project.join(".editorconfig").check(file=1)
     assert project.join(".gitignore").check(file=1)
@@ -68,6 +75,18 @@ def test_not_open_source_license(cookies):
     project = result.project
     with inside_dir(project):
         assert not project.join("LICENSE").check()
+
+
+def test_not_command_line_interface(cookies, cookiecutter):
+    result = cookies.bake(
+        extra_context={"command_line_interface": "No command-line interface"}
+    )
+    project = result.project
+    with inside_dir(project):
+        assert not project.join(cookiecutter["project_slug"], "cli.py").check()
+        assert not project.join(
+            cookiecutter["project_slug"], "__main__.py"
+        ).check()
 
 
 def test_pyproject(cookies, cookiecutter):

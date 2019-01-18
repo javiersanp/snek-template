@@ -243,7 +243,7 @@ def task_test_all():
         "basename": "test-all",
         "task_dep": ["install"],
         "file_dep": PYTHON_FILES,
-        "actions": ["poetry run tox"]
+        "actions": ["poetry run tox"],
     }
 
 

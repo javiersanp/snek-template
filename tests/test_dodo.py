@@ -144,3 +144,14 @@ def test_bumpversion(cookies):
                 )
                 in bump
             )
+
+
+def test_entrypoints(cookies, capfd):
+    result = cookies.bake()
+    with inside_dir(result.project):
+        with poetryenv_in_project():
+            assert subprocess.run(["doit", "install"]).returncode == 0
+            emoji_cmd = ["poetry", "run", "emoji", "-e", "snek", "-c", "3"]
+            assert subprocess.run(emoji_cmd).returncode == 0
+        captured = capfd.readouterr()
+        assert "\n🐍🐍🐍\n" in captured.out

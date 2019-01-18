@@ -10,5 +10,6 @@
     "version": "0.1.0",
     "license": ["MIT", "BSD-4-Clause", "Apache-2.0", "GPL-3.0", "Not open source"],
     "docs_generator": ["MkDocs", "Sphinx"],
+    "command_line_interface": ["Click", "No command-line interface"],
     "_company": ""
 }
