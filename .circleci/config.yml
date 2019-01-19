@@ -23,6 +23,7 @@ jobs:
           name: run tests
           command: |
             . .venv/bin/activate
+            export PATH="$HOME/.poetry/bin:$PATH"
             flake8
             pydocstyle
             isort --check-only -rc .
