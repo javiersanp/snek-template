@@ -2,7 +2,7 @@
 version: 2
 jobs:
   build:
-    docker:
+    matrix:
       - image: circleci/python:3.7
       - image: circleci/python:3.6
 
@@ -25,4 +25,5 @@ jobs:
           name: Run linter and tests
           command: |
             export PATH="$HOME/.poetry/bin:$PATH"
+            pyenv local 3.7.2 3.6.7
             poetry run tox
