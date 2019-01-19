@@ -15,6 +15,7 @@ jobs:
           name: install dependencies
           command: |
             curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+            export PATH="$HOME/.poetry/bin:$PATH"
             poetry config settings.virtualenvs.in-project true
             poetry install
       # Step 3: run linter and tests
