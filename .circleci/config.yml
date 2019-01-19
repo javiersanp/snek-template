@@ -12,12 +12,9 @@ jobs:
       - checkout
       # Step 2: create virtual env and install dependencies
       - run:
-          name: install poetry
-          command:
-            curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
-      - run:
           name: install dependencies
           command: |
+            curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
             poetry config settings.virtualenvs.in-project true
             poetry install
       # Step 3: run linter and tests
@@ -25,4 +22,4 @@ jobs:
           name: run tests
           command: |
             . venv/bin/activate
-            poetry run tox
+            tox
