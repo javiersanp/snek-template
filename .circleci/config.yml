@@ -12,6 +12,10 @@ jobs:
       - checkout
       # Step 2: create virtual env and install dependencies
       - run:
+          name: install poetry
+          command:
+            curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
+      - run:
           name: install dependencies
           command: |
             poetry config settings.virtualenvs.in-project true
