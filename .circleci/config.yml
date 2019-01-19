@@ -23,4 +23,7 @@ jobs:
           name: run tests
           command: |
             . .venv/bin/activate
-            tox
+            flake8
+            pydocstyle
+            isort --check-only -rc .
+            pytest
