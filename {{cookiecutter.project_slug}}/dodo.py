@@ -360,4 +360,3 @@ def task_build():
 def task_publish():
     """Publish to PyPI."""
     return {"actions": [show_task_doc]}
-
