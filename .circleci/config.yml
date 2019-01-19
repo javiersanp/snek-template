@@ -18,10 +18,11 @@ jobs:
       - run:
           name: Create virtual env and install dependencies
           command: |
+            export PATH="$HOME/.poetry/bin:$PATH"
             poetry config settings.virtualenvs.in-project true
             poetry install
       - run:
           name: Run linter and tests
           command: |
-            source .venv/bin/activate
-            tox
+            export PATH="$HOME/.poetry/bin:$PATH"
+            poetry run tox
