@@ -264,22 +264,3 @@ def task_release():
         ],
         "actions": [do_release],
     }
-
-
-# TODO
-def task_build():
-    """Build source and wheel package."""
-    return {"actions": [show_task_doc]}
-
-
-# TODO
-def task_publish():
-    """Publish to PyPI."""
-    return {"actions": [show_task_doc]}
-
-
-# TODO
-def task_clean_all():
-    """Remove all build, test, coverage and Python artifacts."""
-    # calls to doit clean task ?
-    return {"basename": "clean-all", "actions": [show_task_doc]}
