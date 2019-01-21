@@ -67,6 +67,39 @@ def test_get_subtask_with_poetry():
     assert task["actions"] == ["poetry run foo bar"]
 
 
+@mock.patch("dodo.check_call")
+@mock.patch("dodo.check_output")
+def test_checkout_ok(mock_co, mock_cc):
+    mock_co.return_value = "foo"
+    with dodo.checkout("bar"):
+        mock_cc.assert_called_once_with(["git", "checkout", "bar"])
+    mock_cc.assert_called_with(["git", "checkout", "foo"])
+
+
+@mock.patch("dodo.check_call")
+@mock.patch("dodo.check_output")
+def test_checkout_return(mock_co, mock_cc):
+    def dummy():
+        mock_co.return_value = "foo"
+        with dodo.checkout("bar"):
+            mock_cc.assert_called_once_with(["git", "checkout", "bar"])
+            return "taz"
+
+    dummy()
+    mock_cc.assert_called_with(["git", "checkout", "foo"])
+
+
+@mock.patch("dodo.check_call")
+@mock.patch("dodo.check_output")
+def test_checkout_raises(mock_co, mock_cc):
+    mock_co.return_value = "foo"
+    with pytest.raises(Exception):
+        with dodo.checkout("bar"):
+            mock_cc.assert_called_once_with(["git", "checkout", "bar"])
+            raise Exception
+    mock_cc.assert_called_with(["git", "checkout", "foo"])
+
+
 @pytest.mark.parametrize("command", ["format", "style", "test"])
 def test_doit_command_run_in_project(cookies, command):
     result = cookies.bake()
