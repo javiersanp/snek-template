@@ -29,8 +29,8 @@ v       014 doit release
 v           001 bump version
 v       015 doit build
         016 doit publish
-        017 doit clean-all
-        018 doit launch
+x       017 doit clean-all
+x       018 doit launch
 v   03 Gestión de dependencias y empaquetado con Poetry
 v       001 Definir pyproject.toml del proyecto
 v       002 Definir pyproject.toml de la plantilla
@@ -42,7 +42,7 @@ v   07 Cobertura de código con [Coverage](https://coverage.readthedocs.io/en/v4
 v   08 Generación de documentación con Sphinx
 v       001 Documentar proyecto con mkdocs
 v   09 Matriz de pruebas con tox
-    10 Integración contínua con Travis
+o   10 Integración contínua con Travis
 v   11 Elegir entre varias licencias
 v   12 Añadir copyright de compañía
 v   13 System dependency version checker
@@ -55,7 +55,7 @@ Opcionales
     20 Adaptar para uso como librería o aplicación
 v       001 Opción para crear CLI
 v   21 Opción para elejir mkdocs o no docs como alternativas
-    22 Integración contínua con Jenkins y quizá CircleCI
+o   22 Integración contínua con Jenkins y quizá CircleCI
     23 Publicación automática
 
 Requerimientos (nuevos)
