@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: themattrix/docker-tox
+      - image: themattrix/tox
 
     working_directory: ~/repo
 
