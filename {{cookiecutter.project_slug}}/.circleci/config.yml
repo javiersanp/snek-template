@@ -15,7 +15,7 @@ jobs:
             curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
       - restore_cache:
           name: Restore the virtualenv from cache
-          key: deps1-{{ .Branch }}-{{ checksum "poetry.lock" }}
+          key: deps1-'{{' .Branch '}}'-'{{' checksum "poetry.lock" '}}'
       - run:
           name: Create virtual env and install dependencies
           command: |
@@ -24,7 +24,7 @@ jobs:
             poetry install
       - save_cache:
           name: Save the virtualenv to cache
-          key: deps1-{{ .Branch }}-{{ checksum "poetry.lock" }}
+          key: deps1-'{{' .Branch '}}'-'{{' checksum "poetry.lock" '}}'
           paths:
             - ".venv"
             - ".tox"

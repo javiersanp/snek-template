@@ -7,6 +7,7 @@ import glob
 import os
 import shutil
 import webbrowser
+from contextlib import contextmanager
 from subprocess import check_call, check_output
 from urllib.request import pathname2url
 
@@ -107,6 +108,35 @@ def get_stdout(command):
     return check_output(command, universal_newlines=True)
 
 
+@contextmanager
+def checkout(branch):
+    """Temporarily checkout to branch."""
+    current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
+    try:
+        check_call(["git", "checkout", branch])
+        yield
+    finally:
+        check_call(["git", "checkout", current_branch])
+
+
+def get_unstaged_changes():
+    changes = get_stdout(GIT_UNSTAGED_CHANGES)
+    if len(changes) > 0:
+        print(changes)
+    return changes
+
+
+def show_unreleased_commits():
+    """Show commit since last tagged version."""
+    last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
+    unreleased_commits = get_stdout(GIT_BRIEF_LOG_CMD + [last_version + ".."])
+    if len(unreleased_commits) > 0:
+        print("Commits since", last_version)
+        print(unreleased_commits)
+    else:
+        print("There aren't any commit to release.")
+
+
 def do_merge(branch):
     """Merge current branch with given branch (default master) and push it."""
     branches = [
@@ -118,43 +148,30 @@ def do_merge(branch):
     current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
     if current_branch == branch:
         return TaskFailed("Source and targets branch are the same.")
-    changes = get_stdout(GIT_UNSTAGED_CHANGES)
-    if len(changes) > 0:
-        print(changes)
+    if len(get_unstaged_changes()) > 0:
         return TaskFailed("Git working directory is not clean.")
-    check_call(["git", "checkout", branch])
-    check_call(["git", "merge", "--no-ff", current_branch])
-    check_call(["git", "push", "origin", branch])
-    check_call(["git", "checkout", current_branch])
+    with checkout(branch):
+        check_call(["git", "merge", "--no-ff", current_branch])
+        check_call(["git", "push", "origin", branch])
 
 
 def do_release(part):
     """Bump version and push to master."""
-    current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
-    check_call(["git", "checkout", "master"])
-    changes = get_stdout(GIT_UNSTAGED_CHANGES)
-    if len(changes) > 0:
+    if len(get_unstaged_changes()) > 0:
         return TaskFailed("Git working directory is not clean.")
-    last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
-    unreleased_commits = get_stdout(GIT_BRIEF_LOG_CMD + [last_version + ".."])
-    if len(unreleased_commits) > 0:
-        print("Commits since", last_version)
-        print(unreleased_commits)
-    else:
-        return TaskFailed("There aren't any commit to release.")
-    check_call(["poetry", "run", "bump2version", "-n", "--verbose", part])
-    proceed = input("Do you agree with the changes? (y/n): ")
-    if proceed.lower().strip().startswith("y"):
-        check_call(["poetry", "run", "bump2version", part])
-        check_call(["git", "push", "--tags", "origin", "master"])
-    else:
-        check_call(["git", "checkout", current_branch])
-        return TaskFailed("Cancelled by user.")
-    check_call(["git", "checkout", current_branch])
-
-
-def show_task_doc(task):
-    print("TODO: " + task.doc)
+    with checkout("master"):
+        if len(get_unstaged_changes()) > 0:
+            return TaskFailed("Git working directory is not clean.")
+        check_call(["poetry", "run", "bump2version", "-n", "--verbose", part])
+        proceed = input("Do you agree with the changes? (y/n): ")
+        if proceed.lower().strip().startswith("y"):
+            check_call(["poetry", "run", "bump2version", part])
+            check_call(["git", "push", "--tags", "origin", "master"])
+        else:
+            return TaskFailed("Cancelled by user.")
+    check_call(["git", "merge", "--no-ff", "master"])
+    current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
+    check_call(["git", "push", "origin", current_branch])
 
 
 # ------------------- Installation ---------------------
@@ -335,8 +352,10 @@ def task_merge():
 
 def task_release():
     """Bump the current version and release to the repository master branch."""
-    return {
-        "task_dep": ["init-repo", "test-all"],
+    yield {"name": "changes", "actions": [show_unreleased_commits]}
+    yield {
+        "name": "do",
+        "task_dep": ["test-all", "release:changes"],
         "params": [
             {
                 "name": "part",
@@ -354,6 +373,10 @@ def task_release():
 def task_build():
     """Build source and wheel package."""
     return {"task_dep": ["test-all"], "actions": ["poetry build"]}
+
+
+def show_task_doc(task):
+    print("TODO: " + task.doc)
 
 
 # TODO

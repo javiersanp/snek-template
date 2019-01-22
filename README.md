@@ -1,13 +1,12 @@
 Snek Template
 =============
 
-Another cookicutter template for general Python projects.
-
-This project aims to build a [cookiecutter](https://github.com/audreyr/cookiecutter) template for personal use.
+Another [cookiecutter](https://github.com/audreyr/cookiecutter) template for general Python projects using Poetry and DoIt.
 
 Features
 --------
 
+* System dependencies version checker with [verchew](https://github.com/jacebrowning/verchew).
 * Dependency management and packaging with [Poetry](https://poetry.eustace.io/).
 * Automated tasks workflow with [DoIt](http://pydoit.org/). Run tasks only when the dependent files change.
 * Testing with [pytest](https://pytests.org).
@@ -18,16 +17,15 @@ Features
 * Edit documentation on the fly with [livereload](https://github.com/lepture/python-livereload) server for Sphinx and built-in Mkdocs feature.
 * Build matrix with [tox](https://tox.readthedocs.io).
 * [Bump version](https://github.com/c4urself/bump2version) and release to master branch with one command.
+* Continous Integration with [Travis](https://travis-ci.org/) or [CircleCI](https://circleci.com).
 
 Planned Features
 ----------------
 
-* Continous Integration with [Travis](https://travis-ci.org/) \[, [CircleCI](https://circleci.com) or [Jenkins](https://jenkins.io)\].
+* Continous Integration with [Jenkins](https://jenkins.io).
 
 **Optionally**
 
-* Addapt the template to be used both for libraries and applications.
-* Add configuration for many CI: Travis, Jenkins and maybe CircleCI.
 * Auto-release to [PyPI](https://pypi.org/) (optional).
 
 Requirements
@@ -60,6 +58,7 @@ You will be prompted to enter these values:
 * **license**: Legal stuff about reusing your project. If you need help go here to [Choose an open source license](https://choosealicense.com).
 * **docs_generator**: Choose the tool MkDocs or Sphinx to generate the documentation site.
 * **command_line_interface**: Optionally add a Command-line Interface with [Click](https://github.com/pallets/click).
+* **continous_integration**: Choose your CI platform.
 
 Change to the newly created project folder. For example, if your *'project_slug'* is demo: `cd demo`.
 
@@ -96,12 +95,29 @@ If you work into a company, you can make a local copy of the template and edit t
 
 * **_company**: Full name of your company if any, else leave it blank.
 
-Goals
------
+Project structure
+-----------------
 
-Apply testing, documentation and good practices.
-Achive a nice developing workflow.
-Learn to use CI tools.
+These are the files and directories created by the template:
+
+* **_AUTHORS.md_**: Add your credits here.
+* **_bin_**: Directory for utility scripts.
+* **_.bumpversion.cfg_**: Bumpversion configuration file.
+* **_CHANGELOG.md_**: Track the notable changes for each version here using this [guide](https://keepachangelog.com/en/0.3.0/). Always have an "Unreleased" section at the top for keeping track of any changes. Bumpversion will add automatically the new version and release date. If you don't want to use it just delete this file.
+* **_CONTRIBUTING.md_**: Information for new developers.
+* **_{project_slug}_**: Python package for your project.
+* **_docs_**: Directory for the documentation source files. It will be generated in the *site* directory, both for MkDocs and Sphinx. Code coverage reports will be generated in *site/htmlcov*.
+* **_dodo.py_**: Tasks definition script for DoIt.
+* **_doit.cfg_**: Doit configuration file. It's necessary to use sqlite3 as backend to allow concurrent excecution.
+* **_.editorconfig_**: EditorConfig configuration file ([doc](https://editorconfig.org/)).
+* **_.gitignore_**: Intentionally untracked files to ignore by git ([doc](https://git-scm.com/docs/gitignore)).
+* **_LICENSE_**: Legal stuff about reusing your project.
+* **_mkdocs.yml_**: Configuration file for MkDocs.
+* **_pyproject.toml_**: Project metadata and dependencies specification.
+* **_README.md_**: Describe your project here.
+* **_tests_**: Directory for code testing.
+* **_tox.ini_**: Configuration file for tox, but also many other tools.
+* **_.verchew.ini_**: System dependencies definition for _bin/verchew_.
 
 Similar projects
 ----------------
