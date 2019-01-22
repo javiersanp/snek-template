@@ -126,17 +126,6 @@ def get_unstaged_changes():
     return changes
 
 
-def show_unreleased_commits():
-    """Show commit since last tagged version."""
-    last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
-    unreleased_commits = get_stdout(GIT_BRIEF_LOG_CMD + [last_version + ".."])
-    if len(unreleased_commits) > 0:
-        print("Commits since", last_version)
-        print(unreleased_commits)
-    else:
-        print("There aren't any commit to release.")
-
-
 def do_merge(branch):
     """Merge current branch with given branch (default master) and push it."""
     branches = [
@@ -162,6 +151,13 @@ def do_release(part):
     with checkout("master"):
         if len(get_unstaged_changes()) > 0:
             return TaskFailed("Git working directory is not clean.")
+        last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
+        unreleased_commits = get_stdout(GIT_BRIEF_LOG_CMD + [last_version + ".."])
+        if len(unreleased_commits) > 0:
+            print("Commits since", last_version)
+            print(unreleased_commits)
+        else:
+            return TaskFailed("There aren't any commit to release.")
         check_call(["poetry", "run", "bump2version", "-n", "--verbose", part])
         proceed = input("Do you agree with the changes? (y/n): ")
         if proceed.lower().strip().startswith("y"):
@@ -352,9 +348,7 @@ def task_merge():
 
 def task_release():
     """Bump the current version and release to the repository master branch."""
-    yield {"name": "changes", "actions": [show_unreleased_commits]}
-    yield {
-        "name": "do",
+    return {
         "task_dep": ["test-all", "release:changes"],
         "params": [
             {
