@@ -91,6 +91,17 @@ def get_unstaged_changes():
     return changes
 
 
+def show_unreleased_commits():
+    """Show commit since last tagged version."""
+    last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
+    unreleased_commits = get_stdout(GIT_BRIEF_LOG_CMD + [last_version + ".."])
+    if len(unreleased_commits) > 0:
+        print("Commits since", last_version)
+        print(unreleased_commits)
+    else:
+        print("There aren't any commit to release.")
+
+
 def do_merge(branch):
     """Merge current branch with given branch (default master) and push it."""
     branches = [
@@ -107,19 +118,6 @@ def do_merge(branch):
     with checkout(branch):
         check_call(["git", "merge", "--no-ff", current_branch])
         check_call(["git", "push", "origin", branch])
-
-
-def show_unreleased_commits():
-    """Show commit since last tagged version."""
-    last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
-    unreleased_commits = get_stdout(
-        GIT_BRIEF_LOG_CMD + [last_version + ".."]
-    )
-    if len(unreleased_commits) > 0:
-        print("Commits since", last_version)
-        print(unreleased_commits)
-    else:
-        print("There aren't any commit to release.")
 
 
 def do_release(part):

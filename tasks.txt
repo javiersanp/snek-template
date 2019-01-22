@@ -58,9 +58,3 @@ v   21 Opción para elejir mkdocs o no docs como alternativas
 o   22 Integración contínua con Jenkins y quizá CircleCI
     23 Publicación automática
 
-Requerimientos (nuevos)
-=======================
-
-System dependency version checker with [verchew](https://github.com/jacebrowning/verchew).
-
-There are many tools that are optional for your development. For example you would recommend your team mates to use black as code formatter, but this is not really an enforcement. Black requires Python >= 3.6.0 even though it can reformat Python 2 code too. So if you put black in your development requirements you are pinning the Python version of your project preventing it to be backward compatible. It's better to install black in its own virtual environment available for all your projects (with [pipsi](https://github.com/mitsuhiko/pipsi), for example). Verchew is a convenience script for new team members to ensure their computer has everything needed to work on the project.

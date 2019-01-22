@@ -6,6 +6,7 @@ Another [cookiecutter](https://github.com/audreyr/cookiecutter) template for gen
 Features
 --------
 
+* System dependencies version checker with [verchew](https://github.com/jacebrowning/verchew).
 * Dependency management and packaging with [Poetry](https://poetry.eustace.io/).
 * Automated tasks workflow with [DoIt](http://pydoit.org/). Run tasks only when the dependent files change.
 * Testing with [pytest](https://pytests.org).
@@ -115,7 +116,7 @@ These are the files and directories created by the template:
 * **_README.md_**: Describe your project here.
 * **_tests_**: Directory for code testing.
 * **_tox.ini_**: Configuration file for tox, but also many other tools.
-* **_.verchew.ini_**: System dependencies definition for [verchew](https://github.com/jacebrowning/verchew).
+* **_.verchew.ini_**: System dependencies definition for _bin/verchew_.
 
 Similar projects
 ----------------
