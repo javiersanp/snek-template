@@ -152,7 +152,9 @@ def do_release(part):
         if len(get_unstaged_changes()) > 0:
             return TaskFailed("Git working directory is not clean.")
         last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
-        unreleased_commits = get_stdout(GIT_BRIEF_LOG_CMD + [last_version + ".."])
+        unreleased_commits = get_stdout(
+            GIT_BRIEF_LOG_CMD + [last_version + ".."]
+        )
         if len(unreleased_commits) > 0:
             print("Commits since", last_version)
             print(unreleased_commits)
