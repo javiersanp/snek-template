@@ -58,6 +58,7 @@ You will be prompted to enter these values:
 * **license**: Legal stuff about reusing your project. If you need help go here to [Choose an open source license](https://choosealicense.com).
 * **docs_generator**: Choose the tool MkDocs or Sphinx to generate the documentation site.
 * **command_line_interface**: Optionally add a Command-line Interface with [Click](https://github.com/pallets/click).
+* **continous_integration**: Choose your CI platform.
 
 Change to the newly created project folder. For example, if your *'project_slug'* is demo: `cd demo`.
 

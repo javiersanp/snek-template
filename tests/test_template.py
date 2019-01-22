@@ -37,6 +37,7 @@ def test_with_defaults(cookies, cookiecutter):
     assert project.join(".verchew.ini").check(file=1)
     assert project.join("mkdocs.yml").check(file=1)
     assert project.join("docs", "index.md").check(file=1)
+    assert project.join(".travis.yml").check(file=1)
     assert not project.join("sphinx").check()
     assert not project.join("bin", "serve-docs").check()
 
@@ -87,6 +88,21 @@ def test_not_command_line_interface(cookies, cookiecutter):
         assert not project.join(
             cookiecutter["project_slug"], "__main__.py"
         ).check()
+
+
+def test_circleci(cookies, cookiecutter):
+    result = cookies.bake(extra_context={"continous_integration": "CircleCI"})
+    project = result.project
+    with inside_dir(project):
+        assert project.join(".circleci", "config.yml").check(file=1)
+
+
+def test_no_ci(cookies, cookiecutter):
+    result = cookies.bake(extra_context={"continous_integration": "No CI"})
+    project = result.project
+    with inside_dir(project):
+        assert not project.join(".travis.yml").check()
+        assert not project.join(".circleci").check()
 
 
 def test_pyproject(cookies, cookiecutter):

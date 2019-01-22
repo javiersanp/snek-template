@@ -22,3 +22,7 @@ if __name__ == "__main__":
             os.path.join("{{ cookiecutter.project_slug }}", "__main__.py")
         )
         os.remove(os.path.join("tests", "test_cli.py"))
+    if "{{ cookiecutter.continous_integration }}" != "Travis":
+        os.remove(os.path.join(".travis.yml"))
+    if "{{ cookiecutter.continous_integration }}" != "CircleCI":
+        shutil.rmtree(".circleci")
