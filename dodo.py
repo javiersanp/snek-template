@@ -68,10 +68,6 @@ def open_in_browser(file_to_open):
     webbrowser.open(url)
 
 
-def show_task_doc(task):
-    print("TODO: " + task.doc)
-
-
 def get_stdout(command):
     """Run command with text capture and check, then return stdout."""
     return check_output(command, universal_newlines=True)
@@ -114,23 +110,22 @@ def do_merge(branch):
 
 
 def show_unreleased_commits():
-    """Bump version and push to master."""
-    if len(get_unstaged_changes()) > 0:
-        return TaskFailed("Git working directory is not clean.")
-    with checkout("master"):
-        last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
-        unreleased_commits = get_stdout(
-            GIT_BRIEF_LOG_CMD + [last_version + ".."]
-        )
-        if len(unreleased_commits) > 0:
-            print("Commits since", last_version)
-            print(unreleased_commits)
-        else:
-            return TaskFailed("There aren't any commit to release.")
+    """Show commit since last tagged version."""
+    last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
+    unreleased_commits = get_stdout(
+        GIT_BRIEF_LOG_CMD + [last_version + ".."]
+    )
+    if len(unreleased_commits) > 0:
+        print("Commits since", last_version)
+        print(unreleased_commits)
+    else:
+        print("There aren't any commit to release.")
 
 
 def do_release(part):
     """Bump version and push to master."""
+    if len(get_unstaged_changes()) > 0:
+        return TaskFailed("Git working directory is not clean.")
     with checkout("master"):
         if len(get_unstaged_changes()) > 0:
             return TaskFailed("Git working directory is not clean.")
@@ -141,6 +136,9 @@ def do_release(part):
             check_call(["git", "push", "--tags", "origin", "master"])
         else:
             return TaskFailed("Cancelled by user.")
+    check_call(["git", "merge", "--no-ff", "master"])
+    current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
+    check_call(["git", "push", "origin", current_branch])
 
 
 # ------------------- Installation ---------------------
