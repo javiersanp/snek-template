@@ -349,7 +349,7 @@ def task_merge():
 def task_release():
     """Bump the current version and release to the repository master branch."""
     return {
-        "task_dep": ["test-all", "release:changes"],
+        "task_dep": ["test-all"],
         "params": [
             {
                 "name": "part",
