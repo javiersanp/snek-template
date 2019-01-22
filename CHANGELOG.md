@@ -2,8 +2,10 @@
 
 ## Unreleased
 
-* Update dodo merge back master after release.
-* Update: split doit release to show changes.
+* Update docs: Add project structure description.
+* Update bumpversion: Add links to github in changelog.
+* Update dodo: merge back master after release.
+* Update dodo: split doit release to show changes.
 * Fix circleci config.
 
 ## [v0.5.0](https://github.com/javiersanp/snek-template/compare/v0.4.1...v0.5.0) (2019-01-19)
