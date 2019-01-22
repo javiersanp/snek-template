@@ -11,8 +11,8 @@ category = "dev"
 description = "Better dates and times for Python"
 name = "arrow"
 optional = false
-python-versions = "*"
-version = "0.12.1"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
+version = "0.13.0"
 
 [package.dependencies]
 python-dateutil = "*"
@@ -32,6 +32,11 @@ name = "attrs"
 optional = false
 python-versions = "*"
 version = "18.2.0"
+
+[package.extras]
+dev = ["coverage", "hypothesis", "pympler", "pytest", "six", "zope.interface", "sphinx", "zope.interface", "pre-commit"]
+docs = ["sphinx", "zope.interface"]
+tests = ["coverage", "hypothesis", "pympler", "pytest", "six", "zope.interface"]
 
 [[package]]
 category = "dev"
@@ -57,6 +62,9 @@ appdirs = "*"
 attrs = ">=17.4.0"
 click = ">=6.5"
 toml = ">=0.9.4"
+
+[package.extras]
+d = ["aiohttp (>=3.3.2)"]
 
 [[package]]
 category = "dev"
@@ -211,6 +219,9 @@ version = "2.10"
 [package.dependencies]
 MarkupSafe = ">=0.23"
 
+[package.extras]
+i18n = ["Babel (>=0.8)"]
+
 [[package]]
 category = "dev"
 description = "Jinja2 Extension for Dates and Times"
@@ -327,6 +338,10 @@ version = "2.0.0"
 pbr = ">=0.11"
 six = ">=1.9"
 
+[package.extras]
+docs = ["sphinx", "Pygments (<2)", "jinja2 (<2.7)", "sphinx (<1.3)"]
+test = ["unittest2 (>=1.1.0)"]
+
 [[package]]
 category = "dev"
 description = "More routines for operating on iterables, beyond itertools"
@@ -352,7 +367,10 @@ description = "plugin and hook calling mechanisms for python"
 name = "pluggy"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "0.8.0"
+version = "0.8.1"
+
+[package.extras]
+dev = ["pre-commit", "tox"]
 
 [[package]]
 category = "dev"
@@ -413,7 +431,7 @@ description = "pytest: simple powerful testing with Python"
 name = "pytest"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "4.0.2"
+version = "4.1.1"
 
 [package.dependencies]
 atomicwrites = ">=1.0"
@@ -424,6 +442,9 @@ pluggy = ">=0.7"
 py = ">=1.5.0"
 setuptools = "*"
 six = ">=1.10.0"
+
+[package.extras]
+testing = ["hypothesis (>=3.56)", "nose", "requests", "mock"]
 
 [[package]]
 category = "dev"
@@ -443,11 +464,11 @@ description = "Pytest plugin for measuring coverage."
 name = "pytest-cov"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "2.6.0"
+version = "2.6.1"
 
 [package.dependencies]
 coverage = ">=4.4"
-pytest = ">=2.9"
+pytest = ">=3.6"
 
 [[package]]
 category = "dev"
@@ -481,6 +502,10 @@ certifi = ">=2017.4.17"
 chardet = ">=3.0.2,<3.1.0"
 idna = ">=2.5,<2.9"
 urllib3 = ">=1.21.1,<1.25"
+
+[package.extras]
+security = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)"]
+socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7)", "win-inet-pton"]
 
 [[package]]
 category = "dev"
@@ -520,7 +545,7 @@ description = "virtualenv-based automation of test activities"
 name = "tox"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "3.6.1"
+version = "3.7.0"
 
 [package.dependencies]
 filelock = ">=3.0.0,<4"
@@ -531,6 +556,10 @@ six = ">=1.0.0,<2"
 toml = ">=0.9.4"
 virtualenv = ">=1.11.2"
 
+[package.extras]
+docs = ["sphinx (>=1.8.0,<2)", "towncrier (>=18.5.0)", "pygments-github-lexers (>=0.0.5)", "sphinxcontrib-autoprogram (>=0.1.5)"]
+testing = ["freezegun (>=0.3.11)", "pytest (>=3.0.0,<4)", "pytest-cov (>=2.5.1,<3)", "pytest-mock (>=1.10.0,<2)", "pytest-timeout (>=1.3.0,<2)", "pytest-xdist (>=1.22.2,<2)", "pytest-randomly (>=1.2.3,<2)"]
+
 [[package]]
 category = "dev"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
@@ -538,6 +567,10 @@ name = "urllib3"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, <4"
 version = "1.24.1"
+
+[package.extras]
+secure = ["pyOpenSSL (>=0.14)", "cryptography (>=1.3.4)", "idna (>=2.0.0)", "certifi", "ipaddress"]
+socks = ["PySocks (>=1.5.6,<1.5.7 || >1.5.7,<2.0)"]
 
 [[package]]
 category = "dev"
@@ -549,6 +582,10 @@ version = "16.2.0"
 
 [package.dependencies]
 setuptools = ">=18.0.0"
+
+[package.extras]
+docs = ["sphinx (>=1.8.0,<2)", "towncrier (>=18.5.0)", "sphinx-rtd-theme (>=0.4.2,<1)"]
+testing = ["pytest (>=4.0.0,<5)", "coverage (>=4.5.0,<5)", "six (>=1.10.0,<2)", "pytest-timeout (>=1.3.0,<2)", "pytest-xdist", "mock", "xonsh"]
 
 [[package]]
 category = "dev"
@@ -564,7 +601,7 @@ python-versions = "^3.6"
 
 [metadata.hashes]
 appdirs = ["9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92", "d8b24664561d0d34ddfaec54636d502d7cea6e29c3eaf68f3df6180863e2166e"]
-arrow = ["a558d3b7b6ce7ffc74206a86c147052de23d3d4ef0e17c210dd478c53575c4cd"]
+arrow = ["9cb4a910256ed536751cd5728673bfb53e6f0026e240466f90c2a92c0b79c895"]
 atomicwrites = ["0312ad34fcad8fac3704d441f7b317e50af620823353ec657a53e981f92920c0", "ec9ae8adaae229e4f8446952d204a3e4b5fdd2d099f9be3aaf556120135fb3ee"]
 attrs = ["10cbf6e27dbce8c30807caf056c8eb50917e0eaafe86347671b57254006c3e69", "ca4be454458f9dec299268d472aaa5a11f67a4ff70093396e1ceae9c76cf4bbb"]
 binaryornot = ["359501dfc9d40632edc9fac890e19542db1a287bbcfa58175b66658392018061", "b8b71173c917bddcd2c16070412e369c3ed7f0528926f70cac18a6c97fd563e4"]
@@ -598,16 +635,16 @@ mkdocs = ["17d34329aad75d5de604b9ed4e31df3a4d235afefdc46ce7b1964fddb2e1e939", "8
 mock = ["5ce3c71c5545b472da17b72268978914d0252980348636840bd34a00b5cc96c1", "b158b6df76edd239b8208d481dc46b6afd45a846b7812ff0ce58971cf5bc8bba"]
 more-itertools = ["38a936c0a6d98a38bcc2d03fdaaedaba9f412879461dd2ceff8d37564d6522e4", "c0a5785b1109a6bd7fac76d6837fd1feca158e54e521ccd2ae8bfe393cc9d4fc", "fe7a7cae1ccb57d33952113ff4fa1bc5f879963600ed74918f1236e212ee50b9"]
 pbr = ["f59d71442f9ece3dffc17bc36575768e1ee9967756e6b6535f0ee1f0054c3d68", "f6d5b23f226a2ba58e14e49aa3b1bfaf814d0199144b95d78458212444de1387"]
-pluggy = ["447ba94990e8014ee25ec853339faf7b0fc8050cdc3289d4d71f7f410fb90095", "bde19360a8ec4dfd8a20dcb811780a30998101f078fc7ded6162f0076f50508f"]
+pluggy = ["8ddc32f03971bfdf900a81961a48ccf2fb677cf7715108f85295c67405798616", "980710797ff6a041e9a73a5787804f848996ecaa6f8a1b1e08224a5894f2074a"]
 poyo = ["c34a5413191210ed564640510e9c4a4ba3b698746d6b454d46eb5bfb30edcd1d", "d1c317054145a6b1ca0608b5e676b943ddc3bfd671f886a2fe09288b98221edb"]
 py = ["bf92637198836372b520efcba9e020c330123be8ce527e535d185ed4b6f45694", "e76826342cefe3c3d5f7e8ee4316b80d1dd8a300781612ddbc765c17ba25a6c6"]
 pycodestyle = ["74abc4e221d393ea5ce1f129ea6903209940c1ecd29e002e8c6933c2b21026e0", "cbc619d09254895b0d12c2c691e237b2e91e9b2ecf5e84c26b35400f93dcfb83", "cbfca99bd594a10f674d0cd97a3d802a1fdef635d4361e1a2658de47ed261e3a"]
 pydocstyle = ["2258f9b0df68b97bf3a6c29003edc5238ff8879f1efb6f1999988d934e432bd8", "5741c85e408f9e0ddf873611085e819b809fca90b619f5fd7f34bd4959da3dd4", "ed79d4ec5e92655eccc21eb0c6cf512e69512b4a97d215ace46d17e4990f2039"]
 pyflakes = ["9a7662ec724d0120012f6e29d6248ae3727d821bba522a0e6b356eff19126a49", "f661252913bc1dbe7fcfcbf0af0db3f42ab65aabd1a6ca68fe5d466bace94dae"]
 pyinotify = ["9c998a5d7606ca835065cdabc013ae6c66eb9ea76a00a1e3bc6e0cfe2b4f71f4"]
-pytest = ["f689bf2fc18c4585403348dd56f47d87780bf217c53ed9ae7a3e2d7faa45f8e9", "f812ea39a0153566be53d88f8de94839db1e8a05352ed8a49525d7d7f37861e9"]
+pytest = ["41568ea7ecb4a68d7f63837cf65b92ce8d0105e43196ff2b26622995bb3dc4b2", "c3c573a29d7c9547fb90217ece8a8843aa0c1328a797e200290dc3d0b4b823be"]
 pytest-cookies = ["7054b5abd87704c3769b46deb65c332fadba80905d4103b0b1e0b4fe8a9a852a", "a6f37393b697eb3357625a5c226888d9dd020cca3d112b38c630467ce9ff7844"]
-pytest-cov = ["513c425e931a0344944f84ea47f3956be0e416d95acbd897a44970c8d926d5d7", "e360f048b7dae3f2f2a9a4d067b2dd6b6a015d384d1577c994a43f3f7cbad762"]
+pytest-cov = ["0ab664b25c6aa9716cbf203b17ddb301932383046082c081b9848a0edf5add33", "230ef817450ab0699c6cc3c9c8f7a829c34674456f2ed8df1fe1d39780f7c87f"]
 python-dateutil = ["063df5763652e21de43de7d9e00ccf239f953a832941e37be541614732cdfc93", "88f9287c0174266bb0d8cedd395cfba9c58e87e5ad86b2ce58859bc11be3cf02"]
 pyyaml = ["3d7da3009c0f3e783b2c873687652d83b1bbfd5c88e9813fb7e5b03c0dd3108b", "3ef3092145e9b70e3ddd2c7ad59bdd0252a94dfe3949721633e41344de00a6bf", "40c71b8e076d0550b2e6380bada1f1cd1017b882f7e16f09a65be98e017f211a", "558dd60b890ba8fd982e05941927a3911dc409a63dcb8b634feaa0cda69330d3", "a7c28b45d9f99102fa092bb213aa12e0aaf9a6a1f5e395d36166639c1f96c3a1", "aa7dd4a6a427aed7df6fb7f08a580d68d9b118d90310374716ae90b710280af1", "bc558586e6045763782014934bfaf39d48b8ae85a2713117d16c39864085c613", "d46d7982b62e0729ad0175a9bc7e10a566fc07b224d2c79fafb5e032727eaa04", "d5eef459e30b09f5a098b9cea68bebfeb268697f78d647bd255a085371ac7f3f", "e01d3203230e1786cd91ccfdc8f8454c8069c91bee3962ad93b87a4b2860f537", "e170a9e6fcfd19021dd29845af83bb79236068bf5fd4df3327c1be18182b2531"]
 requests = ["502a824f31acdacb3a35b6690b5fbf0bc41d63a24a45c4004352b0242707598e", "7bf2a778576d825600030a110f3c0e3e8edc51dfaafe1c146e39a2027784957b"]
@@ -615,7 +652,7 @@ six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a
 snowballstemmer = ["919f26a68b2c17a7634da993d91339e288964f93c274f1343e3bbbe2096e1128", "9f3bcd3c401c3e862ec0ebe6d2c069ebc012ce142cce209c098ccb5b09136e89"]
 toml = ["229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c", "235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e", "f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"]
 tornado = ["0662d28b1ca9f67108c7e3b77afabfb9c7e87bde174fbda78186ecedc2499a9d", "4e5158d97583502a7e2739951553cbd88a72076f152b4b11b64b9a10c4c49409", "732e836008c708de2e89a31cb2fa6c0e5a70cb60492bee6f1ea1047500feaf7f", "8154ec22c450df4e06b35f131adc4f2f3a12ec85981a203301d310abf580500f", "8e9d728c4579682e837c92fdd98036bd5cdefa1da2aaf6acf26947e6dd0c01c5", "d4b3e5329f572f055b587efc57d29bd051589fb5a43ec8898c77a47ec2fa2bbb", "e5f2585afccbff22390cddac29849df463b252b711aa2ce7c5f3f342a5b3b444"]
-tox = ["2a8d8a63660563e41e64e3b5b677e81ce1ffa5e2a93c2c565d3768c287445800", "edfca7809925f49bdc110d0a2d9966bbf35a0c25637216d9586e7a5c5de17bfb"]
+tox = ["04f8f1aa05de8e76d7a266ccd14e0d665d429977cd42123bc38efa9b59964e9e", "25ef928babe88c71e3ed3af0c464d1160b01fca2dd1870a5bb26c2dea61a17fc"]
 urllib3 = ["61bf29cada3fc2fbefad4fdf059ea4bd1b4a86d2b6d15e1c7c0b582b9752fe39", "de9529817c93f27c8ccbfead6985011db27bd0ddfcdb2d86f3f663385c6a9c22"]
 virtualenv = ["34b9ae3742abed2f95d3970acf4d80533261d6061b51160b197f84e5b4c98b4c", "fa736831a7b18bd2bfeef746beb622a92509e9733d645952da136b0639cd40cd"]
 whichcraft = ["7533870f751901a0ce43c93cc9850186e9eba7fe58c924dfb435968ba9c9fa4e", "fecddd531f237ffc5db8b215409afb18fa30300699064cca4817521b4fc81815"]
