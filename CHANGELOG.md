@@ -1,6 +1,6 @@
 # Changelog
 
-## v## v## v## v## v0.5.0 (2019-01-19) (2019-01-19) (2019-01-19) (2019-01-18) (2019-01-15)
+## Unreleased
 
 * Feature: Continous Integration.
 * Feature: doit build.
