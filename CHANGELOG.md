@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## [v0.4.0](https://github.com/javiersanp/snek-template/compare/0.3.0...0.4.0) (2019-01-23)
 
 * Feature: Continous Integration.
 * Feature: doit build.
