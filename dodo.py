@@ -126,8 +126,22 @@ def do_merge(task, pos_arg_val):
         check_call(["git", "push", "origin", branch])
 
 
-def do_release(part):
+def do_release(pos_arg_val):
     """Bump version and push to master."""
+    choices = ("major", "minor", "patch")
+    if len(pos_arg_val) == 0:
+        return TaskFailed(
+            "Missing PART argument. Availlable choices are: {}.".format(
+                str(choices)
+            )
+        )
+    part = pos_arg_val[0]
+    if part not in choices:
+        return TaskFailed(
+            "Wrong PART argument. Availlable choices are: {}.".format(
+                str(choices)
+            )
+        )
     if len(get_stdout(GIT_UNSTAGED_CHANGES)) > 0:
         return TaskFailed("Git working directory is not clean.")
     with checkout("master"):
@@ -277,15 +291,6 @@ def task_release():
     """Bump the current version and release to the repository master branch."""
     return {
         "task_dep": ["test-all"],
-        "params": [
-            {
-                "name": "part",
-                "long": "part",
-                "short": "p",
-                "choices": (("major", ""), ("minor", ""), ("patch", "")),
-                "default": "patch",
-                "help": "The part of the version to increase.",
-            }
-        ],
+        "pos_arg": "pos_arg_val",
         "actions": [do_release],
     }
