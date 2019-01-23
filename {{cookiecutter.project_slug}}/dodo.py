@@ -133,7 +133,7 @@ def check_diff(task):
     First, validate the task param and if not valid pass the error to do_merge.
     """
     task.params_error = None
-    branch = task.options["branch"]
+    branch = task.pos_arg_val[0] if len(task.pos_arg_val) > 0 else "master"
     branches = [
         branch_.strip("* \r")
         for branch_ in get_stdout(["git", "branch"]).strip("\n\r ").split("\n")
@@ -142,19 +142,20 @@ def check_diff(task):
     if branch not in branches:
         task.params_error = "Branch {} don't exist.".format(branch)
     elif current_branch == branch:
-        task.param_error = "Source and targets branch are the same."
+        task.params_error = "Source and targets branch are the same."
     elif len(get_stdout(GIT_UNSTAGED_CHANGES)) > 0:
-        task.param_error = "Git working directory is not clean."
+        task.params_error = "Git working directory is not clean."
     else:
         branch_diff = get_stdout(["git", "diff", "--name-only", branch])
         return len(branch_diff) == 0
     return False
 
 
-def do_merge(task, branch):
+def do_merge(task, pos_arg_val):
     """Merge current branch with given branch (default master) and push it."""
     if task.params_error is not None:
         return TaskFailed(task.params_error)
+    branch = pos_arg_val[0] if len(pos_arg_val) > 0 else "master"
     with checkout(branch) as current_branch:
         check_call(["git", "merge", "--no-ff", current_branch])
         check_call(["git", "push", "origin", branch])
@@ -350,16 +351,8 @@ def task_serve_docs():
 def task_merge():
     """Merge current branch with given branch (default master) and push it."""
     return {
-        "task_dep": ["init-repo", "test-all"],
-        "params": [
-            {
-                "name": "branch",
-                "long": "branch",
-                "short": "b",
-                "default": "master",
-                "help": "Branch to merge into.",
-            }
-        ],
+        "task_dep": ["test-all"],
+        "pos_arg": "pos_arg_val",
         "uptodate": [check_diff],
         "actions": [do_merge],
     }

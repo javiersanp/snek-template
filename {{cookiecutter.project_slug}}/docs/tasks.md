@@ -66,11 +66,11 @@ Show the documentation and coverage watching for changes::
 Release
 -------
 
-Merge the current branch with that in the --branch/-b parameter (default
-master) and push it. The test-all task will run before this to ensure you
-don't merge untested code::
+Merge the current branch with the positional argument (default master) and push
+it. The test-all task will run before this to ensure you don't merge untested
+code::
 
-    doit merge [--branch branch-to-merge-into]
+    doit merge [branch-to-merge-into]
 
 Bump the current version and release to the repository master branch. The
 test-all task will run before this to ensure you don't publish untested code::
