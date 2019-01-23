@@ -72,10 +72,16 @@ code::
 
     doit merge [branch-to-merge-into]
 
-Bump the current version and release to the repository master branch. The
-test-all task will run before this to ensure you don't publish untested code::
+Bump the part of the current version given in the positional argument and 
+release to the repository master branch. Availlable choices are:
 
-    doit release --part minor
+* major: when you make incompatible API changes.
+* minor: when you add functionality in a backwards-compatible manner.
+* patch: when you make backwards-compatible bug fixes.
+
+The test-all task will run before this to ensure you don't publish untested code::
+
+    doit release [part_of_version_to_increase]
 
 Build source and wheel package::
 

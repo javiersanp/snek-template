@@ -84,20 +84,13 @@ def checkout(branch):
         check_call(["git", "checkout", current_branch])
 
 
-def get_unstaged_changes():
-    changes = get_stdout(GIT_UNSTAGED_CHANGES)
-    if len(changes) > 0:
-        print(changes)
-    return changes
-
-
-def check_diff(task):
+def check_merge(task):
     """
-    Return updated if task param branch don't differ from current branch.
-    
+    Return uptodate (True) if task param branch don't differ from current.
+
     First, validate the task param and if not valid pass the error to do_merge.
     """
-    task.params_error = None
+    task.error = None
     branch = task.pos_arg_val[0] if len(task.pos_arg_val) > 0 else "master"
     branches = [
         branch_.strip("* \r")
@@ -105,11 +98,11 @@ def check_diff(task):
     ]
     current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
     if branch not in branches:
-        task.params_error = "Branch {} don't exist.".format(branch)
+        task.error = "Branch {} don't exist.".format(branch)
     elif current_branch == branch:
-        task.params_error = "Source and targets branch are the same."
+        task.error = "Source and targets branch are the same."
     elif len(get_stdout(GIT_UNSTAGED_CHANGES)) > 0:
-        task.params_error = "Git working directory is not clean."
+        task.error = "Git working directory is not clean."
     else:
         branch_diff = get_stdout(["git", "diff", "--name-only", branch])
         return len(branch_diff) == 0
@@ -118,44 +111,57 @@ def check_diff(task):
 
 def do_merge(task, pos_arg_val):
     """Merge current branch with given branch (default master) and push it."""
-    if task.params_error is not None:
-        return TaskFailed(task.params_error)
+    if task.error is not None:
+        return TaskFailed(task.error)
     branch = pos_arg_val[0] if len(pos_arg_val) > 0 else "master"
     with checkout(branch) as current_branch:
         check_call(["git", "merge", "--no-ff", current_branch])
         check_call(["git", "push", "origin", branch])
 
 
-def do_release(pos_arg_val):
+def check_release(task):
+    """
+    Return uptodate (True) if there aren't unreleased commit in master branch.
+
+    First, check there aren't unstaged changes in master and current branches
+    and pass the error to do_release.
+    """
+    task.error = None
+    if len(get_stdout(GIT_UNSTAGED_CHANGES)) > 0:
+        task.error = "Git working directory is not clean."
+        return False
+    with checkout("master"):
+        if len(get_stdout(GIT_UNSTAGED_CHANGES)) > 0:
+            task.error = "Git working directory is not clean."
+            return False
+        task.last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
+        task.unreleased_commits = get_stdout(
+            GIT_BRIEF_LOG_CMD + [task.last_version + ".."]
+        )
+    return len(task.unreleased_commits) == 0:
+
+
+def do_release(task, pos_arg_val):
     """Bump version and push to master."""
     choices = ("major", "minor", "patch")
     if len(pos_arg_val) == 0:
-        return TaskFailed(
+        task.error = (
             "Missing PART argument. Availlable choices are: {}.".format(
                 str(choices)
             )
         )
     part = pos_arg_val[0]
     if part not in choices:
-        return TaskFailed(
+        task.error = (
             "Wrong PART argument. Availlable choices are: {}.".format(
                 str(choices)
             )
         )
-    if len(get_stdout(GIT_UNSTAGED_CHANGES)) > 0:
-        return TaskFailed("Git working directory is not clean.")
+    if task.error is not None:
+        return TaskFailed(task.error)
     with checkout("master"):
-        if len(get_stdout(GIT_UNSTAGED_CHANGES)) > 0:
-            return TaskFailed("Git working directory is not clean.")
-        last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
-        unreleased_commits = get_stdout(
-            GIT_BRIEF_LOG_CMD + [last_version + ".."]
-        )
-        if len(unreleased_commits) > 0:
-            print("Commits since", last_version)
-            print(unreleased_commits)
-        else:
-            return TaskFailed("There aren't any commit to release.")
+        print("Commits since", task.last_version)
+        print(task.unreleased_commits)
         check_call(["poetry", "run", "bump2version", "-n", "--verbose", part])
         proceed = input("Do you agree with the changes? (y/n): ")
         if proceed.lower().strip().startswith("y"):
@@ -282,7 +288,7 @@ def task_merge():
     return {
         "task_dep": ["test-all"],
         "pos_arg": "pos_arg_val",
-        "uptodate": [check_diff],
+        "uptodate": [check_merge],
         "actions": [do_merge],
     }
 
@@ -292,5 +298,6 @@ def task_release():
     return {
         "task_dep": ["test-all"],
         "pos_arg": "pos_arg_val",
+        "uptodate": [check_release],
         "actions": [do_release],
     }
