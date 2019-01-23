@@ -178,15 +178,15 @@ def check_release(task):
 
 def do_release(task, pos_arg_val):
     """Bump version and push to master."""
+    if task.error is not None:
+        return TaskFailed(task.error)
     choices = ("major", "minor", "patch")
     msg = "{} PART argument. Availlable choices are: {}."
     if len(pos_arg_val) == 0:
-        task.error = msg.format("Missing", str(choices))
+        return TaskFailed(msg.format("Missing", str(choices)))
     part = pos_arg_val[0]
     if part not in choices:
-        task.error = msg.format("Wrong", str(choices))
-    if task.error is not None:
-        return TaskFailed(task.error)
+        return TaskFailed(msg.format("Wrong", str(choices)))
     with checkout("master"):
         print("Commits since", task.last_version)
         print(task.unreleased_commits)
