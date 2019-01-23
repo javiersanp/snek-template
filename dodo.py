@@ -79,7 +79,7 @@ def checkout(branch):
     current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
     try:
         check_call(["git", "checkout", branch])
-        yield
+        yield current_branch
     finally:
         check_call(["git", "checkout", current_branch])
 
@@ -92,36 +92,45 @@ def get_unstaged_changes():
 
 
 def check_diff(task):
-    """Return updated if task param branch don't differ from current branch."""
+    """
+    Return updated if task param branch don't differ from current branch.
+    
+    First, validate the task param and if not valid pass the error to do_merge.
+    """
+    task.params_error = None
     branch = task.options["branch"]
-    branch_diff = get_stdout(["git", "diff", "--name-only", branch])
-    return len(branch_diff) == 0
-
-
-def do_merge(branch):
-    """Merge current branch with given branch (default master) and push it."""
     branches = [
         branch_.strip("* \r")
         for branch_ in get_stdout(["git", "branch"]).strip("\n\r ").split("\n")
     ]
-    if branch not in branches:
-        return TaskFailed("Branch {} don't exist.".format(branch))
     current_branch = get_stdout(GIT_CURRENT_BRANCH_CMD).strip("\n\r ")
-    if current_branch == branch:
-        return TaskFailed("Source and targets branch are the same.")
-    if len(get_unstaged_changes()) > 0:
-        return TaskFailed("Git working directory is not clean.")
-    with checkout(branch):
+    if branch not in branches:
+        task.params_error = "Branch {} don't exist.".format(branch)
+    elif current_branch == branch:
+        task.param_error = "Source and targets branch are the same."
+    elif len(get_stdout(GIT_UNSTAGED_CHANGES)) > 0:
+        task.param_error = "Git working directory is not clean."
+    else:
+        branch_diff = get_stdout(["git", "diff", "--name-only", branch])
+        return len(branch_diff) == 0
+    return False
+
+
+def do_merge(task, branch):
+    """Merge current branch with given branch (default master) and push it."""
+    if task.params_error is not None:
+        return TaskFailed(task.params_error)
+    with checkout(branch) as current_branch:
         check_call(["git", "merge", "--no-ff", current_branch])
         check_call(["git", "push", "origin", branch])
 
 
 def do_release(part):
     """Bump version and push to master."""
-    if len(get_unstaged_changes()) > 0:
+    if len(get_stdout(GIT_UNSTAGED_CHANGES)) > 0:
         return TaskFailed("Git working directory is not clean.")
     with checkout("master"):
-        if len(get_unstaged_changes()) > 0:
+        if len(get_stdout(GIT_UNSTAGED_CHANGES)) > 0:
             return TaskFailed("Git working directory is not clean.")
         last_version = get_stdout(GIT_LAST_VERSION_CMD).strip("\n\r ")
         unreleased_commits = get_stdout(
