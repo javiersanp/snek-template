@@ -27,7 +27,7 @@ PYTHON_FILES = [
 # Set file_dep to this to run task only when the documentation changes
 DOCS_FILES = (
     glob.glob("docs/**/*.md", recursive=True)
-    + glob.glob("**/*.md")
+    + glob.glob("*.md")
     + ["{{cookiecutter.project_slug}}/docs/tasks.md"]
 )
 

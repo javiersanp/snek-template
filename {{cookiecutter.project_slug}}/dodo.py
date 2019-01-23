@@ -27,8 +27,8 @@ PYTHON_FILES = glob.glob("**/*.py", recursive=True)
 DOCS_FILES = (
     glob.glob("docs/**/*.md", recursive=True)
     + glob.glob("docs/**/*.rst", recursive=True)
-    + glob.glob("**/*.md")
-    + glob.glob("**/*.rst")
+    + glob.glob("*.md")
+    + glob.glob("*.rst")
 )
 
 BLACK_CMD = (
