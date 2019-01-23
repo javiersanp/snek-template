@@ -1,7 +1,7 @@
 Snek Template
 =============
 
-[![](https://travis-ci.org/javiersanp/snek-template.png)](https://travis-ci.org/javiersanp/snek-template) [![](https://circleci.com/gh/javiersanp/snek-template.png?style=shield)](https://travis-ci.org/javiersanp/snek-template)
+[![](https://travis-ci.org/javiersanp/snek-template.png)](https://travis-ci.org/javiersanp/snek-template) [![](https://circleci.com/gh/javiersanp/snek-template.png?style=shield)](https://circleci.com/gh/javiersanp/snek-template)
 
 Another [cookiecutter](https://github.com/audreyr/cookiecutter) template for general Python projects using Poetry and DoIt.
 
