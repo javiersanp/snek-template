@@ -1,6 +1,8 @@
 Snek Template
 =============
 
+[![](https://travis-ci.org/javiersanp/snek-template.png)](https://travis-ci.org/javiersanp/snek-template) [![](https://circleci.com/gh/javiersanp/snek-template.png?style=shield)](https://travis-ci.org/javiersanp/snek-template)
+
 Another [cookiecutter](https://github.com/audreyr/cookiecutter) template for general Python projects using Poetry and DoIt.
 
 Features
@@ -26,7 +28,7 @@ Planned Features
 
 **Optionally**
 
-* Auto-release to [PyPI](https://pypi.org/) (optional).
+* Auto-release to [PyPI](https://pypi.org/).
 
 Requirements
 ------------
