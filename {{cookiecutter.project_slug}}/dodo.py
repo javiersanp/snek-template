@@ -173,25 +173,18 @@ def check_release(task):
         task.unreleased_commits = get_stdout(
             GIT_BRIEF_LOG_CMD + [task.last_version + ".."]
         )
-    return len(task.unreleased_commits) == 0:
+    return len(task.unreleased_commits) == 0
 
 
 def do_release(task, pos_arg_val):
     """Bump version and push to master."""
     choices = ("major", "minor", "patch")
+    msg = "{} PART argument. Availlable choices are: {}."
     if len(pos_arg_val) == 0:
-        task.error = (
-            "Missing PART argument. Availlable choices are: {}.".format(
-                str(choices)
-            )
-        )
+        task.error = msg.format("Missing", str(choices))
     part = pos_arg_val[0]
     if part not in choices:
-        task.error = (
-            "Wrong PART argument. Availlable choices are: {}.".format(
-                str(choices)
-            )
-        )
+        task.error = msg.format("Wrong", str(choices))
     if task.error is not None:
         return TaskFailed(task.error)
     with checkout("master"):
