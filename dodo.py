@@ -91,6 +91,13 @@ def get_unstaged_changes():
     return changes
 
 
+def check_diff(task):
+    """Return updated if task param branch don't differ from current branch."""
+    branch = task.options["branch"]
+    branch_diff = get_stdout(["git", "diff", "--name-only", branch])
+    return len(branch_diff) == 0
+
+
 def do_merge(branch):
     """Merge current branch with given branch (default master) and push it."""
     branches = [
@@ -259,6 +266,7 @@ def task_merge():
                 "help": "Branch to merge into.",
             }
         ],
+        "uptodate": [check_diff],
         "actions": [do_merge],
     }
 
